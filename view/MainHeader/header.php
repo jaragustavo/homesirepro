@@ -1,8 +1,8 @@
 <header class="site-header">
     <div class="container-fluid">
 
-        <a href="#" class="site-logo">
-           <h2>Sirepro</h2>
+        <a href="home.php" class="site-logo">
+            <h2>Sirepro</h2>
         </a>
 
         <button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
@@ -22,28 +22,51 @@
                         </a>
                     </div>
                     <div class="dropdown user-menu">
-                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-                            <a class="dropdown-item" href="../MntPerfil/"><span class="font-icon glyphicon glyphicon-user"></span>Perfil</a>
-                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Ayuda</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../../index.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesion</a>
+	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                            <img src="../../assets/images/maite.jpg" alt="">
+	                        </button>
+	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span><?php echo $_SESSION["nombre"] ?> <?php echo $_SESSION["apellido"] ?></a>
+	                            <!-- <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-cog"></span>Settings</a> -->
+	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Ayuda</a>
+	                            <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="../../index.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesion</a>
+	                        </div>
+	                    </div>
+                    <!-- <div class="dropdown user-menu">
+                        <div class="tbl">
+                            <div class="tbl-row">
+                                <div class="tbl-cell">
+                                <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+                                    <a class="dropdown-item" href="../MntPerfil/"><span class="font-icon glyphicon glyphicon-user"></span>Perfil</a>
+                                    <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Ayuda</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="../../index.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesion</a>
+                                </div>
+                                </div>
+                                <div class="tbl-cell">
+                                    <div class="dropdown dropdown-typical">
+                                        <a href="#" class="dropdown-toggle no-arr">
+                                            <span class="font-icon font-icon-user"></span>
+                                            <span class="lblcontactonomx"><?php echo $_SESSION["nombre"] ?> <?php echo $_SESSION["apellido"] ?></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        
+                        
+                    </div> -->
                 </div>
 
                 <div class="mobile-menu-right-overlay"></div>
 
                 <input type="hidden" id="user_idx" value="<?php echo $_SESSION["usuario_id"] ?>"><!-- ID del Usuario-->
 
-                <div class="dropdown dropdown-typical">
-                    <a href="#" class="dropdown-toggle no-arr">
-                        <span class="font-icon font-icon-user"></span>
-                        <span class="lblcontactonomx"></span>
-                    </a>
-                </div>
+                
 
             </div>
         </div>

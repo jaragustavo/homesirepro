@@ -80,11 +80,11 @@
 					<table id="datos_personales_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 						<thead>
 							<tr>
-								<th style="width: 5%;">#</th>
-								<th style="width: 10%">Tipo de Documento</th>
-								<th class="d-none d-sm-table-cell" style="width: 10%">Nombre del Archivo</th>
+								<!-- <th style="width: 5%;">#</th> -->
+								<th style="width: 5%;">Tipo de Documento</th>
+								<!-- <th class="d-none d-sm-table-cell" style="width: 10%">Nombre del Archivo</th> -->
 								<th class="d-none d-sm-table-cell" style="width: 5%;">Fecha</th>
-								<th class="d-none d-sm-table-cell" style="width: 5%;">Acciones</th>
+								<th class="d-none d-sm-table-cell" style="width: 1%;">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>

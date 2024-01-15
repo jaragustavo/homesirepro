@@ -94,7 +94,8 @@
 						</div>
 						<div class="col-lg-12">
 							<!-- <input type="hidden" name="enviar" value="si"> -->
-							<button type="submit" name="action" value="add" class="btn btn-rounded btn-inline btn-primary">Guardar</button>
+							<button type="submit" name="action" value="add" class="btn btn-rounded btn-primary">Guardar</button>
+							<a href="listarDocsPersonales.php"><button type="reset" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
 						</div>
 					</form>
 				</div>

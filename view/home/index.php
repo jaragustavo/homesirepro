@@ -1,4 +1,7 @@
-
+<?php
+  require_once("../../config/conexion.php"); 
+  if(isset($_SESSION["usuario_id"])){ 
+?>
 
 <!doctype html>
 <html lang="es" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
@@ -45,14 +48,24 @@
 	                            </div>
 	                        </article>
 	                    </div>
-						<div class="col-sm-4">
-	                        <article class="statistic-box red">
+						<a href="../DocsPersonales/listarDocsPersonales.php">
+							<div class="col-sm-4">
+								<article class="statistic-box red">
+									<div>
+										<div class="number" id="lbltotalcerrado">13<div>
+										<div class="caption"><div>Documentos</div></div>
+									</div>
+								</article>
+							</div>
+  						</a>
+						<!-- <div class="col-sm-3">
+	                        <article class="statistic-box purple">
 	                            <div>
-	                                <div class="number" id="lbltotalcerrado">31/05/2024<div>
-	                                <div class="caption"><div>Vencimiento de registro</div></div>
+	                                <div class="number" id="lbltotalcerrado">13<div>
+	                                <div class="caption"><div>Documentos</div></div>
 	                            </div>
 	                        </article>
-	                    </div>
+	                    </div> -->
 					</div>
 				</div>
 			</div>
@@ -106,10 +119,7 @@
 
 </html>
 <?php
-    //     }else{
-    //         header("Location:".Conectar::ruta()."view/404/");
-    //     }
-    // }else{
-    //     header("Location:".Conectar::ruta()."view/404/");
-    // }
+} else {
+  header("Location:".Conectar::ruta()."index.php");
+}
 ?>

@@ -9,48 +9,16 @@
                             <span class="lbl">Inicio</span>
                         </a>
                     </li>
-
-                    <li class="blue-dirty">
-                        <a href="..\DocsPersonales\listarDocsPersonales.php">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Documentos</span>
-                        </a>
+                    <li class="magenta with-sub">
+                        <span>
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <span class="lbl">Currículum Virtual</span>
+                        </span>
+                        <ul>
+                            <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Personales</span></a></li>
+                            <a href="bootstrap-datatables.html"><span class="lbl">Académicos</span></a></li>
+                        </ul>
                     </li>
-
-                    <!-- <li class="blue-dirty">
-                        <a href="..\MntUsuario\">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Mant. Usuario</span>
-                        </a>
-                    </li>
-
-                    <li class="blue-dirty">
-                        <a href="..\MntPrioridad\">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Mant. Prioridad</span>
-                        </a>
-                    </li>
-
-                    <li class="blue-dirty">
-                        <a href="..\MntCategoria\">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Mant. Categoria</span>
-                        </a>
-                    </li>
-
-                    <li class="blue-dirty">
-                        <a href="..\MntSubCategoria\">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Mant. Sub Categoria</span>
-                        </a>
-                    </li>
-
-                    <li class="blue-dirty">
-                        <a href="..\ConsultarTicket\">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <span class="lbl">Consultar Ticket</span>
-                        </a>
-                    </li> -->
                 </ul>
             </nav>
 

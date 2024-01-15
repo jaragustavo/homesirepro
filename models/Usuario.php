@@ -97,7 +97,6 @@
             $conectar=parent::Conexion();
             if (isset($_POST["enviar"])){
                 /* TODO: Recepcion de Parametros desde la Vista Login */
-                // $sucursal = $_POST["suc_id"];
                 $correo = $_POST["email"];
                 $pass =  $_POST["password"];
                
@@ -105,7 +104,6 @@
                     header("Location:".Conectar::ruta()."index.php?m=2");
                     exit();
                 }else{
-                    // $sql="select * from usuarios where suc_id = $sucursal and email = '".$correo."' and password= '".$pass."'";
                     $sql="select * from usuarios where email = '".$correo."' and password= '".$pass."'";
 
                     // error_log('$$$$$$$$$$$$$$ '.$sql);
@@ -120,9 +118,6 @@
                         $_SESSION["email"]=$resultado["email"];
                         $_SESSION["suc_id"]=$resultado["suc_id"];
                         $_SESSION["cedula"]=$resultado["ci"];
-                        // $_SESSION["aso_id"]=$resultado["aso_id"];
-                        // $_SESSION["ROL_ID"]=$resultado["ROL_ID"];
-                        // $_SESSION["USU_IMG"]=$resultado["USU_IMG"];
 
                         header("Location:".Conectar::ruta()."view/home/");
                     }else{

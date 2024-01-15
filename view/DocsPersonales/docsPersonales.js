@@ -98,20 +98,19 @@ $(document).ready(function() {
     });
     
     var currentURL = window.location.href;
-    if($('#idEncrypted').val() != "" && $('#idEncrypted').val() != null){
-        // Use a regular expression to extract the ID from the URL
-        // var match = currentURL.match(/[\?&]ID=([^&]*)/);
-        // // Check if a match is found
-        // if (match) {
-        //     // Extracted ID is in match[1]
-        //     var idEncrypted = match[1];
-        //     cargarDocumentoPersonal(idEncrypted);
-            cargarDocumentoPersonal($('#idEncrypted').val());
+    // Use a regular expression to extract the ID from the URL
+    var match = currentURL.match(/[\?&]ID=([^&]*)/);
+    // // Check if a match is found
+    if (match) {
+        // Extracted ID is in match[1]
+        var idEncrypted = match[1];
+    //     cargarDocumentoPersonal(idEncrypted);
+        cargarDocumentoPersonal(idEncrypted);
+        // cargarDocumentoPersonal($('#idEncrypted').val());
 
-        // } else {
-        //     // No ID found in the URL
-        //     console.log("No ID found in the URL");
-        // }
+    } else {
+    //     // No ID found in the URL
+        console.log("No ID found in the URL");
     }
     
 });
@@ -185,28 +184,36 @@ function guardaryeditar(e){
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    console.log(data);
-                    data = JSON.parse(data);
-                    console.log(data[0].tick_id);
-
                     /* TODO: Limpiar campos */
                     $('#imagen').val('');
                     $('#dato_adic').summernote('reset');
                     $('#fecha').val('');
                     $('#tipo_documento').val('');
                     
-                    Swal.fire({
-                        title: "¡Listo!",
-                        text: "Registrado Correctamente",
-                        icon: "success",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3d85c6",
-                        confirmButtonText: "OK"
-                    }).then((result) => {    
-                        if (result.isConfirmed) {    
-                            window.location.replace('listarDocsPersonales.php'); 
-                        }
-                    });
+                    if(data= "Documento agregado"){
+                        Swal.fire({
+                            title: "¡Listo!",
+                            text: "Registrado Correctamente",
+                            icon: "success",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3d85c6",
+                            confirmButtonText: "OK"
+                        }).then((result) => {    
+                            if (result.isConfirmed) {    
+                                window.location.replace('listarDocsPersonales.php'); 
+                            }
+                        });
+                    }
+                    else{
+                        Swal.fire({
+                            title: "Error",
+                            text: data,
+                            icon: "error",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3d85c6",
+                            confirmButtonText: "OK"
+                        });
+                    }
                     
                 }
             });
