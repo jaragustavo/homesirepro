@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 		<?php require_once("../MainHead/head.php");?>
-		<title>Documentos Personales</title>
+		<title>Documentos Academicos</title>
 	</head>
 <body class="with-side-menu">
 
@@ -27,8 +27,8 @@
 						<div class="tbl-cell">
 							<h3>Nuevo Documento</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="listarDocsPersonales.php">Documentos Personales</a></li>
-								<li class="active">Nuevo Documento</li>
+								<li><a href="listarDocsPersonales.php">Documentos Academicos</a></li>
+								<li class="active">Nuevo Documento Academico</li>
 							</ol>
 						</div>
 					</div>
@@ -37,10 +37,7 @@
 
 			<div class="box-typical box-typical-padding">
 
-				<!-- <h5 class="m-t-lg with-border">Ingresar Información</h5> -->
-
-				<div class="row">
-					<form method="post" id="dato_personal_form">
+				<form method="post" id="doc_academico_form">
 
 						<input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $_SESSION["usuario_id"] ?>">
 
@@ -57,17 +54,24 @@
 								<select id="x" name="x" class="form-control select2">
 							</fieldset>
 						</div>
-						<div class="col-lg-4">
-							<fieldset class="form-group">
-								<label class="form-label semibold" for="fecha">Fecha</label>
-								<input type="date" class="form-control" id="fecha" name="fecha">
-
-								</select>
-							</fieldset>
-						</div>
-
+						
+					<div class="row">
 						<div class="col-lg-6">
 							<fieldset class="form-group">
+								<label class="form-label semibold" for="institucion_educativa">Institucion</label>
+								<select id="institucion_educativa" name="institucion_educativa" class="form-control select2">
+							</fieldset>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+						<fieldset class="form-group">
+							<label class="form-label semibold" for="x">Tipo Documento</label>
+							<select id="x" name="x" class="form-control select2">
+						</fieldset>
+						</div>
+						<div class="col-lg-6">
+							<!-- <fieldset class="form-group"> -->
 								<label class="form-label semibold" for="documento">Documento</label>
                                     <div class="el-element-overlay">
                                         <div class="el-card-item">
@@ -81,24 +85,25 @@
                                         <input type="hidden" name="imagenactual" id="imagenactual">
                                         <p class="help-block">Peso máximo 2MB</p>
                                     </div>       
-							</fieldset>
+							<!-- </fieldset> -->
 						</div>
-
+					</div>
+					<div class="row">
 						<div class="col-lg-12">
-							<fieldset class="form-group">
+							<!-- <fieldset class="form-group"> -->
 								<label class="form-label semibold" for="dato_adic">Datos Adicionales</label>
 								<div class="summernote-theme-1">
 									<textarea id="dato_adic" name="dato_adic" class="summernote" name="name"></textarea>
 								</div>
-							</fieldset>
+							<!-- </fieldset> -->
 						</div>
 						<div class="col-lg-12">
 							<!-- <input type="hidden" name="enviar" value="si"> -->
 							<button type="submit" name="action" value="add" class="btn btn-rounded btn-primary">Guardar</button>
-							<a href="listarDocsPersonales.php"><button type="button" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
+							<a href="listarDocsAcademicos.php"><button type="button" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 
 			</div>
 		</div>
@@ -107,7 +112,7 @@
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="docsPersonales.js"></script>
+	<script type="text/javascript" src="docsAcademicos.js"></script>
 	<?php require_once("../html/footer.php");?>
 	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 

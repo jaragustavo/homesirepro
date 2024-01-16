@@ -1,9 +1,9 @@
 <?php
     class TipoDocumento extends Conectar{
         /* TODO: Listar Registros */
-        public function get_tipodocumento_x_tipo_id(){
+        public function get_tipodocumento_x_tipo_id($tipo){
             $conectar=parent::Conexion();
-            $sql="select id as tipo_documento_id, documento from tipos_documentos where tipo = 'P';";
+            $sql="select id as tipo_documento_id, documento from tipos_documentos where tipo = '$tipo';";
             $query=$conectar->prepare($sql);
             // $query->bindValue(1, 'P');
             $query->execute();

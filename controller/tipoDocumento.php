@@ -59,7 +59,21 @@
         /* TODO: Formato para llenar combo en formato HTML */
         case "combo":
             
-            $datos = $tipoDocumento->get_tipodocumento_x_tipo_id();
+            $datos = $tipoDocumento->get_tipodocumento_x_tipo_id('P');
+            $html="";
+            $html.="<option label='Seleccionar'></option>";
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $html.= "<option value='".$row['tipo_documento_id']."'>".$row['documento']."</option>";
+                }
+                echo $html;
+            }
+            break;
+
+        case "comboAcademicos":
+            
+            $datos = $tipoDocumento->get_tipodocumento_x_tipo_id('A');
             $html="";
             $html.="<option label='Seleccionar'></option>";
             if(is_array($datos)==true and count($datos)>0){

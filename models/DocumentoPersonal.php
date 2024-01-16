@@ -38,6 +38,34 @@
             return $resultado=$sql->fetchAll();
         }
 
+        /* TODO: Filtro Avanzado de documentos personales */
+        public function filtrar_doc_personal($tipo_documento,$fecha){
+            $conectar= parent::conexion();
+            $condicionTipoDoc = "";
+            $condicionFecha = "";
+            $and = "";
+            if($tipo_documento > 0){
+                $condicionTipoDoc = "tipo_doc_id = $tipo_documento ";
+            } 
+            if($fecha != ""){
+                $condicionFecha= "fecha::date = '$fecha'";
+            }
+            if($condicionFecha != "" && $condicionTipoDoc != ""){
+                $and = " AND ";
+            }
+            $sql="SELECT tipo_doc_id as tipo_documento, datos_personales.fecha, 
+            datos_personales.id as dato_personal_id, 
+            tipos_documentos.documento as tipo_documento
+            FROM datos_personales 
+            INNER JOIN tipos_documentos on datos_personales.tipo_doc_id = tipos_documentos.id
+            WHERE datos_personales.activo = true AND ".$condicionTipoDoc.$and.$condicionFecha;
+            $sql=$conectar->prepare($sql);
+            $sql->execute();
+            return $resultado=$sql->fetchAll();
+            $conectar->close();
+            $conectar = null;
+        }
+
         /* TODO: Mostrar documento personal segun id del documento */
         public function mostrar($doc_personal_id){
             $conectar= parent::conexion();

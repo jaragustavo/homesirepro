@@ -47,7 +47,7 @@
 						<div class="col-lg-6">
 							<fieldset class="form-group">
 								<label class="form-label semibold" for="tipo_documento">Tipo Documento</label>
-								<select id="tipo_documento" name="tipo_documento" class="form-control select2">
+								<select id="tipo_documento" name="tipo_documento" class="form-control select2" >
 							</fieldset>
 						</div>
 
@@ -65,14 +65,6 @@
 								</select>
 							</fieldset>
 						</div>
-
-						<!-- <div class="col-lg-6">
-							<fieldset class="form-group">
-								<label class="form-label semibold" for="documento">Documento</label>
-								<input type="file" name="documento" id="documento" class="form-control">
-								<embed src="../../docs/documents/11/maite_passport_p2.jpg" width="400px" height="200px" />
-							</fieldset>
-						</div> -->
 						<div class="col-lg-6">
 							<fieldset class="form-group">
 								<label class="form-label semibold" for="documento">Documento</label>
@@ -105,7 +97,7 @@
 						<div class="col-lg-12">
 							<!-- <input type="hidden" name="enviar" value="si"> -->
 							<button type="submit" name="action" value="add" class="btn btn-rounded btn-primary">Guardar</button>
-							<a href="listarDocsPersonales.php"><button type="reset" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
+							<a href="listarDocsPersonales.php"><button type="button" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
 						</div>
 					</form>
 				</div>
@@ -118,7 +110,7 @@
 	<?php require_once("../MainJs/js.php");?>
 
 	<script type="text/javascript" src="docsPersonales.js"></script>
-
+	<?php require_once("../html/footer.php");?>
 	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 
 </body>
