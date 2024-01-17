@@ -115,14 +115,13 @@ $(document).ready(function() {
 /* TODO: Link para poder ver el detalle de documento academico */
 $(document).on("click", ".btn-inline", function() {
     const ciphertext = $(this).data("ciphertext");
-    window.location.replace('http://localhost:90/sirepro/view/DocsAcademicos/editarDocsAcademicos.php?ID=' + ciphertext + '');    
+    window.location.replace('editarDocsAcademicos.php?ID=' + ciphertext + '');    
 });
 
 /* TODO: Link para poder ver el documento academico */
 $(document).on("click", ".btn-open-pdf", function() {
     const ciphertext = $(this).data("ciphertext");
-    console.log("$$$$$$$$$$ "+ciphertext);
-    wwindow.open(ciphertext);  
+    window.open(ciphertext);  
 });
 
 /* TODO:Filtro avanzado */

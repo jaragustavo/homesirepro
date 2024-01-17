@@ -1,8 +1,8 @@
 <header class="site-header">
     <div class="container-fluid">
 
-        <a href="home.php" class="site-logo">
-            <h2>Sirepro</h2>
+        <a href="../home/index.php" class="site-logo">
+            <img src="../../assets/images/logo1_sirepro.jpg">
         </a>
 
         <button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
@@ -16,6 +16,9 @@
         <div class="site-header-content">
             <div class="site-header-content-in">
                 <div class="site-header-shown">
+                    <?php
+                        require_once('notificaciones.php');
+                    ?>
                     <div class="dropdown dropdown-notification notif">
                         <a href="../MntNotificacion/" class="header-alarm">
                             <i class="font-icon-alarm"></i>
@@ -23,14 +26,13 @@
                     </div>
                     <div class="dropdown user-menu">
 	                        <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                            <img src="../../assets/images/maite.jpg" alt="">
+	                            <img src="https://sirepro.mspbs.gov.py/foto/<?php echo $_SESSION["cedula"] ?>.jpg" alt="">
 	                        </button>
 	                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
 	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span><?php echo $_SESSION["nombre"] ?> <?php echo $_SESSION["apellido"] ?></a>
-	                            <!-- <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-cog"></span>Settings</a> -->
 	                            <a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-question-sign"></span>Ayuda</a>
 	                            <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="../../index.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesion</a>
+                                <a class="dropdown-item" href="../Logout/logout.php"><span class="font-icon glyphicon glyphicon-log-out"></span>Cerrar Sesion</a>
 	                        </div>
 	                    </div>
                     <!-- <div class="dropdown user-menu">

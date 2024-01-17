@@ -1,4 +1,10 @@
 function init(){
+    $.post("../../controller/usuario.php?op=cantidadesCurriculum",function (data) {
+        data = JSON.parse(data);
+        $('#lbldocspersonales').html(data.lbldocspersonales);
+        $('#lbldocsacademicos').html(data.lbldocsacademicos);
+        $('#lbltotalcurriculum').html(data.lbltotalcurriculum);
+    });
 
 }
 

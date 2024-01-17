@@ -233,8 +233,14 @@ function listardatatable(tipo_documento, fecha) {
 /* TODO: Link para poder ver el detalle de documento personal en otra ventana */
 $(document).on("click", ".btn-inline", function() {
     const ciphertext = $(this).data("ciphertext");
-    window.location.replace('http://localhost:90/sirepro/view/DocsPersonales/editarDocsPersonales.php?ID=' + ciphertext + '');
+    window.location.replace('editarDocsPersonales.php?ID=' + ciphertext + '');
     
+});
+
+/* TODO: Link para poder ver el documento personal */
+$(document).on("click", ".btn-open-pdf", function() {
+    const ciphertext = $(this).data("ciphertext");
+    window.open(ciphertext);  
 });
 
 /* TODO: Link para poder ver el eliminar el Documento Personal */
@@ -286,12 +292,14 @@ function guardaryeditar(e){
     /* TODO: Array del form Documento Personal */
     var formData = new FormData($("#dato_personal_form")[0]);
     /* TODO: validamos si los campos tienen informacion antes de guardar */
-    if ($('#dato_adic').summernote('isEmpty') || $('#imagen').val()=='' || $('#tipo_documento').val() == 0){
+    if (($('#dato_adic').summernote('isEmpty') || $('#imagen').val()=='' 
+    || $('#tipo_documento').val() == 0|| $('#institucion_educativa').val() == 0) 
+    && $('#imagenmuestra').length == 0){
         swal("Advertencia!", "Campos Vacios", "warning");
     }else{
 
         /* TODO: Guardar Documento Personal */
-        if(idEncrypted == ""){
+        if($('#idEncrypted').val() == ""){
             $.ajax({
                 url: "../../controller/documentoPersonal.php?op=insert",
                 type: "POST",
@@ -336,15 +344,12 @@ function guardaryeditar(e){
         else{
 
             $.ajax({
-                url: "../../controller/documentoPersonal.php?op=update&ID="+idEncrypted,
+                url: "../../controller/documentoPersonal.php?op=update&img="+$('#imagenmuestra').length,
                 type: "POST",
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    console.log(data);
-                    data = JSON.parse(data);
-                    console.log(data[0].tick_id);
                     
                     Swal.fire({
                         title: "¡Listo!",

@@ -25,7 +25,7 @@
 						<div class="tbl-cell">
 							<h3>Documentos Académicos</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../home/">Inicio</a></li>
+							<li><a href="../home/indexCurriculumVirtual.php">Currículum Virtual</a></li>
 								<li class="active">Documentos Académicos</li>
 							</ol>
 						</div>
@@ -34,7 +34,7 @@
 							<div class="col-lg-6">
 								<fieldset class="form-group">
 									<label class="form-label" for="btnfiltrar">&nbsp;</label>
-									<a href= "nuevoDocsAcademicos.php"><button class="btn btn-rounded btn-primary btn-block" id="btnfiltrar">Nuevo Documento</button></a>
+									<a href= "nuevoDocsAcademicos.php"><button type="button" class="btn btn-rounded btn-primary btn-block" id="btnfiltrar">Nuevo Documento</button></a>
 								</fieldset>
 							</div>
 						</div>

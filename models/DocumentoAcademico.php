@@ -57,7 +57,8 @@
             $sql="SELECT tipo_doc_id as tipo_documento, 
             instituciones_educativas.nombre_institucion as institucion, 
             documentos_academicos.id as doc_academico_id, 
-            tipos_documentos.documento as tipo_documento
+            tipos_documentos.documento as tipo_documento,
+            documentos_academicos.pdf as documento
             FROM documentos_academicos 
             INNER JOIN tipos_documentos on documentos_academicos.tipo_doc_id = tipos_documentos.id
             INNER join instituciones_educativas on instituciones_educativas.id = documentos_academicos.institucion_id

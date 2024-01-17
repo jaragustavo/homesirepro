@@ -25,7 +25,7 @@
 						<div class="tbl-cell">
 							<h3>Documentos Personales</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="../home/">Inicio</a></li>
+								<li><a href="../home/indexCurriculumVirtual.php">Currículum Virtual</a></li>
 								<li class="active">Documentos Personales</li>
 							</ol>
 						</div>
@@ -58,10 +58,7 @@
 					<div class="col-lg-3">
 						<fieldset class="form-group">
 							<label class="form-label" for="fecha">Fecha</label>
-							<select class="select2" id="fecha" name="fecha" data-placeholder="Seleccionar">
-								<option label="Seleccionar"></option>
-
-							</select>
+							<input type="date" placeholder="DD-MM-YYYY" class="form-control" id="fecha" name="fecha">
 						</fieldset>
 					</div>
 

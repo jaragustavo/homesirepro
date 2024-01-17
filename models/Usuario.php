@@ -160,5 +160,24 @@
             $sql->execute();
             return $resultado=$sql->fetchAll();
         }
+
+        /* TODO: Listar documentos pertenecientes a Currículum Virtual */
+        public function get_cantidades_curriculum($usu_id){
+            $conectar=parent::Conexion();
+            $sql="select 
+            t1.cant_personales,t2.cant_academicos
+            from 
+            (SELECT count(*) as cant_personales
+                FROM datos_personales
+                WHERE usuario_id = $usu_id
+                AND activo = true) as t1, 
+            (SELECT count(*) as cant_academicos
+                FROM documentos_academicos
+                WHERE usuario_id = $usu_id
+                AND activo = true) as t2;";
+            $query=$conectar->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>

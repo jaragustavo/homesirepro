@@ -55,7 +55,8 @@
             }
             $sql="SELECT tipo_doc_id as tipo_documento, datos_personales.fecha, 
             datos_personales.id as dato_personal_id, 
-            tipos_documentos.documento as tipo_documento
+            tipos_documentos.documento as tipo_documento,
+            datos_personales.pdf as documento
             FROM datos_personales 
             INNER JOIN tipos_documentos on datos_personales.tipo_doc_id = tipos_documentos.id
             WHERE datos_personales.activo = true AND ".$condicionTipoDoc.$and.$condicionFecha;
@@ -88,10 +89,14 @@
         /* TODO: actualizar documento */
         public function update_doc_personal($doc_personal_id, $usuario_id, $tipo_documento, $documento, $fecha, $dato_adic){
             $conectar= parent::conexion();
+            $pdf = "";
+            if($documento != ""){
+                $pdf = "pdf = '$documento',";
+            }
             $sql="update datos_personales 
                 set	
                     tipo_doc_id = $tipo_documento,
-                    pdf = '$documento',
+                    $pdf
                     fecha = '$fecha',
                     dato_adic = '$dato_adic',
                     user_mod = '$usuario_id',

@@ -27,7 +27,7 @@
 						<div class="tbl-cell">
 							<h3>Editar Documento</h3>
 							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="listarDocsPersonales.php">Documentos Académicos</a></li>
+								<li><a href="listarDocsAcademicos.php">Documentos Académicos</a></li>
 								<li class="active">Editar Documento</li>
 							</ol>
 						</div>

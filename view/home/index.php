@@ -48,24 +48,16 @@
 	                            </div>
 	                        </article>
 	                    </div>
-						<a href="../DocsPersonales/listarDocsPersonales.php">
+						<a href="indexCurriculumVirtual.php">
 							<div class="col-sm-4">
 								<article class="statistic-box red">
 									<div>
-										<div class="number" id="lbltotalcerrado">13<div>
-										<div class="caption"><div>Documentos</div></div>
+										<div class="number" id="lbltotalcurriculum" name="lbltotalcurriculum"></div>
+										<div class="caption"><div>Currículum Virtual</div></div>
 									</div>
 								</article>
 							</div>
   						</a>
-						<!-- <div class="col-sm-3">
-	                        <article class="statistic-box purple">
-	                            <div>
-	                                <div class="number" id="lbltotalcerrado">13<div>
-	                                <div class="caption"><div>Documentos</div></div>
-	                            </div>
-	                        </article>
-	                    </div> -->
 					</div>
 				</div>
 			</div>

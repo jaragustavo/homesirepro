@@ -23,15 +23,14 @@
                 $sub_array = array();
                 $sub_array[] = $row["tipo_documento"];
                 $sub_array[] = $row["institucion"];
-                $ruta = "http://localhost:90/sirepro/docs/documents/".$_SESSION["cedula"]."/"."academicos/".$row["documento"];
-
+                $ruta = "http://localhost:90/homesirepro/docs/documents/".$_SESSION["cedula"]."/"."academicos/".$row["documento"];
                 
                 $cifrado = openssl_encrypt($row["doc_academico_id"], $cipher, $key, OPENSSL_RAW_DATA, $iv);
                 $textoCifrado = base64_encode($iv . $cifrado);
 
-                $sub_array[] = '<button style="padding: 0;border: none;background: none;" type="button" data-ciphertext="'.$ruta.'" id="'.$textoCifrado.'" class="btn-open-pdf"><i class="glyphicon glyphicon-eye-open " style="color:#2986cc; font-size:large; margin: 3px;" aria-hidden="true"></button></i>
-                <button type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline"><i  class="glyphicon glyphicon-edit" style="color:#6aa84f; font-size:large; margin: 3px;" aria-hidden="true"></i></button>
-                <button type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-delete-row"><i class="glyphicon glyphicon-trash" style="color:#e06666; font-size:large; margin: 3px;" aria-hidden="true"></i></button>';
+                $sub_array[] = '<button title="Abrir documento" style="padding: 0;border: none;background: none;" type="button" data-ciphertext="'.$ruta.'" id="'.$textoCifrado.'" class="btn-open-pdf"><i class="glyphicon glyphicon-file" style="color:#2986cc; font-size:large; margin: 3px;" aria-hidden="true"></button></i>
+                <button title="Editar documento" type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline"><i  class="glyphicon glyphicon-edit" style="color:#6aa84f; font-size:large; margin: 3px;" aria-hidden="true"></i></button>
+                <button title="Eliminar documento" type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-delete-row"><i class="glyphicon glyphicon-trash" style="color:#e06666; font-size:large; margin: 3px;" aria-hidden="true"></i></button>';
                 
                 $data[] = $sub_array;
             }
@@ -54,13 +53,14 @@
                 $sub_array = array();
                 $sub_array[] = $row["tipo_documento"];
                 $sub_array[] = $row["institucion"];
-
+                $ruta = "http://localhost:90/homesirepro/docs/documents/".$_SESSION["cedula"]."/"."academicos/".$row["documento"];
+                
                 $cifrado = openssl_encrypt($row["doc_academico_id"], $cipher, $key, OPENSSL_RAW_DATA, $iv);
                 $textoCifrado = base64_encode($iv . $cifrado);
 
-                $sub_array[] = '<button style="padding: 0;border: none;background: none;" type="button" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline"><i class="glyphicon glyphicon-eye-open " style="color:#2986cc; font-size:large; margin: 3px;" aria-hidden="true"></button></i>
-                <button type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline"><i  class="glyphicon glyphicon-edit" style="color:#6aa84f; font-size:large; margin: 3px;" aria-hidden="true"></i></button>
-                <button type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-delete-row"><i class="glyphicon glyphicon-trash" style="color:#e06666; font-size:large; margin: 3px;" aria-hidden="true"></i></button>';
+                $sub_array[] = '<button title="Abrir documento" style="padding: 0;border: none;background: none;" type="button" data-ciphertext="'.$ruta.'" id="'.$textoCifrado.'" class="btn-open-pdf"><i class="glyphicon glyphicon-file" style="color:#2986cc; font-size:large; margin: 3px;" aria-hidden="true"></button></i>
+                <button title="Editar documento" type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline"><i  class="glyphicon glyphicon-edit" style="color:#6aa84f; font-size:large; margin: 3px;" aria-hidden="true"></i></button>
+                <button title="Eliminar documento" type="button" style="padding: 0;border: none;background: none;" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-delete-row"><i class="glyphicon glyphicon-trash" style="color:#e06666; font-size:large; margin: 3px;" aria-hidden="true"></i></button>';
                 
                 $data[] = $sub_array;
                 
@@ -96,7 +96,7 @@
                 $datos=$documentoAcademico->insert_doc_academico($_POST["usuario_id"],$_POST["tipo_documento"],
                 $docNombre,$_POST["institucion_educativa"],$_POST["dato_adic"]);
             }
-            echo $datos ? "Documento agregado" : "El documento se pudo agregar.";
+            echo $datos ? "Documento agregado" : "El documento no se pudo agregar.";
             break;
 
         /* TODO: Actualizamos el Documento Academico a cerrado y adicionamos una linea adicional */
@@ -125,10 +125,8 @@
                     $destino = $ruta.$docNombre;
                     /* TODO: Movemos los archivos hacia la carpeta creada */
                     move_uploaded_file($doc1,$destino);
-                    /* Se inserta el registro en la BD */
-                    $datos = $documentoAcademico->update_doc_academico($decifrado,$_POST["usuario_id"],
-                    $_POST["tipo_documento"],$docNombre,$_POST["institucion_educativa"],$_POST["dato_adic"]);
                 }
+                /* Se inserta el registro en la BD */
                 $datos = $documentoAcademico->update_doc_academico($decifrado,$_POST["usuario_id"],
                     $_POST["tipo_documento"],$docNombre,$_POST["institucion_educativa"],$_POST["dato_adic"]);
             } 

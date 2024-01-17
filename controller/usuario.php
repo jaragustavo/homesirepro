@@ -124,5 +124,21 @@
             $datos=$usuario->get_usuario_grafico($_SESSION["usuario_id"]);  
             echo json_encode($datos);
             break;
+
+        case "cantidadesCurriculum":
+            $datos=$usuario->get_cantidades_curriculum($_SESSION["usuario_id"]);  
+            if(is_array($datos)==true and count($datos)>0){
+                
+                foreach($datos as $row)
+                {
+                    $output["lbldocspersonales"] = $row["cant_personales"];
+                    $output["lbldocsacademicos"] = $row["cant_academicos"];
+                    $output["lbltotalcurriculum"] = $row["cant_personales"]+$row["cant_academicos"];
+                    
+                    // error_log("$$$$$$ ".$row["cant_personales"]."$$$$$$$$ ".$row["cant_academicos"]);
+                }
+                echo json_encode($output);
+            }
+            break;
     }
 ?>
