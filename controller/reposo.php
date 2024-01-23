@@ -28,12 +28,7 @@
                 $sub_array[] = (int)$row["cantrep"]+1;
                 
                 $cifrado = openssl_encrypt($row["id_reposo"], $cipher, $key, OPENSSL_RAW_DATA, $iv);
-                $textoCifrado = base64_encode($iv . $cifrado);
-
-                // $sub_array[] = '<button title="Ver detalle" type="button" style="padding: 0;border: none;background: none;" 
-                // data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn-inline">
-                // <i  class="glyphicon glyphicon-eye-open" style="color:#6aa84f; font-size:large; margin: 3px;" aria-hidden="true"></i></button>';
-                
+                $textoCifrado = base64_encode($iv . $cifrado);               
                 $data[] = $sub_array;
             }
 

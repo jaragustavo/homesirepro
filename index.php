@@ -12,12 +12,12 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>ApeCode | Acceso </title>
+    <title>HomeSirepro | Acceso </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
 
-    <link rel="shortcut icon" href="../../assets/images/favicon.ico">
+    <link rel="shortcut icon" href="assets/images/logo1_sirepro.jpg">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -69,7 +69,7 @@
                                                             <p class="fs-15 fst-italic">" El soporte técnico es verdaderamente destacado, con una atención al cliente sorprendente."</p>
                                                         </div>
                                                         <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">"  El sistema de gestión de compras y ventas supera mis expectativas, proporcionando una solución integral que se ajusta perfectamente a mis necesidades y preferencias."</p>
+                                                            <p class="fs-15 fst-italic">"  El Sistema HOMESIREPRO supera mis expectativas, proporcionando una solución integral que se ajusta perfectamente a mis necesidades y preferencias."</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -137,7 +137,7 @@
                                                     <label class="form-label" for="usu_pass">Contraseña</label>
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
                                                         <input type="password" class="form-control pe-5" placeholder="Ingrese Contraseña" name="password" id="password">
-                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i id="togglePassword" class="ri-eye-fill align-middle"></i></button>
                                                     </div>
                                                 </div>
 

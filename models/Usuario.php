@@ -179,5 +179,15 @@
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        public function get_cantidades_reposos($cedula){
+            $conectar=parent::ConexionSirepro();
+            $sql="select 
+            count(*) as cant_reposos from reposos
+            where ciprof = '$cedula'";
+            $query=$conectar->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
 ?>

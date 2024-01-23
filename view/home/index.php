@@ -33,27 +33,31 @@
 				<div class="col-xl-12">
 					<div class="row">
 						<div class="col-sm-4">
-	                        <article class="statistic-box green">
-	                            <div>
-	                                <div class="number" id="lbltotal">15</div>
-	                                <div class="caption"><div>Investigaciones Cientificas</div></div>
-	                            </div>
-	                        </article>
-	                    </div>
-						<div class="col-sm-4">
-	                        <article class="statistic-box yellow">
-	                            <div>
-	                                <div class="number" id="lbltotalabierto">106</div>
-	                                <div class="caption"><div>Reposos emitidos</div></div>
-	                            </div>
-	                        </article>
-	                    </div>
-						<a href="indexCurriculumVirtual.php">
-							<div class="col-sm-4">
-								<article class="statistic-box red">
+							<a href="indexCurriculumVirtual.php">
+								<article class="statistic-box green">
 									<div>
 										<div class="number" id="lbltotalcurriculum" name="lbltotalcurriculum"></div>
 										<div class="caption"><div>Currículum Virtual</div></div>
+									</div>
+								</article>
+  							</a>
+	                    </div>
+						<a href="">
+							<div class="col-sm-4">
+								<article class="statistic-box yellow">
+									<div>
+										<div class="number" id="lbltotal">15</div>
+										<div class="caption"><div>Investigaciones Cientificas</div></div>
+									</div>
+								</article>
+							</div>
+  						</a>
+						<a href="../Reposos/listarReposos.php">
+							<div class="col-sm-4">
+								<article class="statistic-box red">
+									<div>
+										<div class="number" id="lblreposos"></div>
+										<div class="caption"><div>Reposos emitidos</div></div>
 									</div>
 								</article>
 							</div>
@@ -62,15 +66,6 @@
 				</div>
 			</div>
 
-			<!-- <section class="card">
-				<header class="card-header">
-					Bar Chart
-				</header>
-				<div class="card-block">
-					<div id="bar-chart"></div>
-				</div>
-			</section> -->
-
 			<section class="card">
 				<header class="card-header">
 					Grafico Estadístico
@@ -78,18 +73,7 @@
 				<div class="card-block">
 					<div id="divgrafico" style="height: 250px;"></div>
 				</div>
-			</section>
-
-
-			<!-- <section class="card">
-				<header class="card-header">
-					Calendario
-				</header>
-				<div class="card-block">
-					<div id="idcalendar"></div>
-				</div>
-			</section> -->
-			
+			</section>			
 
 		</div>
 	</div>
@@ -104,6 +88,7 @@
 	<script src="../../public/js/lib/fullcalendar/fullcalendar.min.js"></script>
 
 	<script type="text/javascript" src="home.js"></script>
+
 
 	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 	<?php require_once("../html/footer.php"); ?>

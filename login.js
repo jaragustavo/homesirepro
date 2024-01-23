@@ -1,25 +1,17 @@
+const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+    // toggle the type attribute
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+    
+    // toggle the icon
+    this.classList.toggle("bi-eye");
+});
+
 $(document).ready(function(){
     
-    // var com_id = getUrlParameter('c');
-
-    // $('#aso_id').select2();
-
-    // $('#suc_id').select2();
-
-    // $.post("controller/asociacion.php?op=combo",function(data){
-    //     console.log(data);
-    //     $("#aso_id").html(data);
-    // });
-
-    // $("#aso_id").change(function(){
-    //     $("#aso_id").each(function(){
-    //         aso_id = $(this).val();
-
-    //         $.post("controller/sucursal.php?op=combo",{aso_id:aso_id},function(data){
-    //             $("#suc_id").html(data);
-    //         });
-    //     });
-    // });
 });
 
 /* TODO: Obtener parametro de URL */

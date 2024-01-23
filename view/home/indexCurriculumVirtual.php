@@ -56,7 +56,7 @@
 							<div class="col-sm-3">
 								<article class="statistic-box red">
 									<div>
-										<div class="number" id="lblcapacitaciones">13<div>
+										<div class="number" id="lblcapacitaciones">0<div>
 										<div class="caption"><div>Capacitaciones</div></div>
 									</div>
 								</article>
@@ -65,7 +65,7 @@
 						<div class="col-sm-3">
 	                        <article class="statistic-box purple">
 	                            <div>
-	                                <div class="number" id="lbllaborales">13<div>
+	                                <div class="number" id="lbllaborales">0<div>
 	                                <div class="caption"><div>Laborales</div></div>
 	                            </div>
 	                        </article>

@@ -140,5 +140,17 @@
                 echo json_encode($output);
             }
             break;
+            case "cantidadesReposos":
+                $datos=$usuario->get_cantidades_reposos($_SESSION["cedula"]);  
+                if(is_array($datos)==true and count($datos)>0){
+                    foreach($datos as $row)
+                    {
+                        $output["lblreposos"] = $row["cant_reposos"];
+                        
+                        // error_log("$$$$$$ ".$row["cant_personales"]."$$$$$$$$ ".$row["cant_academicos"]);
+                    }
+                    echo json_encode($output);
+                }
+                break;
     }
 ?>

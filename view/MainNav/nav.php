@@ -21,7 +21,7 @@
                             <a href="..\DocsAcademicos\listarLaborales.php"><span class="lbl">Laborales</span></a></li>
                         </ul>
                     </li>
-                    <li class="green with-sub">
+                    <li class="aquamarine with-sub">
                         <span>
                             <span class="fa fa-flask" style="font-size:22px;margin-top:1px;"></span>
                             <span class="lbl">Investigaciones Cientificas</span>
@@ -43,8 +43,17 @@
                             <span class="lbl">Trámites en línea</span>
                         </span>
                         <ul>
-                            <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Registro Profesional</span></a></li>
-                            <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Estado de Cuenta</span></a></li>
+                            <li class="with-sub">
+                                <span>
+                                    
+                                    <span class="lbl">Registro Profesional</span>
+                                </span>
+                                <ul>
+                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Inscripción</span></a></li>
+                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Renovación</span></a></li>
+                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Validez</span></a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                 </ul>

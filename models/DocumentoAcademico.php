@@ -62,7 +62,9 @@
             FROM documentos_academicos 
             INNER JOIN tipos_documentos on documentos_academicos.tipo_doc_id = tipos_documentos.id
             INNER join instituciones_educativas on instituciones_educativas.id = documentos_academicos.institucion_id
-            WHERE documentos_academicos.activo = true AND ".$condicionTipoDoc.$and.$condicionInstitucion;
+            WHERE documentos_academicos.activo = true
+            -- AND docs_academicos.usuario_id = 
+             AND ".$condicionTipoDoc.$and.$condicionInstitucion;
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();

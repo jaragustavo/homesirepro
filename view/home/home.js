@@ -6,6 +6,11 @@ function init(){
         $('#lbltotalcurriculum').html(data.lbltotalcurriculum);
     });
 
+    $.post("../../controller/usuario.php?op=cantidadesReposos",function (data) {
+        data = JSON.parse(data);
+        $('#lblreposos').html(data.lblreposos);
+    });
+
 }
 
 $(document).ready(function(){
