@@ -43,17 +43,7 @@
                             <span class="lbl">Trámites en línea</span>
                         </span>
                         <ul>
-                            <li class="with-sub">
-                                <span>
-                                    
-                                    <span class="lbl">Registro Profesional</span>
-                                </span>
-                                <ul>
-                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Inscripción</span></a></li>
-                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Renovación</span></a></li>
-                                    <a href="..\DocsPersonales\listarDocsPersonales.php"><span class="lbl">Validez</span></a></li>
-                                </ul>
-                            </li>
+                            <a href="..\Tramites\listarTramites.php"><span class="lbl">Gestiones</span></a></li>
                         </ul>
                     </li>
                 </ul>

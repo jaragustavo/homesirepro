@@ -45,33 +45,16 @@
                         </div>
                     </div>
                 </div><!--.chat-list-search-->
-                <div class="chat-list-in scrollable-block">
+                <div class="chat-list-in scrollable-block" id="chat-list-item">
                     <!-- <div class="chat-list-item online">
-                        <div class="chat-list-item-photo">
-                            <img src="../../public/img/photo-64-1.jpg" alt="">
-                        </div>
-                        <div class="chat-list-item-header">
-                            <div class="chat-list-item-name">
-                                <span class="name">Matt McGill</span>
-                            </div>
-                            <div class="chat-list-item-date">16:59</div>
-                        </div>
-                        <div class="chat-list-item-cont">
-                            <div class="chat-list-item-txt writing">
-                                <div class="icon">
-                                    <i class="font-icon font-icon-pencil-thin"></i>
-                                </div>
-                                Matt McGill typing a message
-                            </div>
-                            <div class="chat-list-item-count">3</div>
-                        </div>
+                        Cuando el usuario está online
                     </div> -->
                     <?php
                       foreach($chats as $row){
                     ?>
                     <div class="chat-list-item" onclick="cargarChat(<?php echo $row['chat_id'] ?>)">
                         <div class="chat-list-item-photo">
-                            <img src="../../public/img/photo-64-2.jpg" alt="">
+                            <img src="https://sirepro.mspbs.gov.py/foto/<?php echo $row['cedula_chat'] ?>.jpg" alt="">
                         </div>
                         <div class="chat-list-item-header">
                             <div class="chat-list-item-name">
@@ -81,26 +64,16 @@
                         </div>
                         <div class="chat-list-item-cont">
                             <div class="chat-list-item-txt"><?php echo $row["mensaje"] ?></div>
+                            <?php if($row["cant_mensajes_nuevos_x_chat"]>0){ ?>
                             <div class="chat-list-item-count"><?php echo $row["cant_mensajes_nuevos_x_chat"] ?></div>
+                            <?php } ?>
                         </div>
                     </div>
                     <?php
                       }
                     ?>
                     <!-- <div class="chat-list-item selected">
-                        <div class="chat-list-item-photo">
-                            <img src="../../public/img/photo-64-3.jpg" alt="">
-                        </div>
-                        <div class="chat-list-item-header">
-                            <div class="chat-list-item-name">
-                                <span class="name">Vasilisa</span>
-                            </div>
-                            <div class="chat-list-item-date">05 Aug</div>
-                        </div>
-                        <div class="chat-list-item-cont">
-                            <div class="chat-list-item-txt">no</div>
-                            <div class="chat-list-item-dot"></div>
-                        </div>
+                        Cuando selecciona el chat
                     </div> -->
                     
                 </div><!--.chat-list-in-->
@@ -122,36 +95,17 @@
                           <div class="chat-list-item-txt writing">Última vez 05 ago 2015 a las 18:04</div>
                       </div>
                   </div><!--.chat-area-header-->
-
+                    
+                  <!-- Área en donde se carga el chat por persona -->
                   <div class="chat-dialog-area scrollable-block" id="body_chat">
                       <div class="messenger-dialog-area" id="listado_mensajes">
-                          <!-- <div class="messenger-message-container">
-                              <div class="avatar">
-                                  <img src="../../public/img/avatar-1-32.png">
-                              </div>
-                              <div class="messages">
-                                  <ul id="mensajes_recibidos">
-                                      
-                                  </ul>
-                              </div>
-                          </div> -->
-                          <!-- <div class="messenger-message-container from bg-blue">
-                              <div class="messages">
-                                  <ul id="mensajes_remitidos">
-                                      
-                                  </ul>
-                              </div>
-                              <div class="avatar chat-list-item-photo">
-                                  <img src="../../public/img/photo-64-1.jpg">
-                              </div>
-                          </div> -->
                       </div>
                   </div>
 
                   <div class="chat-area-bottom" id="escribir_mensaje">
                       <form class="write-message">
                           <div class="form-group">
-                              <textarea rows="1" class="form-control" placeholder="Type a message"></textarea>
+                              <textarea rows="1" class="form-control" placeholder="Type a message" id="nuevo_mensaje"></textarea>
                               <div class="dropdown dropdown-typical dropup attach">
                                   <a class="dropdown-toggle dropdown-toggle-txt"
                                       id="dd-chat-attach"

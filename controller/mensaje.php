@@ -12,31 +12,6 @@
     /*TODO: opciones del controlador */
     switch($_GET["op"]){
 
-        case "listarNotificaciones":
-            // $datos=$mensaje->get_mensajes_x_usu($_SESSION["usuario_id"]);
-            // $data= Array();
-            foreach($datos as $row){
-                // $sub_array = array();
-                $output["mensaje_id"] = $row["mensaje_id"];
-                $output["mensaje"] = $row["mensaje"];
-                $output["remitente_id"] = $row["remitente_id"];
-                $output["nombre_remitente"] = $row["nombre_remitente"];
-                $output["fecha"] = $row["fecha"];
-                $mensajes_nuevos = $row["cant_mensajes_nuevos"];
-                $active = "active";
-                
-                $cifrado = openssl_encrypt($row["remitente_id"], $cipher, $key, OPENSSL_RAW_DATA, $iv);
-                $textoCifrado = base64_encode($iv . $cifrado);
-                $output["ruta_mensaje"] = '../Mensajes/abrirChat.php?ID='.$textoCifrado.'';
-
-                echo json_encode($output);
-                
-            }
-
-            break;
-        /* TODO: Mostrar en formato JSON segun usu_id */
-        
-
         case "cargarChat":
             $conversaciones=$mensaje->get_conversacion_x_usuario($_POST["chat_id"], $_SESSION["usuario_id"]);
             $data= Array();
@@ -63,32 +38,30 @@
             break;
 
         /* TODO:Actualizar estado segun not_id */
-        case "actualizar";
-            $notificacion->update_notificacion_estado($_POST["not_id"]);
+        case "actualizarEstado":
+            $mensaje->update_mensaje_estado($_SESSION["usuario_id"],$_POST["mensaje_id"], $_POST["nuevo_estado"]);
             break;
 
-        /* TODO: Listado de notificacion segun formato json para el datatable */    
-        case "listar":
-            $datos=$notificacion->get_mensajes_x_usu($_SESSION["usuario_id"]);
+        case "enviarMensaje":
+            $nuevo_mensaje = $mensaje->enviar_mensaje($_SESSION["usuario_id"],$_POST["destinatario_id"], $_POST["nuevo_mensaje"]);
             $data= Array();
-            foreach($datos as $row){
-                $sub_array = array();
-                $sub_array[] = $row["mensaje_id"];
-
-                $cifrado = openssl_encrypt($row["mensaje_id"], $cipher, $key, OPENSSL_RAW_DATA, $iv);
-                $textoCifrado = base64_encode($iv . $cifrado);
-
-                $sub_array[] = '<button type="button" data-ciphertext="'.$textoCifrado.'" id="'.$textoCifrado.'" class="btn btn-inline btn-primary btn-sm ladda-button"><i class="fa fa-eye"></i></button>';
-                $data[] = $sub_array;
+            if(is_array($nuevo_mensaje)==true and count($nuevo_mensaje)>0){
+                foreach($nuevo_mensaje as $row)
+                {
+                    $data["mensaje_id"] = $row["mensaje_id"];
+                    $data["mensaje"] = $row["mensaje"];
+                    $data["remitente_id"] = $row["remitente_id"];
+                    $data["usuario_id"] = $_SESSION["usuario_id"];
+                    $data["nombre_remitente"] = $row["nombre_remitente"];
+                    $data["nombre_destinatario"] = $row["nombre_destinatario"];
+                    $data["ind_estado"] = $row["ind_estado"];
+                    $data["hora"] = $row["hora"];
+                    $data["fecha"] = $row["fecha"];
+                    $data["cedula_usuario"] = $row["cedula_usuario"];
+                    $data["cedula_chat"] = $row["cedula_chat"];
+                }
+                echo json_encode($data);
             }
-
-            $results = array(
-                "sEcho"=>1,
-                "iTotalRecords"=>count($data),
-                "iTotalDisplayRecords"=>count($data),
-                "aaData"=>$data);
-            echo json_encode($results);
             break;
-
     }
 ?>

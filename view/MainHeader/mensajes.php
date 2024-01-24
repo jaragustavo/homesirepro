@@ -30,7 +30,7 @@
         $style="height:0px !important";
     }
 ?>
-<div class="dropdown dropdown-notification messages">
+<div class="dropdown dropdown-notification messages" id="header_mensajes">
     <a href="#"
         
         class="header-alarm <?php echo $active ?>"
@@ -47,9 +47,9 @@
                 <li class="nav-item">
                     <a class="nav-link active"
                         data-toggle="tab"
-                        href="#tab-incoming"
+                        href="../Mensajes/listarMensajes.php"
                         role="tab">
-                        Mensajes
+                        Mensajes nuevos
                         <span class="label label-pill label-danger">
                             <?php 
                             echo $mensajes_nuevos
