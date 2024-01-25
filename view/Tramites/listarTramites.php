@@ -29,26 +29,36 @@
 								<li class="active">Gestiones</li>
 							</ol>
 						</div>
-						<!-- <div class="tbl-cell">
-							<div class="col-lg-6"></div>
-							<div class="col-lg-6">
-								<fieldset class="form-group">
-									<label class="form-label" for="btnfiltrar">&nbsp;</label>
-									<a href= "nuevoDocsAcademicos.php"><button type="button" class="btn btn-rounded btn-primary btn-block" id="btnfiltrar">Nuevo Documento</button></a>
-								</fieldset>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</header>
 
 			<div class="box-typical box-typical-padding">
-				
-				<div class="row">
-					<div class="col-lg-3">
+				<!-- opciones de trámites para solicitar -->
+				<div class="row" style="margin-bottom:50px;">
+					<div class="col-lg-6">
 						<fieldset class="form-group">
-							<label class="form-label" for="tipo_documento">Tipo Documento</label>
-							<select class="select2" id="tipo_documento" name="tipo_documento" data-placeholder="Seleccionar">
+							<label class="form-label" for="tramite_nuevo">Solicitar trámite</label>
+							<select class="select2" id="tramite_nuevo" name="tramite_nuevo" data-placeholder="Seleccionar">
+								<option label="Seleccionar"></option>
+
+							</select>
+						</fieldset>
+					</div>
+
+					<div class="col-lg-2">
+						<fieldset class="form-group">
+							<label class="form-label" for="btnnuevo">&nbsp;</label>
+							<button type="button" class="btn btn-rounded btn-success btn-block" onclick="abrirNuevoTramite()" id="btnnuevo">Nuevo Trámite</button>
+						</fieldset>
+					</div>
+				</div>	
+
+				<div class="row">
+					<div class="col-lg-4">
+						<fieldset class="form-group">
+							<label class="form-label" for="tramite">Tipo de trámite</label>
+							<select class="select2" id="tramite" name="tramite" data-placeholder="Seleccionar">
 								<option label="Seleccionar"></option>
 
 							</select>
@@ -56,8 +66,8 @@
 					</div>
 					<div class="col-lg-3">
 						<fieldset class="form-group">
-							<label class="form-label" for="institucion_educativa">Institucion</label>
-							<select class="select2" id="institucion_educativa" name="institucion_educativa" data-placeholder="Seleccionar">
+							<label class="form-label" for="estado_tramite">Estado del trámite</label>
+							<select class="select2" id="estado_tramite" name="estado_tramite" data-placeholder="Seleccionar">
 								<option label="Seleccionar"></option>
 
 							</select>
@@ -80,7 +90,7 @@
 				</div>
 
 				<div class="box-typical box-typical-padding" id="table">
-					<table id="datos_academicos_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
+					<table id="tramites_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 						<thead>
 							<tr>
 								<th style="width: 5%;">Fecha solicitud</th>

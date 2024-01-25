@@ -5,16 +5,17 @@
         protected $dbh;
 
         protected function Conexion(){
-			$contraseña = "nicoHermann2003....";
-			$usuario = "postgres";
-			$nombreBaseDeDatos = "homesirepro";
-	        $rutaServidor = "localhost";
-			$puerto = "5432";
-			// $contraseña = "postgres";
+			// $contraseña = "nicoHermann2003....";
 			// $usuario = "postgres";
 			// $nombreBaseDeDatos = "homesirepro";
 	        // $rutaServidor = "localhost";
 			// $puerto = "5432";
+			
+			$contraseña = "postgres";
+			$usuario = "postgres";
+			$nombreBaseDeDatos = "homesirepro";
+	        $rutaServidor = "localhost";
+			$puerto = "5432";
 
 			try {
             $conectar = $this->dbh= new PDO("pgsql:host=$rutaServidor;port=$puerto;dbname=$nombreBaseDeDatos", $usuario, $contraseña, 

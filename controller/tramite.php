@@ -2,8 +2,8 @@
     /* TODO:Cadena de Conexion */
     require_once("../config/conexion.php");
     /* TODO:Clases Necesarias */
-    require_once("../models/DocumentoPersonal.php");
-    $documentoPersonal = new DocumentoPersonal();
+    require_once("../models/Tramite.php");
+    $tramite = new Tramite();
 
     require_once("../models/Usuario.php");
     $usuario = new Usuario();
@@ -77,9 +77,23 @@
             echo json_encode($results);
             break;
 
-        
-        
-            /* TODO: Insertar nuevo Documento Personal */
+        case "documentosRequeridos":
+            $conversaciones=$tramite->get_docsrequeridos_x_tramite($_POST["tramite_gestionado"]);
+            $data= Array();
+            if(is_array($conversaciones)==true and count($conversaciones)>0){
+                
+                foreach($conversaciones as $row)
+                {
+                    $sub_array = array();
+                    $sub_array["tipo_documento"] = $row["tipo_documento"];
+                    $sub_array["tramite_nombre"] = $row["tramite_nombre"];
+                    $data[] = $sub_array;
+                }
+                echo json_encode($data);
+            }
+            break;
+
+        /* TODO: Insertar nuevo trámite gestionado */
         case "insert":
             $doc1 = $_FILES['imagen']['tmp_name'];
             if($doc1 != ""){
@@ -166,15 +180,38 @@
             $iv_dec = substr(base64_decode($_POST["ciphertext"]), 0, openssl_cipher_iv_length($cipher));
             $cifradoSinIV = substr(base64_decode($_POST["ciphertext"]), openssl_cipher_iv_length($cipher));
             $decifrado = openssl_decrypt($cifradoSinIV, $cipher, $key, OPENSSL_RAW_DATA, $iv_dec);
+            // error_log('$$$$$$$$$$$$$$$$'.$decifrado);
             
             $respuesta = $documentoPersonal->delete_doc_personal($decifrado, $_SESSION["usuario_id"]);
             echo $respuesta ? "Documento eliminado" : "El documento se pudo eliminar.";
             break;
 
-        case "grafico":
-            $datos=$documentoPersonal->get_documentos_grafico();  
-            echo json_encode($datos);
+        case "comboTramites":
+        
+            $datos = $tramite->get_tramites_x_tipo_id('P');
+            $html="";
+            $html.="<option label='Seleccionar'></option>";
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $html.= "<option value='".$row['tramite_id']."'>".$row['tramite']."</option>";
+                }
+                echo $html;
+            }
             break;
 
+        case "comboEstadosTramites":
+    
+            $datos = $tramite->get_estados_tramites();
+            $html="";
+            $html.="<option label='Seleccionar'></option>";
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $html.= "<option value='".$row['estado_tramite_id']."'>".$row['estado_tramite']."</option>";
+                }
+                echo $html;
+            }
+            break;    
         }
 ?>
