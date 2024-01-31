@@ -5,7 +5,6 @@
     require_once("../models/Tramite.php");
     $tramite = new Tramite();
 
-
     require_once("../models/Usuario.php");
     $usuario = new Usuario();
 

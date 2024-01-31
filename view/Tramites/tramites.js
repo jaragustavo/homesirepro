@@ -339,6 +339,7 @@ function guardarSolicitud(){
                     
                 // }
             });
+            // manejo del formulario
         }
         else{
 
@@ -363,6 +364,17 @@ function guardarSolicitud(){
                         }
                     });
                 }
+            }).DataTable();
+        
+            /* TODO: Llenar Combo trámites */
+            $.post("../../controller/tramite.php?op=comboTramites",function(data){
+                $('#tramite_nuevo').html(data);
+                $('#tramite').html(data);
+            });
+            
+            /* TODO: Llenar Combo estados de trámites */
+            $.post("../../controller/tramite.php?op=comboEstadosTramites",function(data){
+                $('#estado_tramite').html(data);
             });
         }
         
