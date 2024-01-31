@@ -2,105 +2,18 @@ var tabla;
 //Se utiliza para listar los documentos del usuario
 var usu_id = $('#user_idx').val();
 var idEncrypted = "";
+var arrayFiles = []; 
 
 function init() {
-    $("#tramites_form").on("submit",function(e){
-        guardaryeditar(e);
-    });
+    // $("#tramites_form").on("submit",function(e){
+    //     guardaryeditar(e);
+    // });
     actualizar_img();
 }
 
 $(document).ready(function() {
-    $('#dato_adic').summernote({
-        height: 150,
-        lang: "es-ES",
-        popover: {
-            image: [],
-            link: [],
-            air: []
-        },
-        callbacks: {
-            onImageUpload: function(image) {
-                console.log("Image detect...");
-                myimagetreat(image[0]);
-            },
-            onPaste: function (e) {
-                console.log("Text detect...");
-            }
-        },
-        toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['strikethrough', 'superscript', 'subscript']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']]
-        ]
-    });
-    $('#viewuser').hide();
-
-    tabla = $('#datos_academicos_data').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-        dom: 'rtip',
-        lengthChange: false,
-        colReorder: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ],
-        "ajax": {
-            url: '../../controller/documentoAcademico.php?op=listar_x_usu',
-            type: "post",
-            dataType: "json",
-            data: { usu_id: usu_id },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        },
-        "ordering": false,
-        "bDestroy": true,
-        "responsive": true,
-        "bInfo": true,
-        "iDisplayLength": 10,
-        "autoWidth": false,
-        "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-        }
-    }).DataTable();
-
-    /* TODO: Llenar Combo tipos de Documento */
-    $.post("../../controller/tipoDocumento.php?op=comboAcademicos",function(data, status){
-        $('#tipo_documento').html(data);
-    });
-
-    $.post("../../controller/documentoAcademico.php?op=comboInstituciones",function(data, status){
-        $('#institucion_educativa').html(data);
-    });
     
+    // Extraer el ID del registro a modificar
     var currentURL = window.location.href;
     // Use a regular expression to extract the ID from the URL
     var match = currentURL.match(/[\?&]ID=([^&]*)/);
@@ -108,300 +21,357 @@ $(document).ready(function() {
     if (match) {
         // Extracted ID is in match[1]
         idEncrypted = match[1];
-        cargarDocumentoAcademico(idEncrypted);
+        cargarTramite(idEncrypted);
     }
-});
+    else{
+        //Extrae el tipo de trámite a ser gestionado
+        var currentURL = window.location.href;
+        // Use a regular expression to extract the ID from the URL
+        var match_code = currentURL.match(/[\?&]code=([^&]*)/);
+        // // Check if a match is found
+        if (match_code) {
+            $('#tramite_code').val(match_code[1]);
+            // manejo del formulario
+            $("#next-1").click( function(){
+                $("#residencia_permanente").show();
+                $("#informacion_personal").hide();
+                document.getElementById('progress-2').classList.add('active');
+            });
+            $("#back-1").click( function(){
+                $("#residencia_permanente").hide();
+                $("#informacion_personal").show();
+                document.getElementById('progress-2').classList.remove('active');
 
-/* TODO: Link para poder ver el detalle de documento academico */
-$(document).on("click", ".btn-inline", function() {
-    const ciphertext = $(this).data("ciphertext");
-    window.location.replace('editarDocsAcademicos.php?ID=' + ciphertext + '');    
-});
+            });
+            $("#next-2").click( function(){
+                $("#pasantia_rural").show();
+                $("#residencia_permanente").hide();
+                document.getElementById('progress-3').classList.add('active');
 
-/* TODO: Link para poder ver el documento academico */
-$(document).on("click", ".btn-open-pdf", function() {
-    const ciphertext = $(this).data("ciphertext");
-    window.open(ciphertext);  
-});
+            });
+            $("#back-2").click( function(){
+                $("#pasantia_rural").hide();
+                $("#residencia_permanente").show();
+                document.getElementById('progress-3').classList.remove('active');
 
-/* TODO:Filtro avanzado */
-$(document).on("click", "#btnfiltrar", function() {
+            });
+            $("#next-3").click( function(){
+                $("#libro_registros").show();
+                $("#pasantia_rural").hide();
+                document.getElementById('progress-4').classList.add('active');
 
-    var tipo_documento = $('#tipo_documento').val();
-    var institucion = $('#institucion_educativa').val();
+            });
+            $("#back-3").click( function(){
+                $("#libro_registros").hide();
+                $("#pasantia_rural").show();
+                document.getElementById('progress-4').classList.remove('active');
 
-    listardatatable(tipo_documento, institucion);
+            });
+            $("#next-4").click( function(){
+                $("#antecedentes_academicos").show();
+                $("#libro_registros").hide();
+                $("#progress-1").hide();
+                $("#progress-5").show();
+                document.getElementById('progress-5').classList.add('active');
 
-});
+            });
+            $("#back-4").click( function(){
+                $("#antecedentes_academicos").hide();
+                $("#libro_registros").show();
+                $("#progress-5").hide();
+                $("#progress-1").show();
+                document.getElementById('progress-5').classList.remove('active');
 
-function listardatatable(tipo_documento, institucion) {
-    tabla = $('#datos_academicos_data').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-        dom: 'rtip',
-        lengthChange: false,
-        colReorder: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ],
-        "ajax": {
-            url: '../../controller/documentoAcademico.php?op=listar_filtro',
-            type: "post",
-            dataType: "json",
-            data: { tipo_documento: tipo_documento, institucion: institucion },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        },
-        "bDestroy": true,
-        "responsive": true,
-        "bInfo": true,
-        "iDisplayLength": 10,
-        "autoWidth": false,
-        "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-        }
-    }).DataTable().ajax.reload();
-}
+            });
+            $("#next-5").click( function(){
+                $("#post-grado").show();
+                $("#antecedentes_academicos").hide();
+                $("#progress-2").hide();
+                $("#progress-6").show();
+                document.getElementById('progress-6').classList.add('active');
 
-$(document).on("click", "#btntodo", function() {
+            });
+            $("#back-5").click( function(){
+                $("#post-grado").hide();
+                $("#antecedentes_academicos").show();
+                $("#progress-6").hide();
+                $("#progress-2").show();
+                document.getElementById('progress-6').classList.remove('active');
 
-    tabla = $('#datos_academicos_data').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-        dom: 'rtip',
-        lengthChange: false,
-        colReorder: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ],
-        "ajax": {
-            url: '../../controller/documentoAcademico.php?op=listar_x_usu',
-            type: "post",
-            dataType: "json",
-            data: { usu_id: usu_id },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        },
-        "ordering": false,
-        "bDestroy": true,
-        "responsive": true,
-        "bInfo": true,
-        "iDisplayLength": 10,
-        "autoWidth": false,
-        "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            }
-        }
-    }).DataTable();
+            });
+            
+            // manejo del formulario
 
-});
-
-/* TODO: Link para poder ver el eliminar el Documento academico */
-$(document).on("click", ".btn-delete-row", function() {
-    var ciphertext = $(this).data("ciphertext");
-    
-    Swal.fire({
-        title: '¿Desea eliminarlo?',
-        text: "No podrás revertir esta acción.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar.'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.post("../../controller/documentoAcademico.php?op=delete", {ciphertext : ciphertext}, function(e){
-                
-                if(e == "Documento eliminado"){
-                    Swal.fire({
-                        title: e,
-                        text: "El documento se eliminó correctamente.",
-                        icon: "success",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3d85c6",
-                        confirmButtonText: "OK"
-                    });
-                    tabla.ajax.reload();
-                }
-                else{
-                    Swal.fire({
-                        title: "Error",
-                        text: e,
-                        icon: "error",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3d85c6",
-                        confirmButtonText: "OK"
-                    });
-                }
+            /* TODO: Títulos del trámite */
+            $.post("../../controller/tramite.php?op=cargarTitulo",{titulo: match_code[1]},function(data){
+                $('.tramite_nombre').html(data);
+            });
+            $.post("../../controller/tramite.php?op=comboEstadoCivil",function(data){
+                $('#estado_civil').html(data);
+            });
+            // Llenar combo países
+            $.post("../../controller/tramite.php?op=comboPaises",function(data){
+                $('#pais').html(data);
+            });
+            // LLenar combo departamentos para la residencia permanente
+            $.post("../../controller/tramite.php?op=comboDepartamentos",{pais: "Paraguay"},function(data){
+                $('#departamento_residencia').html(data);
+            });
+            // Llenar combo países
+            $.post("../../controller/documentoAcademico.php?op=comboInstituciones",function(data){
+                $('#institucion_acad').html(data);
+                $('#institucion_postgrado').html(data);
             });
         }
+        else{
+            tabla = $('#datos_academicos_data').dataTable({
+                "aProcessing": true,
+                "aServerSide": true,
+                dom: 'rtip',
+                lengthChange: false,
+                colReorder: true,
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
+                "ajax": {
+                    url: '../../controller/documentoAcademico.php?op=listar_x_usu',
+                    type: "post",
+                    dataType: "json",
+                    data: { usu_id: usu_id },
+                    error: function(e) {
+                        console.log(e.responseText);
+                    }
+                },
+                "ordering": false,
+                "bDestroy": true,
+                "responsive": true,
+                "bInfo": true,
+                "iDisplayLength": 10,
+                "autoWidth": false,
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            }).DataTable();
         
-        
-      })
-});
+            /* TODO: Llenar Combo trámites */
+            $.post("../../controller/tramite.php?op=comboTramites",function(data){
+                $('#tramite_nuevo').html(data);
+                $('#tramite').html(data);
+            });
+            
+            /* TODO: Llenar Combo estados de trámites */
+            $.post("../../controller/tramite.php?op=comboEstadosTramites",function(data){
+                $('#estado_tramite').html(data);
+            });
+            
+        }
+    } 
 
-function guardaryeditar(e){
-    e.preventDefault();
-    /* TODO: Array del form Documento Academico */
-    var formData = new FormData($("#doc_academico_form")[0]);
+    /*=============================================
+    AGREGAR MULTIMEDIA CON DROPZONE
+    =============================================*/
+
+    $(".multimediaFisica").dropzone({
+        url: "/",
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg, image/png, application/pdf",
+        maxFilesize: 5,
+        maxFiles: 1,
+        init: function() {
+            this.on("addedfile", function(file) {
+                console.log(file);
+                arrayFiles.push({ id: id, value: file });
+
+                console.log("arrayFiles: "+arrayFiles[0].id+"  "+arrayFiles[0].value);
+            })
+            this.on("removedfile", function(file) {
+                var index = arrayFiles.indexOf(file);
+            })
+
+        }
+
+    })
+     
+});
+var id = 0;
+function cargarIdDoc(idDiv){
+    id = idDiv;
+}
+
+function abrirNuevoTramite(){
+    // var tramite = $('option:selected', this).attr('url');
+    var tramite = $('#tramite_nuevo').val();
+    // var codeTramite = 0;
+    $.post("../../controller/tramite.php?op=code", {tramiteUrl: tramite},function(data){
+        // data = JSON.parse(data);
+        codeTramite = data;
+        console.log("$$$$$$$$$$$$ "+codeTramite);
+        window.location.replace(tramite+'?code='+codeTramite);
+    });
+
+    
+}
+
+function cargarDptos(){
+    var pais=$('#pais').val();
+    $.post("../../controller/tramite.php?op=comboDepartamentos",{pais: pais},function(data){
+        $('#departamento').html(data);
+    });
+}
+
+function cargarCiudades(dpto_id){
+    var departamento=0;
+    if(dpto_id=="departamento"){
+        departamento=$('#departamento').val();
+    }
+    else{
+        departamento=$('#departamento_residencia').val();
+    }
+    $.post("../../controller/tramite.php?op=comboCiudades",{departamento:departamento},function(data){
+        if(dpto_id=="departamento"){
+            $('#ciudad').html(data);
+        }
+        else{
+            $('#ciudad_residencia').html(data);
+        }
+        
+    });
+}
+
+function guardarDocsTramites(){
+    for (var i = 0; i < arrayFiles.length; i++) {
+
+        var datosMultimedia = new FormData();
+        datosMultimedia.append("id", arrayFiles[i].id);
+        datosMultimedia.append("file", arrayFiles[i].value);
+        datosMultimedia.append('tramite_code', $('#tramite_code').val());
+
+        $.ajax({
+            url: "../../controller/tramite.php?op=insertDocumentos",
+            method: "POST",
+            data: datosMultimedia,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
+}
+
+function guardarSolicitud(){
+
+    /* TODO: Array del form Documento Personal */
+    var formData = new FormData($("#inscripcion_registro_form")[0]);
+    // Add the arrayFiles to formData
+    // formData.append('arrayFiles', JSON.stringify(arrayFiles));
+
+    // arrayFiles.forEach((fileObject, index) => {
+    // formData.append(`file[${index}][id]`, fileObject.id);
+    // formData.append(`file[${index}][name]`, fileObject.value.name);
+    // formData.append(`file[${index}][type]`, fileObject.value.type);
+    // formData.append(`file[${index}][size]`, fileObject.value.size);
+    // formData.append(`file[${index}][tmp_name]`, fileObject.value.tmp_name);
+    // });
+    formData.append('tramite_code', $('#tramite_code').val());
+
     /* TODO: validamos si los campos tienen informacion antes de guardar */
 
-    if (($('#dato_adic').summernote('isEmpty') || $('#imagen').val()=='' 
-    || $('#tipo_documento').val() == 0|| $('#institucion_educativa').val() == 0) 
-    && $('#imagenmuestra').length == 0){
-        Swal.fire("Advertencia!", "Campos Vacios", "warning");
-    }else{
 
-        /* TODO: Guardar Documento Academico */
-        if(idEncrypted == ""){
+        /* TODO: Guardar Documento Personal */
+        $('#idEncrypted').val("");
+        if($('#idEncrypted').val() == ""){
             $.ajax({
-                url: "../../controller/documentoAcademico.php?op=insert",
+                url: "../../controller/tramite.php?op=insert",
                 type: "POST",
                 data: formData,
                 contentType: false,
-                processData: false,
-                success: function(data){
-                    /* TODO: Limpiar campos */
-                    $('#imagen').val('');
-                    $('#dato_adic').summernote('reset');
-                    $('#fecha').val('');
-                    $('#tipo_documento').val('');
+                processData: false
+                // success: function(data){
                     
-                    if(data= "Documento agregado"){
-                        Swal.fire({
-                            title: "¡Listo!",
-                            text: "Registrado Correctamente",
-                            icon: "success",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3d85c6",
-                            confirmButtonText: "OK"
-                        }).then((result) => {    
-                            if (result.isConfirmed) {    
-                                window.location.replace('listarDocsAcademicos.php'); 
-                            }
-                        });
-                    }
-                    else{
-                        Swal.fire({
-                            title: "Error",
-                            text: data,
-                            icon: "error",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3d85c6",
-                            confirmButtonText: "OK"
-                        });
-                    }
+                //     if(data= "Documento agregado"){
+                //         Swal.fire({
+                //             title: "¡Listo!",
+                //             text: "Registrado Correctamente",
+                //             icon: "success",
+                //             showCancelButton: true,
+                //             confirmButtonColor: "#3d85c6",
+                //             confirmButtonText: "OK"
+                //         }).then((result) => {    
+                //             if (result.isConfirmed) {    
+                //                 window.location.replace('listarTramites.php'); 
+                //             }
+                //         });
+                //     }
+                //     else{
+                //         Swal.fire({
+                //             title: "Error",
+                //             text: data,
+                //             icon: "error",
+                //             showCancelButton: true,
+                //             confirmButtonColor: "#3d85c6",
+                //             confirmButtonText: "OK"
+                //         });
+                //     }
                     
-                }
+                // }
             });
         }
         else{
 
             $.ajax({
-                url: "../../controller/documentoAcademico.php?op=update&img="+$('#imagenmuestra').length,
+                url: "../../controller/documentoPersonal.php?op=update&img=",
                 type: "POST",
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function(data){
-                    console.log(data);
-                    if(data= "Documento modificado"){
-                        Swal.fire({
-                            title: "¡Listo!",
-                            text: data,
-                            icon: "success",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3d85c6",
-                            confirmButtonText: "OK"
-                        }).then((result) => {   
-                            if (result.isConfirmed) {    
-                                window.location.replace('listarDocsAcademicos.php'); 
-                            }
-                        });
-                    }
-                    else{
-                        Swal.fire({
-                            title: "Error",
-                            text: data,
-                            icon: "error",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3d85c6",
-                            confirmButtonText: "OK"
-                        });
-                    }
+                    
+                    Swal.fire({
+                        title: "¡Listo!",
+                        text: "Modificado Correctamente",
+                        icon: "success",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3d85c6",
+                        confirmButtonText: "OK"
+                    }).then((result) => {   
+                        if (result.isConfirmed) {    
+                            window.location.replace('listarTramites.php'); 
+                        }
+                    });
                 }
             });
         }
         
-    }
+    // }
 }
 
-function cargarDocumentoAcademico(doc_academico_id){
-    /* TODO: Mostramos informacion del documento en inputs */
-    $.post("../../controller/documentoAcademico.php?op=mostrar", { doc_academico_id: doc_academico_id }, function(data) {
-        data = JSON.parse(data);
-        $('#tipo_documento').val(data.tipo_documento);
-        $('#tipo_documento').trigger('change');
-        $('#institucion_educativa').val(data.institucion_educativa);
-        $('#institucion_educativa').trigger('change');
-        $('#imagenmuestra').attr("src",data.documento_ruta);
-        $('#dato_adic').summernote('code', data.dato_adic);
-
-        $('#idEncrypted').val(doc_academico_id);
-    });
-}
 
 /*=============================================
-SUBIENDO EL ARCHIVO
+SUBIENDO LOS ARCHIVOS
 =============================================*/
 function actualizar_img() {
     $(".nuevaImagen").change(function() {
@@ -432,10 +402,12 @@ function actualizar_img() {
                 var rutaImagen = event.target.result;
                 $(".previsualizar").attr("src", rutaImagen);
             });
-         }
-
-        
-    });
+        }
+    });
 }
+
+var arrayFiles = [];
+
+
 
 init();

@@ -309,7 +309,16 @@
   margin: -4px 0;
 }
 .proj-page-actions-list li {
+  text-decoration: none;
+  color: #919fa9;
+  border: none;
   padding: 4px 0;
+}
+.proj-page-actions-list li:hover {
+  color: #00a8ff;
+}
+.proj-page-actions-list li .cancelar:hover {
+  color: #e06666;
 }
 .proj-page-actions-list a {
   text-decoration: none;
@@ -318,6 +327,9 @@
 }
 .proj-page-actions-list a:hover {
   color: #00a8ff;
+}
+.proj-page-actions-list a .cancelar:hover {
+  color: #e06666;
 }
 .proj-page-actions-list .font-icon {
   margin: 0 7px 0 0;

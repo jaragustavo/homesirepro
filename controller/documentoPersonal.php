@@ -166,7 +166,6 @@
             $iv_dec = substr(base64_decode($_POST["ciphertext"]), 0, openssl_cipher_iv_length($cipher));
             $cifradoSinIV = substr(base64_decode($_POST["ciphertext"]), openssl_cipher_iv_length($cipher));
             $decifrado = openssl_decrypt($cifradoSinIV, $cipher, $key, OPENSSL_RAW_DATA, $iv_dec);
-            error_log('$$$$$$$$$$$$$$$$'.$decifrado);
             
             $respuesta = $documentoPersonal->delete_doc_personal($decifrado, $_SESSION["usuario_id"]);
             echo $respuesta ? "Documento eliminado" : "El documento se pudo eliminar.";

@@ -97,7 +97,7 @@
                   </div><!--.chat-area-header-->
                     
                   <!-- Área en donde se carga el chat por persona -->
-                  <div class="chat-dialog-area scrollable-block" id="body_chat">
+                  <div class="chat-dialog-area scrollable-block refresh" id="body_chat">
                       <div class="messenger-dialog-area" id="listado_mensajes">
                       </div>
                   </div>

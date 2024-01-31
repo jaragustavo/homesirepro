@@ -87,12 +87,8 @@
                     $output["apellido"] = $row["apellido"];
                     $output["email"] = $row["email"];
                     $output["ci"] = $row["ci"];
+                    $output["telefono"] = $row["telefono"];
                     $output["password"] = $row["password"];
-                    // if($row["USU_IMG"] != ''){
-                    //     $output["USU_IMG"] = '<img src="../../assets/usuario/'.$row["USU_IMG"].'" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image"></img><input type="hidden" name="hidden_usuario_imagen" value="'.$row["USU_IMG"].'" />';
-                    // }else{
-                    //     $output["USU_IMG"] = '<img src="../../assets/usuario/no_imagen.png" class="rounded-circle avatar-xl img-thumbnail user-profile-image" alt="user-profile-image"></img><input type="hidden" name="hidden_usuario_imagen" value="" />';
-                    // }
                 }
                 echo json_encode($output);
             }

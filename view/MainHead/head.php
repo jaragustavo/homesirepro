@@ -26,5 +26,9 @@
 <link rel="stylesheet" href="../../public/css/separate/vendor/datatables-net.min.css">
 
 <link rel="stylesheet" href="../../public/css/separate/vendor/select2.min.css">
+<link rel="stylesheet" href="../../public/css/separate/elements/steps.min.css">
 
 <link rel="stylesheet" href="../../public/css/main.css">
+
+<link rel="stylesheet" href="../../public/css/separate/pages/project.css">
+

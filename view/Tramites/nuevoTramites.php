@@ -20,101 +20,168 @@
 	<!-- Contenido -->
 	<div class="page-content">
 		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xxl-9 col-lg-12 col-xl-8 col-md-8">
+					<section class="box-typical proj-page">
+						<section class="proj-page-section proj-page-header">
+							<div class="title">
+								Nueva solicitud
+								<i class="font-icon font-icon-pencil"></i>
+							</div>
+							<div class="project">Trámite: <a href="#" class="tramite_nombre"></a></div>
+						</section><!--.proj-page-section-->
 
-			<header class="section-header">
-				<div class="tbl">
-					<div class="tbl-row">
-						<div class="tbl-cell">
-							<h3>Nuevo Documento</h3>
-							<ol class="breadcrumb breadcrumb-simple">
-								<li><a href="listarDocsPersonales.php">Trámites</a></li>
-								<li class="active">Nuevo Trámite</li>
-							</ol>
-						</div>
-					</div>
-				</div>
-			</header>
+						<section class="proj-page-section">
 
-			<div class="box-typical box-typical-padding">
+							<div class="proj-page-txt">
+								<header class="proj-page-subtitle">
+									<h3 class="tramite_nombre"></h3>
+								</header>
+								<p>En la sección de abajo, verá los documentos que se requieren adjuntar para presentar
+									la solicitud de forma completa. Además, asegúrese de completar correctamente
+									el formulario correspondiente.
+									<br>De no completar la totalidad de lo necesario para la solicitud, podrá guardar
+									la solicitud como borrador.
+								</p>
+							</div>
+						</section><!--.proj-page-section-->
 
-				<form method="post" id="doc_academico_form">
+						<section class="proj-page-section">
+							<header class="proj-page-subtitle with-del">
+								<h3>Documentos requeridos</h3>
+							</header>
+							<div class="form-group" id="documentos_requeridos">
+							</div>
+						</section><!--.proj-page-section-->
 
-						<input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo $_SESSION["usuario_id"] ?>">
+						<section class="proj-page-section">
+							<header class="proj-page-subtitle">
+								<h3>Carga de archivos</h3>
+							</header>
+							<div class="drop-zone">
+								<i class="font-icon font-icon-cloud-upload-2"></i>
+								<div class="drop-zone-caption">Arrastre aquí su archivo</div>
+								<span class="btn btn-rounded btn-file">
+									<span>Elegir archivo</span>
+									<input type="file" name="files[]" multiple>
+								</span>
+							</div>
+							<ul class="uploading-list">
+								<li class="uploading-list-item">
+									<div class="uploading-list-item-wrapper">
+										<div class="uploading-list-item-name">
+											<i class="font-icon font-icon-cam-photo"></i>
+											photo.png
+										</div>
+										<div class="uploading-list-item-size">7,5 mb</div>
+										<button type="button" class="uploading-list-item-close">
+											<i class="font-icon-close-2"></i>
+										</button>
+									</div>
+									<progress class="progress" value="25" max="100">
+										<div class="progress">
+											<span class="progress-bar" style="width: 25%;">25%</span>
+										</div>
+									</progress>
+									<div class="uploading-list-item-progress">37% done</div>
+									<div class="uploading-list-item-speed">90KB/sec</div>
+								</li>
+							</ul>
+						</section><!--.proj-page-section-->
 
-						<div class="col-lg-6">
-							<fieldset class="form-group">
-								<label class="form-label semibold" for="tipo_documento">Tipo Documento</label>
-								<select id="tipo_documento" name="tipo_documento" class="form-control select2">
-							</fieldset>
-						</div>
-
-						<div class="col-lg-6">
-							<fieldset class="form-group">
-								<label class="form-label semibold" for="x">Tipo Documento</label>
-								<select id="x" name="x" class="form-control select2">
-							</fieldset>
-						</div>
-						
-					<div class="row">
-						<div class="col-lg-6">
-							<fieldset class="form-group">
-								<label class="form-label semibold" for="institucion_educativa">Institucion</label>
-								<select id="institucion_educativa" name="institucion_educativa" class="form-control select2">
-							</fieldset>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-6">
-						<fieldset class="form-group">
-							<label class="form-label semibold" for="x">Tipo Documento</label>
-							<select id="x" name="x" class="form-control select2">
-						</fieldset>
-						</div>
-						<div class="col-lg-6">
-							<!-- <fieldset class="form-group"> -->
-								<label class="form-label semibold" for="documento">Documento</label>
-                                    <div class="el-element-overlay">
-                                        <div class="el-card-item">
-                                            <div class="el-card-avatar el-overlay-1"> 
-                                                <embed id="imagenmuestra" name="imagenmuestra" class="previsualizar" width="400px" title="Imagen del artículo">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="waves-effect waves-light"><span>Subir una imagen</span>
-                                        <input type="file" class="nuevaImagen" name="imagen" id="imagen">
-                                        <input type="hidden" name="imagenactual" id="imagenactual">
-                                        <p class="help-block">Peso máximo 2MB</p>
-                                    </div>       
-							<!-- </fieldset> -->
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-12">
-							<!-- <fieldset class="form-group"> -->
-								<label class="form-label semibold" for="dato_adic">Datos Adicionales</label>
-								<div class="summernote-theme-1">
-									<textarea id="dato_adic" name="dato_adic" class="summernote" name="name"></textarea>
+						<section class="proj-page-attach-section scrollable-block">
+							<div class="proj-page-attach-section-in">
+								<header class="proj-page-subtitle">
+									<h3>Adjuntos</h3>
+								</header>
+								<div class="proj-page-attach-grid">
+									<div class="gd-doc">
+										<div class="gd-doc-preview">
+											<a href="#">
+												<img src="img/doc.jpg" alt="">
+												<span class="icon"><i class="font-icon font-icon-downloaded"></i></span>
+											</a>
+										</div>
+										<div class="gd-doc-title">History Class Final</div>
+										<div class="gd-doc-date">05/30/2014</div>
+									</div>
+									<div class="gd-doc">
+										<div class="gd-doc-preview">
+											<a href="#">
+												<img src="img/doc.jpg" alt="">
+												<span class="icon"><i class="font-icon font-icon-downloaded"></i></span>
+											</a>
+										</div>
+										<div class="gd-doc-title">History Class Final</div>
+										<div class="gd-doc-date">05/30/2014</div>
+									</div>
 								</div>
-							<!-- </fieldset> -->
-						</div>
-						<div class="col-lg-12">
-							<!-- <input type="hidden" name="enviar" value="si"> -->
-							<button type="submit" name="action" value="add" class="btn btn-rounded btn-primary">Guardar</button>
-							<a href="listarDocsAcademicos.php"><button type="button" name="cancel" class="btn btn-rounded btn-secondary">Cancelar</button></a>
-						</div>
-					</div>
-				</form>
+							</div>
+						</section><!--.proj-page-attach-section-->
 
-			</div>
-		</div>
-	</div>
+						<section class="proj-page-section">
+							<header class="proj-page-subtitle">
+								<h3>Attachments 2</h3>
+							</header>
+							<div class="proj-page-attach">
+								<i class="font-icon font-icon-pdf"></i>
+								<p class="name">Concept and UX.pdf</p>
+								<p class="date">16:48, 02 dec 2016</p>
+								<p>
+									<a href="#">View</a>
+									<a href="#">Download</a>
+								</p>
+							</div>
+							<div class="proj-page-attach">
+								<i class="font-icon font-icon-cam-photo"></i>
+								<p class="name">Concept and UX.jpg</p>
+								<p class="date">16:48, 02 dec 2016</p>
+								<p>
+									<a href="#">View</a>
+									<a href="#">Download</a>
+								</p>
+							</div>
+						</section><!--.proj-page-attach-section-->
+					</section><!--.proj-page-->
+				</div>
+
+				<div class="col-xxl-3 col-lg-12 col-xl-4 col-md-4">
+					<section class="box-typical proj-page">
+						<section class="proj-page-section proj-page-time-info">
+							<div class="tbl">
+								<div class="tbl-row">
+									<div class="tbl-cell">Tiempo estimado</div>
+									<div class="tbl-cell tbl-cell-time">48 hs
+									</div>
+								</div>
+								<!-- <div class="tbl-row">
+									<div class="tbl-cell">Time working</div>
+									<div class="tbl-cell tbl-cell-time">2h 10m</div>
+								</div> -->
+							</div>
+							<!-- <div class="progress-compact-style">
+								<progress class="progress progress-success" value="65" max="100">65%</progress>
+							</div> -->
+						</section><!--.proj-page-section-->
+
+						<section class="proj-page-section">
+							<ul class="proj-page-actions-list">
+								<li><a href="#"><i class="font-icon font-icon-check-square"></i>Enviar solicitud</a></li>
+								<li><a href="#"><i class="font-icon font-icon-archive"></i>Guardar solicitud</a></li>
+								<li><a href="#"><i class="glyphicon glyphicon-trash"></i>  Cancelar</a></li>
+							</ul>
+						</section><!--.proj-page-section-->
+					</section><!--.proj-page-->
+				</div>
+			</div><!--.row-->
+		</div><!--.container-fluid-->
+	</div><!--.page-content-->
 	<!-- Contenido -->
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="docsAcademicos.js"></script>
+	<script type="text/javascript" src="tramites.js"></script>
 	<?php require_once("../html/footer.php");?>
-	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 
 </body>
 </html>

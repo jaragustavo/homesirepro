@@ -2,24 +2,24 @@
     /* TODO: Inicio de Session */
     session_start();
     class Conectar{
-        protected $dbh;
-
-        protected function Conexion(){
-			$contraseña = "nicoHermann2003....";
-			$usuario = "postgres";
-			$nombreBaseDeDatos = "homesirepro";
-	        $rutaServidor = "localhost";
-			$puerto = "5432";
-			// $contraseña = "postgres";
+        
+        static public function Conexion(){
+			// $contraseña = "nicoHermann2003....";
 			// $usuario = "postgres";
 			// $nombreBaseDeDatos = "homesirepro";
 	        // $rutaServidor = "localhost";
 			// $puerto = "5432";
+			
+			$contraseña = "postgres";
+			$usuario = "postgres";
+			$nombreBaseDeDatos = "homesirepro";
+	        $rutaServidor = "localhost";
+			$puerto = "5432";
 
 			try {
-            $conectar = $this->dbh= new PDO("pgsql:host=$rutaServidor;port=$puerto;dbname=$nombreBaseDeDatos", $usuario, $contraseña, 
+           $dbh= new PDO("pgsql:host=$rutaServidor;port=$puerto;dbname=$nombreBaseDeDatos", $usuario, $contraseña, 
 						 array(PDO::ATTR_PERSISTENT => true));
-
+						 $conectar =$dbh;
 			$conectar->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
 			} catch (Exception $e) {

@@ -112,6 +112,7 @@
             } else {
 
                 $doc1 = $_FILES['imagen']['tmp_name'];
+                error_log($doc1);
                 if($doc1 != "" && $_GET["img"] == 0){
                     $ruta = "../docs/documents/".$_SESSION["cedula"]."/"."academicos/";
 

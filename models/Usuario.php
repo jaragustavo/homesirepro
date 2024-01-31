@@ -118,6 +118,7 @@
                         $_SESSION["email"]=$resultado["email"];
                         $_SESSION["suc_id"]=$resultado["suc_id"];
                         $_SESSION["cedula"]=$resultado["ci"];
+                        $_SESSION["telefono"]=$resultado["telefono"];
 
                         header("Location:".Conectar::ruta()."view/home/");
                     }else{

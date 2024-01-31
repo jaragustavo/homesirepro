@@ -148,7 +148,7 @@
 
                                                 <div class="mt-2">
                                                     <input type="hidden" name="enviar" value="si">
-                                                    <button class="btn btn-success w-100" type="submit">Acceder</button>
+                                                    <button class="btn btn-primary w-100" type="submit">Acceder</button>
                                                 </div>
 
                                             </form>
