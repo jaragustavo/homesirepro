@@ -600,8 +600,8 @@ $_SESSION['oauth2_state'] = $state;
     <!-- Main JS -->
     <script src="assets-main/js/main.js"></script>
     <script>
-        const SERVER_URL = 'https://devidentidad.mitic.gov.py/login';
-        const CLIENT_ID = '1077'; // ID de cliente generado por MITIC
+        const SERVER_URL = 'https://identidad.paraguay.gov.py/login';
+        const CLIENT_ID = '36'; // ID de cliente generado por MITIC
         const SCOPE = 'read';
         const RESPONSE_TYPE = 'code';
         const STATE = '<?php echo $state; ?>'; // Estado generado en PHP

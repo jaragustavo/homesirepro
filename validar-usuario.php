@@ -22,9 +22,9 @@ if (isset($_GET['code']) && isset($_GET['state'])) {
     }
 
     // Configuración de la solicitud
-    $base_url = 'https://devidentidad.mitic.gov.py/rest/authentication';
-    $client_id = '1077'; // ID de cliente
-    $client_secret = 'dd123030-cd5a-4e3c-a4b3-0ee553747784'; // Reemplaza con tu client secret
+    $base_url = 'https://identidad.paraguay.gov.py/rest/authentication';
+    $client_id = '36'; // ID de cliente
+    $client_secret = 'faaa54e2-1bfc-4305-9954-0918706e0da3'; 
     $grant_type = 'authorization_code';
     $code = $_GET['code']; // Obtener el código de autorización de la URL
 
