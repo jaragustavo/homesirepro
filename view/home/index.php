@@ -1,5 +1,7 @@
 <?php
-  require_once("../../config/conexion.php"); 
+
+  require_once("../../config/conexion.php");
+
   if(isset($_SESSION["usuario_id"])){ 
 ?>
 
@@ -33,11 +35,11 @@
 				<div class="col-xl-12">
 					<div class="row">
 						<div class="col-sm-4">
-							<a href="indexCurriculumVirtual.php">
+							<a href="../Tramites/listarTramites.php">
 								<article class="statistic-box green">
 									<div>
-										<div class="number" id="lbltotalcurriculum" name="lbltotalcurriculum"></div>
-										<div class="caption"><div>Currículum Virtual</div></div>
+										<div class="number" id="lbltramitesrealizados" name="lbltramitesrealizados"></div>
+										<div class="caption"><div>Trámites realizados</div></div>
 									</div>
 								</article>
   							</a>
@@ -57,7 +59,7 @@
 								<article class="statistic-box red">
 									<div>
 										<div class="number" id="lblreposos"></div>
-										<div class="caption"><div>Reposos emitidos</div></div>
+										<div class="caption"><div>Reposos emitidos visados</div></div>
 									</div>
 								</article>
 							</div>
@@ -97,6 +99,8 @@
 </html>
 <?php
 } else {
-  header("Location:".Conectar::ruta()."index.php");
+ 
+	header("Location:".Conectar::ruta()."index.php");
+
 }
 ?>

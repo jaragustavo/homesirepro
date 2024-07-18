@@ -27,7 +27,7 @@
                 $condicionNombrePaciente = "nombyapel ilike '%$nombre_paciente%' ";
             }
             if($fecha_inicio_reposo != ""){
-                $condicionFecha= "fechainicio::date = '$fecha'";
+                $condicionFecha= "fechainicio::date = '$fecha_inicio_reposo'";
             }
             if($condicionNombrePaciente != "" && $condicionCiPaciente != ""){
                 $and = " AND ";
@@ -42,9 +42,9 @@
 
             $sql=$conectar->prepare($sql);
             $sql->execute();
-            return $resultado=$sql->fetchAll();
-            $conectar->close();
             $conectar = null;
+
+            return $resultado=$sql->fetchAll();
         }
 
         /* TODO: Mostrar documento personal segun id del documento */
@@ -61,9 +61,9 @@
 
             $sql=$conectar->prepare($sql);
             $sql->execute();
-            return $resultado=$sql->fetchAll();
-            $conectar->close();
             $conectar = null;
+
+            return $resultado=$sql->fetchAll();
         }
 
     }

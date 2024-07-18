@@ -13,7 +13,6 @@
             where usuario_destino_id = $usu_id
             AND mensajes.activo = true
             AND ind_estado = 'No leido';";
-            // error_log("$$$$$$$$ ".$sql);
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();
@@ -56,7 +55,7 @@
                     WHERE usuario_envio_id = $usu_id
                         AND mensajes.activo = true
                     ORDER BY chat_id,fecha DESC
-                );";
+                ) Dato;";
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();
@@ -92,7 +91,6 @@
             $conectar= parent::conexion();
             $sql="UPDATE mensajes SET ind_estado='$nuevo_estado' 
             WHERE id = $mensaje_id AND usuario_destino_id = $usuario_id;";
-            error_log($sql);
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();
@@ -124,7 +122,6 @@
                 AND mensajes.activo = true
                 ORDER BY fecha ASC;
             ";
-            error_log("Sql1 ".$sql1);
             $sql1=$conectar->prepare($sql1);
             $sql1->execute();
             return $resultado=$sql1->fetchAll(pdo::FETCH_ASSOC);

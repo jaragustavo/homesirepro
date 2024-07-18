@@ -93,11 +93,12 @@
 					<table id="tramites_data" class="table table-bordered table-striped table-vcenter js-dataTable-full">
 						<thead>
 							<tr>
-								<th style="width: 5%;">Fecha solicitud</th>
 								<th style="width: 5%;">Tipo de trámite</th>
+								<th style="width: 5%;">Fecha de solicitud</th>
 								<th class="d-none d-sm-table-cell" style="width: 10%">Estado actual</th>
-								<th class="d-none d-sm-table-cell" style="width: 10%;">Último movimiento</th>
-								<th class="d-none d-sm-table-cell" style="width: 1%;">Acciones</th>
+								<th class="d-none d-sm-table-cell" style="width: 15%">Avance</th>
+								<th class="d-none d-sm-table-cell" style="width: 7%;">Último movimiento</th>
+								<th class="d-none d-sm-table-cell" style="width: 5%;">Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -114,7 +115,7 @@
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="tramites.js"></script>
+	<script type="text/javascript" src="tramites.js?v=<?php echo time();?>"></script>
 	<script src="plugins/dropzone/dropzone.js"></script>
 
 	<?php require_once("../html/footer.php");?>

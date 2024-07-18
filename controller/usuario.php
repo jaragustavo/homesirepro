@@ -121,32 +121,47 @@
             echo json_encode($datos);
             break;
 
-        case "cantidadesCurriculum":
-            $datos=$usuario->get_cantidades_curriculum($_SESSION["usuario_id"]);  
+        case "cantidadesTramites":
+            $datos=$usuario->get_cantidades_tramites($_SESSION["usuario_id"]);  
             if(is_array($datos)==true and count($datos)>0){
                 
                 foreach($datos as $row)
                 {
-                    $output["lbldocspersonales"] = $row["cant_personales"];
-                    $output["lbldocsacademicos"] = $row["cant_academicos"];
-                    $output["lbltotalcurriculum"] = $row["cant_personales"]+$row["cant_academicos"];
-                    
-                    // error_log("$$$$$$ ".$row["cant_personales"]."$$$$$$$$ ".$row["cant_academicos"]);
+                    $output["lbltramitesrealizados"] = $row["cantidad_tramites"];
                 }
                 echo json_encode($output);
             }
             break;
-            case "cantidadesReposos":
-                $datos=$usuario->get_cantidades_reposos($_SESSION["cedula"]);  
-                if(is_array($datos)==true and count($datos)>0){
-                    foreach($datos as $row)
-                    {
-                        $output["lblreposos"] = $row["cant_reposos"];
-                        
-                        // error_log("$$$$$$ ".$row["cant_personales"]."$$$$$$$$ ".$row["cant_academicos"]);
-                    }
-                    echo json_encode($output);
+        case "cantidadesReposos":
+            $datos=$usuario->get_cantidades_reposos($_SESSION["cedula"]);  
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $output["lblreposos"] = $row["cant_reposos"];
                 }
-                break;
+                echo json_encode($output);
+            }
+            break;
+
+        case "totalRepososVisados":
+            $datos=$usuario->get_total_reposos_visados();  
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $output["lbltotalrepososvisados"] = $row["cant_reposos"];
+                }
+                echo json_encode($output);
+            }
+            break;
+        case "mostrarDatosPersonales":
+            $datos=$usuario->get_datos_personales($_SESSION["usuario_id"]);  
+            if(is_array($datos)==true and count($datos)>0){
+                foreach($datos as $row)
+                {
+                    $output["lbltotalrepososvisados"] = $row["cant_reposos"];
+                }
+                echo json_encode($output);
+            }
+            break;
     }
 ?>

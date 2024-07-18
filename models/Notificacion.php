@@ -2,34 +2,32 @@
     class Notificacion extends Conectar{
 
         /* TODO:Todos los registros */
-        public function get_notificacion_x_usu($usu_id){
+        public static function get_notificaciones_x_usu($usuario_id){
             $conectar= parent::conexion();
-            parent::set_names();
-            $sql="SELECT * FROM tm_notificacion WHERE usu_id= ? AND est=2 Limit 1;";
+            $sql="SELECT 
+                user_crea AS notificante,
+                (SELECT nombre || ' ' || apellido FROM usuarios WHERE id = notificaciones.user_crea) AS nombre_notificante,
+                mensaje_notificacion,
+                fecha_crea AS fecha_notificacion,
+                TO_CHAR(fecha_crea, 'DD Mon YYYY') AS fecha_formato_doc,
+                TO_CHAR(fecha_crea, 'HH24:MI') AS hora_formato_doc,
+                (SELECT count(*) from notificaciones where usuario_notificado_id = 2
+                and leido = false) AS no_leidas
+            FROM 
+                notificaciones 
+            WHERE 
+                usuario_notificado_id = 2
+                AND activo = true;";
             $sql=$conectar->prepare($sql);
-            $sql->bindValue(1, $usu_id);
-            $sql->execute();
-            return $resultado=$sql->fetchAll();
-        }
-
-        /* TODO: Obtener registro segun el usuario */
-        public function get_notificacion_x_usu2($usu_id){
-            $conectar= parent::conexion();
-            parent::set_names();
-            $sql="SELECT * FROM tm_notificacion WHERE usu_id= ?";
-            $sql=$conectar->prepare($sql);
-            $sql->bindValue(1, $usu_id);
             $sql->execute();
             return $resultado=$sql->fetchAll();
         }
 
         /* TODO: Actualizar estado de la notificacion luego de ser mostrado */
-        public function update_notificacion_estado($not_id){
+        public function update_leido_notificaciones($usuario_id){
             $conectar= parent::conexion();
-            parent::set_names();
-            $sql="UPDATE tm_notificacion SET est=1 WHERE not_id = ?;";
+            $sql="UPDATE notificaciones SET leido=true WHERE usuario_notificado_id = $usuario_id;";
             $sql=$conectar->prepare($sql);
-            $sql->bindValue(1, $not_id);
             $sql->execute();
             return $resultado=$sql->fetchAll();
         }
@@ -37,10 +35,8 @@
         /* TODO: Actualizar notificacion luego de ser leido */
         public function update_notificacion_estado_read($not_id){
             $conectar= parent::conexion();
-            parent::set_names();
             $sql="UPDATE tm_notificacion SET est=0 WHERE not_id = ?;";
             $sql=$conectar->prepare($sql);
-            $sql->bindValue(1, $not_id);
             $sql->execute();
             return $resultado=$sql->fetchAll();
         }

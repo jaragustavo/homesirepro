@@ -32,3 +32,10 @@
 
 <link rel="stylesheet" href="../../public/css/separate/pages/project.css">
 
+<link rel="stylesheet" href="../../public/css/separate/elements/player.min.css">
+<link rel="stylesheet" href="../../public/css/separate/pages/profile-2.min.css">
+
+<link rel="stylesheet" href="../../public/css/separate/vendor/pnotify.min.css">
+<link rel="stylesheet" href="../../public/css/separate/vendor/typeahead.min.css">
+
+

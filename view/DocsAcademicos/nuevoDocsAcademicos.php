@@ -112,7 +112,7 @@
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="docsAcademicos.js"></script>
+	<script type="text/javascript" src="docsAcademicos.js?v=<?php echo time();?>"></script>
 	<?php require_once("../html/footer.php");?>
 	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 

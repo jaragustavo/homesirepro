@@ -295,11 +295,11 @@ function guardaryeditar(e){
     if (($('#dato_adic').summernote('isEmpty') || $('#imagen').val()=='' 
     || $('#tipo_documento').val() == 0|| $('#institucion_educativa').val() == 0) 
     && $('#imagenmuestra').length == 0){
-        swal("Advertencia!", "Campos Vacios", "warning");
+        Swal.fire("Advertencia!", "Campos Vacios", "warning");
     }else{
 
         /* TODO: Guardar Documento Personal */
-        if($('#idEncrypted').val() == ""){
+        if(idEncrypted == ""){
             $.ajax({
                 url: "../../controller/documentoPersonal.php?op=insert",
                 type: "POST",
@@ -395,7 +395,7 @@ function actualizar_img() {
         =============================================*/
         if (imagen["type"] != "image/jpeg" && imagen["type"] != "image/png" && imagen["type"] != "application/pdf") {
             $(".nuevaImagen").val("");
-            swal({
+            Swal.fire({
                 title: "Error al subir la imagen",
                 text: "¡La imagen debe estar en formato PDF, JPG o PNG!",
                 confirmButtonText: "¡Cerrar!"
@@ -403,7 +403,7 @@ function actualizar_img() {
 
         } else if (imagen["size"] > 2000000) {
             $(".nuevaImagen").val("");
-            swal({
+            Swal.fire({
                 title: "Error al subir la imagen",
                 text: "¡La imagen no debe pesar más de 2MB!",
                 confirmButtonText: "¡Cerrar!"

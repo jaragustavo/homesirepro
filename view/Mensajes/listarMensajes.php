@@ -78,12 +78,6 @@
                     
                 </div><!--.chat-list-in-->
             </section><!--.chat-list-->
-            <section class="chat-list-info">
-                <div class="chat-list-search chat-list-settings-header">
-                    
-                </div><!--.chat-list-search-->
-                
-            </section>
 
             <section class="chat-area">
               <div class="chat-area-in">
@@ -136,7 +130,7 @@
 	  <!-- <script type="text/javascript" src="mensajes.js"></script> -->
     <?php require_once("../MainJs/js.php");?>
     <?php require_once("../html/footer.php"); ?>
-    <script type="text/javascript" src="mensajes.js"></script>
+    <script type="text/javascript" src="mensajes.js?v=<?php echo time();?>"></script>
   </body>
 
 </html>

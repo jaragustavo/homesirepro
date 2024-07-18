@@ -432,10 +432,10 @@ function actualizar_img() {
                 var rutaImagen = event.target.result;
                 $(".previsualizar").attr("src", rutaImagen);
             });
-         }
+        }
 
         
-    });
+    });
 }
 
 init();

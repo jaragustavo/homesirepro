@@ -41,12 +41,12 @@
   z-index: 2;
 }
 .chat-area {
-  float: right;
+  float: left;
   width: 100%;
   margin-left: -300px;
 }
 .chat-area-in {
-  margin-left: 600px;
+  margin-left: 300px;
   border-left: solid 1px #d8e2e7;
 }
 @media (max-width: 767px) {

@@ -1,14 +1,17 @@
 function init(){
-    $.post("../../controller/usuario.php?op=cantidadesCurriculum",function (data) {
+    $.post("../../controller/usuario.php?op=cantidadesTramites",function (data) {
         data = JSON.parse(data);
-        $('#lbldocspersonales').html(data.lbldocspersonales);
-        $('#lbldocsacademicos').html(data.lbldocsacademicos);
-        $('#lbltotalcurriculum').html(data.lbltotalcurriculum);
+        $('#lbltramitesrealizados').html(data.lbltramitesrealizados);
     });
 
     $.post("../../controller/usuario.php?op=cantidadesReposos",function (data) {
         data = JSON.parse(data);
         $('#lblreposos').html(data.lblreposos);
+    });
+
+    $.post("../../controller/usuario.php?op=totalRepososVisados",function (data) {
+        data = JSON.parse(data);
+        $('#lbltotalrepososvisados').html(data.lbltotalrepososvisados);
     });
 
 }

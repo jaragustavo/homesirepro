@@ -8,7 +8,7 @@
             VALUES ($usuario_id,$tipo_documento,'$documento','$fecha','$dato_adic','$usuario_id');";
             $sql=$conectar->prepare($sql);
             $sql->execute();
-
+            error_log("Docs personales ->  ".$sql);
             $sql1="SELECT datos_personales.id as dato_personal_id, usuarios.ci as cedula, tipo_doc_id
             FROM datos_personales
             INNER JOIN usuarios on usuarios.id = datos_personales.usuario_id
@@ -62,9 +62,9 @@
             WHERE datos_personales.activo = true AND ".$condicionTipoDoc.$and.$condicionFecha;
             $sql=$conectar->prepare($sql);
             $sql->execute();
-            return $resultado=$sql->fetchAll();
-            $conectar->close();
             $conectar = null;
+
+            return $resultado=$sql->fetchAll();
         }
 
         /* TODO: Mostrar documento personal segun id del documento */
@@ -81,9 +81,8 @@
 
             $sql=$conectar->prepare($sql);
             $sql->execute();
-            return $resultado=$sql->fetchAll();
-            $conectar->close();
             $conectar = null;
+            return $resultado=$sql->fetchAll();
         }
 
         /* TODO: actualizar documento */

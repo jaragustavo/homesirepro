@@ -2,27 +2,20 @@
 ACTUALIZAR MENSAJES
 =============================================*/
 
-$(".actualizarMensajes").click(function(e) {
+var contador_clicks = 0
+function actualizarNotificaciones(notif_nuevas) {
+    contador_clicks++;
+    if (notif_nuevas > 0) {
+        if(contador_clicks>1){
+            $.post("../../controller/notificacion.php?op=abrirNotificacion", function (data) {
+                if (data == "ok") {
+                    $("#header_notificaciones").load(location.href + " #header_notificaciones > *");
+                }
+                else {
+                    alert(data);
+                }
 
-    e.preventDefault();
-
-    var usuario_destino_id = $(this).attr("usuario_id");
-
-    var datos = new FormData();
-
-    datos.append("usuario_destino_id", usuario_destino_id);
-
-    $.ajax({
-
-        url: "../ajax/mensajes.ajax.php",
-        method: "POST",
-        data: datos,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(respuesta) {
-
-            window.location = "mensajeUsuario.php";
+            });
         }
-    })
-})
+    }
+}

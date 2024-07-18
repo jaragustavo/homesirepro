@@ -77,7 +77,7 @@
                                     <div class="el-element-overlay">
                                         <div class="el-card-item">
                                             <div class="el-card-avatar el-overlay-1"> 
-                                                <embed id="imagenmuestra" name="imagenmuestra" class="previsualizar" width="400px" title="Imagen del artículo">
+                                                <embed id="imagenmuestra" name="imagenmuestra" class="previsualizar" width="400px" length="400px" title="Imagen del artículo">
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +113,7 @@
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="docsAcademicos.js"></script>
+	<script type="text/javascript" src="docsAcademicos.js?v=<?php echo time();?>"></script>
 	<?php require_once("../html/footer.php");?>
 	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 

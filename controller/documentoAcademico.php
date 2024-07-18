@@ -91,7 +91,7 @@
                 $_POST["tipo_documento"].".".$fileExtension;
                 $destino = $ruta.$docNombre;
                 /* TODO: Movemos los archivos hacia la carpeta creada */
-                move_uploaded_file($doc1,$destino);
+                move_uploaded_file($docNombre,$destino);
                 /* Se inserta el registro en la BD */
                 $datos=$documentoAcademico->insert_doc_academico($_POST["usuario_id"],$_POST["tipo_documento"],
                 $docNombre,$_POST["institucion_educativa"],$_POST["dato_adic"]);
@@ -112,7 +112,6 @@
             } else {
 
                 $doc1 = $_FILES['imagen']['tmp_name'];
-                error_log($doc1);
                 if($doc1 != "" && $_GET["img"] == 0){
                     $ruta = "../docs/documents/".$_SESSION["cedula"]."/"."academicos/";
 
@@ -125,9 +124,10 @@
                     $_POST["tipo_documento"].".".$fileExtension;
                     $destino = $ruta.$docNombre;
                     /* TODO: Movemos los archivos hacia la carpeta creada */
-                    move_uploaded_file($doc1,$destino);
+                    move_uploaded_file($docNombre,$destino);
                 }
                 /* Se inserta el registro en la BD */
+                
                 $datos = $documentoAcademico->update_doc_academico($decifrado,$_POST["usuario_id"],
                     $_POST["tipo_documento"],$docNombre,$_POST["institucion_educativa"],$_POST["dato_adic"]);
             } 
@@ -165,11 +165,6 @@
             
             $respuesta = $documentoAcademico->delete_doc_academico($decifrado, $_SESSION["usuario_id"]);
             echo $respuesta ? "Documento eliminado" : "El documento no se pudo eliminar.";
-            break;
-
-        case "grafico":
-            $datos=$documentoAcademico->get_documentos_grafico();  
-            echo json_encode($datos);
             break;
 
         case "comboInstituciones":

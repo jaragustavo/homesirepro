@@ -33,6 +33,15 @@
 					</div>
 				</div>
 			</header>
+			<header class="box-typical box-typical-padding">
+				<div class="form-group">
+					<p>
+						En este listado se encuentran solamente aquellos reposos que fueron visados
+						por la Dirección General de Control de Profesiones, Establecimientos y Tecnología de la Salud
+						del MSPBS.
+					</p>
+				</div>
+			</header>
 
 			<div class="box-typical box-typical-padding">
 				
@@ -95,14 +104,11 @@
 		</div>
 	</div>
 	<!-- Contenido -->
-	<?php require_once("modalasignar.php");?>
 
 	<?php require_once("../MainJs/js.php");?>
 
-	<script type="text/javascript" src="reposos.js"></script>
+	<script type="text/javascript" src="reposos.js?v=<?php echo time();?>"></script>
 	<?php require_once("../html/footer.php");?>
-
-	<!-- <script type="text/javascript" src="../notificacion.js"></script> -->
 
 </body>
 </html>
