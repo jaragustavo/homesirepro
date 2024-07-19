@@ -78,41 +78,29 @@ $root_path_main = "/homesirepro/";
                                 <span class="category-text d-none d-xl-block">HomeSirepro</span>
                             </div>
 
-                            <!-- <div class="category-dropdown-menu d-none d-xl-block">
+                            <div class="category-dropdown-menu d-none d-xl-block">
                                 <div class="category-menu-item">
                                     <div class="rbt-vertical-nav">
                                         <ul class="rbt-vertical-nav-list-wrapper vertical-nav-menu">
                                             <li class="vertical-nav-item active">
-                                                <a href="<?php echo $root_path ?>APE/misionVision.php">Misión y
+                                                <a href="<?php //echo $root_path ?>">Misión y
                                                     Visión</a>
                                             </li>
                                             <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path ?>APE/quienesSomos.php">Quiénes somos</a>
+                                                <a href="<?php echo $root_path ?>APE/quienesSomos.php">Resoluciones</a>
                                             </li>
                                             <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path ?>APE/presidenta.php">Presidenta</a>
+                                                <a href="<?php echo $root_path ?>APE/presidenta.php">Formularios Varios</a>
                                             </li>
                                             <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path ?>APE/juntaDirectiva.php">Junta
-                                                    Directiva</a>
+                                                <a href="<?php echo $root_path ?>APE/juntaDirectiva.php">Requisitos para la Habilitación de Establecimientos de Salud</a>
                                             </li>
-                                            <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path ?>APE/filiales.php">Filiales</a>
-                                            </li>
-                                            <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path ?>APE/personalAdministrativo.php">Personal
-                                                    Administrativo</a>
-                                            </li>
-                                            <li class="vertical-nav-item">
-                                                <a href="<?php echo $root_path_main ?>docs/website/memoria.pdf"
-                                                    target="_blank">Memoria
-                                                    2018-2021</a>
-                                            </li>
+                                            
                                         </ul>
                                     </div>
 
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
