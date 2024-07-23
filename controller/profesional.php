@@ -31,7 +31,7 @@ class ControladorProfesional
             }
         } else {
             http_response_code(403); // Forbidden
-            echo json_encode(['error' => 'Token inválido']);
+            echo json_encode(['error' => 'Token invalido']);
         }
     }
    
