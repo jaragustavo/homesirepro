@@ -66,5 +66,6 @@ class Consulta extends Conectar
         $conectar = null;
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>

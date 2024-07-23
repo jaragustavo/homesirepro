@@ -1,8 +1,9 @@
 <?php
     session_start();
-	
+
+	define('TOKEN_SECRETO', 'alguno'); // Usa el token generado
+
     class Conectar{
-        
         static public function Conexion(){
 			$contraseña = "dgt1c.123**";
 			$usuario = "postgres";
@@ -31,11 +32,11 @@
 	    }
 
         protected function ConexionSirepro(){
-
-			$contraseña = "nicoHermann2003....";
-			$usuario = "postgres";
+			//$cnxString = "host='127.0.0.1' port='5432' dbname='sirepro' user='usuario_sirepro' password=':-)PassSirepro001122'";
+			$contraseña = ":-)PassSirepro001122";
+			$usuario = "usuario_sirepro";
 			$nombreBaseDeDatos = "sirepro";
-	        $rutaServidor = "159.65.242.229";
+	        $rutaServidor = "192.168.1.66";
 			$puerto = "5432";
 
 			try {

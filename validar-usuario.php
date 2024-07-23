@@ -17,7 +17,7 @@ if (isset($_GET['code']) && isset($_GET['state'])) {
     // Verificar que el estado recibido coincida con el estado almacenado
     if ($_GET['state'] !== $session_state) {
 
-        die('El estado recibido no coincide con el estado almacenado. Posible ataque CSRF.');
+       die('El estado recibido no coincide con el estado almacenado. Posible ataque CSRF.');
 
     }
 
