@@ -11,8 +11,8 @@ $root_path_main = "/homesSirepro/";
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--30">
                             <div class="footer-widget">
                                 <div class="logo">
-                                    <a href="index.html">
-                                        <img src="assets/images/logo1_sirepro.jpg" alt="Edu-cause">
+                                    <a href="index.php">
+                                        <img src="<?php echo $root_path_main ?>assets/images/logo1_sirepro.jpg">
                                     </a>
                                 </div>
 
