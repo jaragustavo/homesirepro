@@ -1,35 +1,39 @@
-
+<?php
+  // Obtener la ruta relativa del directorio actual
+$root_path = "/homesirepro/portal/";
+$root_path_main = "/homesirepro/";
+?>
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
-    <script src="assets-main/js/vendor/modernizr.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/modernizr.min.js"></script>
     <!-- jQuery JS -->
-    <script src="assets-main/js/vendor/jquery.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/jquery.js"></script>
     <!-- Bootstrap JS -->
-    <script src="assets-main/js/vendor/bootstrap.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/bootstrap.min.js"></script>
     <!-- sal.js -->
-    <script src="assets-main/js/vendor/sal.js"></script>
-    <script src="assets-main/js/vendor/swiper.js"></script>
-    <script src="assets-main/js/vendor/magnify.min.js"></script>
-    <script src="assets-main/js/vendor/jquery-appear.js"></script>
-    <script src="assets-main/js/vendor/odometer.js"></script>
-    <script src="assets-main/js/vendor/backtotop.js"></script>
-    <script src="assets-main/js/vendor/isotop.js"></script>
-    <script src="assets-main/js/vendor/imageloaded.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/sal.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/swiper.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/magnify.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/jquery-appear.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/odometer.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/backtotop.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/isotop.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/imageloaded.js"></script>
 
-    <script src="assets-main/js/vendor/wow.js"></script>
-    <script src="assets-main/js/vendor/waypoint.min.js"></script>
-    <script src="assets-main/js/vendor/easypie.js"></script>
-    <script src="assets-main/js/vendor/text-type.js"></script>
-    <script src="assets-main/js/vendor/jquery-one-page-nav.js"></script>
-    <script src="assets-main/js/vendor/bootstrap-select.min.js"></script>
-    <script src="assets-main/js/vendor/jquery-ui.js"></script>
-    <script src="assets-main/js/vendor/magnify-popup.min.js"></script>
-    <script src="assets-main/js/vendor/paralax-scroll.js"></script>
-    <script src="assets-main/js/vendor/paralax.min.js"></script>
-    <script src="assets-main/js/vendor/countdown.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/wow.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/waypoint.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/easypie.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/text-type.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/jquery-one-page-nav.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/bootstrap-select.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/jquery-ui.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/magnify-popup.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/paralax-scroll.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/paralax.min.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/countdown.js"></script>
     <!-- Main JS -->
-    <script src="assets-main/js/main.js"></script>
+    <script src="<?php echo $root_path_main ?>assets-main/js/main.js"></script>
     <script>
         const SERVER_URL = 'https://identidad.paraguay.gov.py/login';
         const CLIENT_ID = '36'; // ID de cliente generado por MITIC

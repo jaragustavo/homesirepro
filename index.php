@@ -40,7 +40,7 @@ $_SESSION['oauth2_state'] = $state;
 
                                 </p>
                                 <div class="slider-btn">
-                                    <a class="rbt-btn btn-gradient hover-icon-reverse" href="#">
+                                    <a class="rbt-btn btn-gradient hover-icon-reverse" href="portal/Profesionales/consultaRegistroProfesional.php">
                                         <span class="icon-reverse-wrapper">
                                             <span class="btn-text">Consultar profesionales</span>
                                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
