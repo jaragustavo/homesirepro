@@ -14,20 +14,21 @@ class ControladorProfesional
     
     public function obtenerProfesional()
     {
-        $dato = isset($_GET['dato']) ? trim($_GET['dato']) : '';
+        $item = isset($_GET['item']) ? trim($_GET['item']) : '';
+        $valor = isset($_GET['valor']) ? trim($_GET['valor']) : '';
         $token = isset($_GET['token']) ? trim($_GET['token']) : '';
     
         // Verificar el token
         if ($this->verificarToken($token)) {
-            if ($this->esParametroValido($dato)) {
+            if ($this->esParametroValido($valor) || $this->esParametroValido($item)) {
                 $profesional = new Profesional();
-                $resultado = $profesional->obtenerProfesional($dato);
+                $resultado = $profesional->obtenerProfesional($item,$valor);
                 
                 header('Content-Type: application/json');
                 echo json_encode($resultado);
             } else {
                 http_response_code(400); // Bad Request
-                echo json_encode(['error' => 'Parámetro inválido']);
+                echo json_encode(['error' => 'Parámetro invalido']);
             }
         } else {
             http_response_code(403); // Forbidden

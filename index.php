@@ -277,7 +277,6 @@ $_SESSION['oauth2_state'] = $state;
         
 
     </main>
-
     <?php require_once ('portal/html/footer.php'); ?>
     <?php require_once ('portal/html/js.php'); ?>
 </body>

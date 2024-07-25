@@ -3,17 +3,40 @@
 class Profesional extends Conectar
 {
    
-    public function obtenerProfesional($dato){
+    public function obtenerProfesional($item, $valor) {
+        // Validar que $item sea una columna válida
+        $columnasValidas = ['codprofe', 'cedula', 'nroregis', 'nombreProfesional', 'codcateg1'];
+        if (!in_array($item, $columnasValidas)) {
+            throw new InvalidArgumentException("Columna no válida: $item");
+        }
+    
         $conectar = parent::ConexionSirepro();
-        $sql = "WITH dato AS (
+    
+        // Construir la consulta SQL con la columna y valor proporcionados
+        $sql = "
+            WITH dato AS (
                 SELECT 
                     a.tipoprof,
                     a.codprofe,
-                    MAX(a.fechains) AS fechains, -- Obtiene la fecha más reciente de inscripción
+                    MAX(a.fechains) AS fechains,
                     a.cedula,
                     a.nroregis,
-                    p.pnombre || ' ' || p.snombre  || ' ' || p.tnombre AS nombres, -- Concatenación de nombres
-                    p.papellido  || ' ' || p.sapellido AS apellidos, -- Concatenación de apellidos
+                    CONCAT_WS(' ', 
+                        NULLIF(trim(p.pnombre), ''), 
+                        NULLIF(trim(p.snombre), ''), 
+                        NULLIF(trim(p.tnombre), ''), 
+                        NULLIF(trim(p.papellido), ''), 
+                        NULLIF(trim(p.sapellido), '')
+                    ) AS nombreProfesional,
+                    CONCAT_WS(' ', 
+                        NULLIF(trim(p.papellido), ''), 
+                        NULLIF(trim(p.sapellido), '')
+                    ) AS apellidos, 
+                    CONCAT_WS(' ', 
+                        NULLIF(trim(p.pnombre), ''), 
+                        NULLIF(trim(p.snombre), ''), 
+                        NULLIF(trim(p.tnombre), '')
+                    ) AS nombres,
                     b.nomprofe,
                     i.nomuniv
                 FROM 
@@ -23,7 +46,7 @@ class Profesional extends Conectar
                     JOIN personas p ON a.cedula = p.cedula
                     JOIN instituciones i ON a.coduniv = i.coduniv
                 WHERE 
-                    a.tipoprof <> 4 
+                    a.tipoprof <> 4
                 GROUP BY 
                     a.tipoprof, 
                     a.codprofe, 
@@ -37,19 +60,26 @@ class Profesional extends Conectar
                     b.nomprofe, 
                     i.nomuniv
             ),
-
-
             espe AS (
                 SELECT 
-                    *,
+                    tipoprof,
+                    codprofe,
+                    MAX(fechains) AS fechains,
+                    cedula,
+                    nroregis,
+                    codespe,
                     ROW_NUMBER() OVER (PARTITION BY cedula, nroregis, codprofe ORDER BY cedula) AS rn
                 FROM 
                     rprofesional 
                 WHERE 
-                    tipoprof = 4 
+                    tipoprof = 4
+                GROUP BY  
+                    tipoprof,
+                    codprofe,
+                    cedula,
+                    nroregis,
+                    codespe
             ),
-
-            -- Subconsulta 'pivot': Pivotea los valores de 'codespe' en columnas y calcula las nuevas columnas
             pivot AS (
                 SELECT 
                     dato.tipoprof,
@@ -57,22 +87,28 @@ class Profesional extends Conectar
                     dato.fechains,
                     dato.cedula,
                     dato.nroregis,
-                    dato.nombres,
+                    dato.nombreProfesional,
                     dato.apellidos,
+                    dato.nombres,
                     dato.nomprofe,
                     dato.nomuniv,
-                    MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END) AS codespe1, -- Asigna la primera especialidad
-                    MAX(CASE WHEN espe.rn = 2 THEN espe.codespe END) AS codespe2, -- Asigna la segunda especialidad
-                    MAX(CASE WHEN espe.rn = 3 THEN espe.codespe END) AS codespe3, -- Asigna la tercera especialidad
-                    dato.fechains + INTERVAL '5 years' AS fecha_vencimiento, -- Calcula la fecha de vencimiento sumando 5 años a 'fechains'
+                    MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END) AS codespe1,
+                    MAX(CASE WHEN espe.rn = 2 THEN espe.codespe END) AS codespe2,
+                    MAX(CASE WHEN espe.rn = 3 THEN espe.codespe END) AS codespe3,
+                    dato.fechains + INTERVAL '5 years' AS fecha_vencimiento,
                     CASE 
-                        WHEN (dato.fechains + INTERVAL '5 years') < CURRENT_DATE THEN 'vencido' -- Determina el estado como 'vencido' si la fecha de vencimiento es menor a la fecha actual
-                        ELSE 'vigente' -- Determina el estado como 'vigente' si la fecha de vencimiento es mayor o igual a la fecha actual
+                        WHEN (dato.fechains + INTERVAL '5 years') < CURRENT_DATE THEN 'vencido'
+                        ELSE 'vigente'
                     END AS estado,
                     CASE 
-                        WHEN MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END) IS NOT NULL THEN 'SI' -- Si tiene al menos una especialidad
-                        ELSE 'NO' -- Si no tiene ninguna especialidad
-                    END AS tiene_especialidad
+                        WHEN MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END) IS NOT NULL THEN 'SI'
+                        ELSE 'NO'
+                    END AS tiene_especialidad,
+                    COALESCE(
+                        (CASE WHEN MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END) IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN MAX(CASE WHEN espe.rn = 2 THEN espe.codespe END) IS NOT NULL THEN 1 ELSE 0 END) +
+                        (CASE WHEN MAX(CASE WHEN espe.rn = 3 THEN espe.codespe END) IS NOT NULL THEN 1 ELSE 0 END), 0
+                    ) AS cantidad_especialidad
                 FROM dato
                 LEFT JOIN espe ON 
                     dato.cedula = espe.cedula
@@ -84,64 +120,84 @@ class Profesional extends Conectar
                     dato.fechains,
                     dato.cedula,
                     dato.nroregis,
-                    dato.nombres,
-                    dato.apellidos,
+                    dato.nombreProfesional,
                     dato.nomprofe,
-                    dato.nomuniv
+                    dato.nomuniv,
+                    dato.apellidos,
+                    dato.nombres
+            ),
+            especialidades_con_categoria AS (
+                SELECT 
+                    e.codespe,
+                    e.nomespe,
+                    cate.codcateg,
+                    cate.nomcateg
+                FROM 
+                    especialidades e
+                INNER JOIN 
+                    categoria cate ON e.codcateg = cate.codcateg
+            ),
+            final AS (
+                SELECT 
+                    pivot.tipoprof,
+                    pivot.codprofe,
+                    pivot.fechains,
+                    pivot.fecha_vencimiento,
+                    pivot.estado,
+                    pivot.cedula,
+                    pivot.nroregis,
+                    pivot.nombreProfesional,
+                    pivot.apellidos,
+                    pivot.nombres,
+                    pivot.nomprofe,
+                    pivot.nomuniv,
+                    pivot.codespe1,
+                    espe1.nomespe AS description1,
+                    espe1.codcateg AS codcateg1,
+                    espe1.nomcateg AS nomcateg1,
+                    pivot.codespe2,
+                    espe2.nomespe AS description2,
+                    espe2.codcateg AS codcateg2,
+                    espe2.nomcateg AS nomcateg2,
+                    pivot.codespe3,
+                    espe3.nomespe AS description3,
+                    espe3.codcateg AS codcateg3,
+                    espe3.nomcateg AS nomcateg3,
+                    pivot.tiene_especialidad,
+                    pivot.cantidad_especialidad
+                FROM 
+                    pivot
+                LEFT JOIN especialidades_con_categoria espe1 ON pivot.codespe1 = espe1.codespe
+                LEFT JOIN especialidades_con_categoria espe2 ON pivot.codespe2 = espe2.codespe
+                LEFT JOIN especialidades_con_categoria espe3 ON pivot.codespe3 = espe3.codespe
             )
-
-            -- Consulta final: Realiza los LEFT JOINs con la tabla 'especialidades' para obtener las descripciones y selecciona las columnas deseadas
-            SELECT 
-                pivot.tipoprof,
-                pivot.codprofe,
-                pivot.fechains,
-                pivot.fecha_vencimiento, -- Columna nueva para la fecha de vencimiento
-                pivot.estado, -- Columna nueva para el estado
-                pivot.cedula,
-                pivot.nroregis,
-                pivot.nombres,
-                pivot.apellidos,
-                pivot.nomprofe,
-                pivot.nomuniv,
-                pivot.codespe1,
-                e1.nomespe AS description1, -- Descripción de la primera especialidad
-                pivot.codespe2,
-                e2.nomespe AS description2, -- Descripción de la segunda especialidad
-                pivot.codespe3,
-                e3.nomespe AS description3, -- Descripción de la tercera especialidad
-                pivot.tiene_especialidad -- Nueva columna que indica si tiene especialidad o no
-            FROM 
-                pivot
-            LEFT JOIN especialidades e1 ON pivot.codespe1 = e1.codespe
-            LEFT JOIN especialidades e2 ON pivot.codespe2 = e2.codespe
-            LEFT JOIN especialidades e3 ON pivot.codespe3 = e3.codespe
+            SELECT * FROM final
             WHERE 
-                pivot.tipoprof::text ILIKE UPPER('%$dato%') OR
-                pivot.codprofe::text ILIKE UPPER('%$dato%') OR
-                pivot.fechains::text ILIKE UPPER('%$dato%') OR
-                pivot.fecha_vencimiento::text ILIKE UPPER('%$dato%') OR
-                pivot.estado ILIKE UPPER('%$dato%') OR
-                pivot.cedula::text ILIKE UPPER('%$dato%') OR
-                pivot.nroregis::text ILIKE UPPER('%$dato%') OR
-                pivot.nombres ILIKE UPPER('%$dato%') OR
-                pivot.apellidos ILIKE UPPER('%$dato%') OR
-                pivot.nomprofe ILIKE UPPER('%$dato%') OR
-                pivot.nomuniv ILIKE UPPER('%$dato%') OR
-                pivot.codespe1::text ILIKE UPPER('%$dato%') OR
-                e1.nomespe ILIKE UPPER('%$dato%') OR
-                pivot.codespe2::text ILIKE UPPER('%$dato%') OR
-                e2.nomespe ILIKE UPPER('%$dato%') OR
-                pivot.codespe3::text ILIKE UPPER('%$dato%') OR
-                e3.nomespe ILIKE UPPER('%$dato%') OR
-                pivot.tiene_especialidad ILIKE UPPER('%$dato%')
+                (CASE 
+                    WHEN :item = 'codcateg1' THEN codcateg1::text
+                    WHEN :item = 'codcateg2' THEN codcateg2::text
+                    WHEN :item = 'codcateg3' THEN codcateg3::text
+                    WHEN :item = 'cedula' THEN cedula::text
+                    WHEN :item = 'nroregis' THEN nroregis::text
+                    WHEN :item = 'nombreProfesional' THEN nombreProfesional::text
+                    WHEN :item = 'codprofe' THEN codprofe::text
+                    ELSE NULL
+                END) ILIKE UPPER(:valor)
             ORDER BY 
-                pivot.cedula, 
-                pivot.codprofe;";
-
+                final.apellidos, 
+                final.nombres,
+                final.nomprofe;
+        ";
+      
         $query = $conectar->prepare($sql);
+        $query->bindValue(':item', $item);
+        $query->bindValue(':valor', "%$valor%");
         $query->execute();
         $conectar = null;
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    
+    
 }
 ?>
