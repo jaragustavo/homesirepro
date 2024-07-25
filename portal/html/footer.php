@@ -1,7 +1,7 @@
 <?php
   // Obtener la ruta relativa del directorio actual
-$root_path = "/homesSirepro/portal/";
-$root_path_main = "/homesSirepro/";
+$root_path = "/homesirepro/portal/";
+$root_path_main = "/homesirepro/";
 ?>
 <!-- Start Footer aera -->
 <footer class="rbt-footer footer-style-1">
