@@ -39,7 +39,8 @@ $root_path_main = "/homesirepro/";
         const CLIENT_ID = '36'; // ID de cliente generado por MITIC
         const SCOPE = 'read';
         const RESPONSE_TYPE = 'code';
-        const STATE = '<?php echo $state; ?>'; // Estado generado en PHP
+        // Si existe $state, se hace echo del mismo, ya que sólo se utiliza para el login
+        const STATE = '<?php if(isset($state)) echo $state; ?>'; // Estado generado en PHP
 
         // Construir la URL
         const redirectURL = `${SERVER_URL}?clientId=${CLIENT_ID}&scope=${SCOPE}&responseType=${RESPONSE_TYPE}&state=${STATE}`;
