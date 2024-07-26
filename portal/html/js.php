@@ -3,12 +3,17 @@
 $root_path = "/homesirepro/portal/";
 $root_path_main = "/homesirepro/";
 ?>
+
+
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
     <script src="<?php echo $root_path_main ?>assets-main/js/vendor/modernizr.min.js"></script>
     <!-- jQuery JS -->
-    <script src="<?php echo $root_path_main ?>assets-main/js/vendor/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--     
+    <script src="<?php //echo $root_path_main ?>assets-main/js/vendor/jquery.js"></script> -->
+    hay que ver que version 
     <!-- Bootstrap JS -->
     <script src="<?php echo $root_path_main ?>assets-main/js/vendor/bootstrap.min.js"></script>
     <!-- sal.js -->
@@ -32,6 +37,12 @@ $root_path_main = "/homesirepro/";
     <script src="<?php echo $root_path_main ?>assets-main/js/vendor/paralax-scroll.js"></script>
     <script src="<?php echo $root_path_main ?>assets-main/js/vendor/paralax.min.js"></script>
     <script src="<?php echo $root_path_main ?>assets-main/js/vendor/countdown.js"></script>
+  
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+
     <!-- Main JS -->
     <script src="<?php echo $root_path_main ?>assets-main/js/main.js"></script>
     <script>
@@ -43,7 +54,7 @@ $root_path_main = "/homesirepro/";
         const STATE = '<?php if(isset($state)) echo $state; ?>'; // Estado generado en PHP
 
         // Construir la URL
-        const redirectURL = `${SERVER_URL}?clientId=${CLIENT_ID}&scope=${SCOPE}&responseType=${RESPONSE_TYPE}&state=${STATE}`;
+        const redirectURL = ${SERVER_URL}?clientId=${CLIENT_ID}&scope=${SCOPE}&responseType=${RESPONSE_TYPE}&state=${STATE};
 
         // Asignar la URL generada al atributo href del enlace cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', () => {
@@ -54,5 +65,5 @@ $root_path_main = "/homesirepro/";
             });
         });
 
-     
-    </script>
+     
+    </script>

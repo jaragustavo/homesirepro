@@ -6,6 +6,12 @@
     .normal-font {
         font-size: 14px;
     }
+    .square-image {
+        width: 50%;
+        object-fit: cover;
+        /* Required to prevent the image from stretching, use the object-position property to adjust the visible area */
+        aspect-ratio: 1/1;
+    }
 </style>
 </head>
 
@@ -36,14 +42,20 @@
                                             <option value="cedula">Cédula de Identidad</option>
                                             <option value="nombreProfesional">Nombre y Apellido</option>
                                             <option value="nroregis">Registro Profesional</option>
-                                            <option value="nombreprofe">Profesión</option>
-                                            <option value="especialidad">Especialidad</option>
+                                            <option value="codprofe">Profesión</option>
+                                            <option value="codcateg1">Especialidad</option>
                                         </select>
                                     </div>
                                     <div id="divEspecialidad" class="filter-select rbt-modern-select search-by-category"
                                         style="display:none;">
-                                        <select id="searchEspecialidad" style="max-width:100%; max-width: 1400px;">
+                                        <select id="searchEspecialidad">
                                             <option>Seleccione una especialidad</option>
+                                        </select>
+                                    </div>
+                                    <div id="divProfesion" class="filter-select rbt-modern-select search-by-category"
+                                        style="display:none;">
+                                        <select id="searchProfesion">
+                                            <option>Seleccione una profesión</option>
                                         </select>
                                     </div>
                                     <div class="search-field" id="searchButton">
@@ -71,6 +83,9 @@
                                     profesional, haga clic
                                     la fila correspondiente.
                                 </p>
+                                <p id="ceroRegistros" class="description mt--30" style="color: #2F57EF;display: none;">
+                                    No se han encontrado registros con los datos ingresados.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -82,9 +97,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="pro-thumbnail"></th>
-                                                <th class="pro-title">Cédula de Identidad</th>
-                                                <th class="pro-title">Nombre y Apellido</th>
-                                                <th class="pro-title">Registro Profesional</th>
+                                                <th class="pro-title">CI</th>
+                                                <th class="pro-title">Nombre</th>
+                                                <th class="pro-title">N° de Registro</th>
                                                 <th class="pro-price">Profesión</th>
                                                 <th class="pro-quantity">Especialidad</th>
                                             </tr>
@@ -113,8 +128,6 @@
     <?php require_once ('../html/js.php'); ?>
 
     <script type="text/javascript" src="profesionales.js?v=<?php echo time(); ?>"></script>
-
-
 </body>
 
 </html>
