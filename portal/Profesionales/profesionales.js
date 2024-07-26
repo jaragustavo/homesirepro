@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (value === 'codcateg1') {
             $('#divEspecialidad').show();
             $('#divProfesion').hide();
-        } else if (value === 'profesion') {
+        } else if (value === 'codprofe') {
             $('#divEspecialidad').hide();
             $('#divProfesion').show();
         } else {
@@ -50,29 +50,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         })
         .catch(error => console.error('Error:', error));
+
+    url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesion.php?token=alguno";
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const select = $('#searchProfesion'); // Usamos jQuery para Select2
+
+            if (select) {
+
+                select.empty(); // Vaciar las opciones existentes
+
+                // Añadir una opción vacía para Select2
+                select.append(new Option('', '', true, true));
+
+                data.forEach(categoria => {
+                    const option = new Option(categoria.nomprofe, categoria.codprofe, false, false);
+                    select.append(option).trigger('change');
+                });
+
+
+            } else {
+                console.error('Elemento select no encontrado');
+            }
+
+        })
+        .catch(error => console.error('Error:', error));
 });
-
-document.getElementById("searchCategory").addEventListener("change", cambiarCampoFiltrado);
-
-function cambiarCampoFiltrado() {
-    var x = document.getElementById("searchCategory");
-    if (document.getElementById('searchCategory').value === "codcateg1") {
-        document.getElementById('divEspecialidad').style.display = 'block';
-        // document.getElementById('searchButton').style.display = 'none';
-        document.getElementById('divProfesion').style.display = 'none';
-
-    }
-    else if (document.getElementById('searchCategory').value === "codprofe") {
-        document.getElementById('divProfesion').style.display = 'block';
-        document.getElementById('divEspecialidad').style.display = 'none';
-        // document.getElementById('searchButton').style.display = 'none';
-    }
-    else {
-        document.getElementById('divEspecialidad').style.display = 'none';
-        document.getElementById('divProfesion').style.display = 'none';
-        document.getElementById('searchButton').style.display = 'block';
-    }
-}
 
 document.getElementById('searchButton').addEventListener('keyup', function (e) {
     if (e.keyCode === 13) {
