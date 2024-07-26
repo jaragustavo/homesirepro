@@ -14,7 +14,7 @@ class Profesional extends Conectar
     
         // Construir la consulta SQL con la columna y valor proporcionados
         $sql = "
-            WITH dato AS (
+           WITH dato AS (
                 SELECT 
                     a.tipoprof,
                     a.codprofe,
@@ -64,7 +64,7 @@ class Profesional extends Conectar
                 SELECT 
                     tipoprof,
                     codprofe,
-                    MAX(fechains) AS fechains,
+                    MAX(fechains) AS fechainsespe,
                     cedula,
                     nroregis,
                     codespe,
@@ -173,21 +173,25 @@ class Profesional extends Conectar
             )
             SELECT * FROM final
             WHERE 
-                (CASE 
-                    WHEN :item = 'codcateg1' THEN codcateg1::text
-                    WHEN :item = 'codcateg2' THEN codcateg2::text
-                    WHEN :item = 'codcateg3' THEN codcateg3::text
-                    WHEN :item = 'cedula' THEN cedula::text
-                    WHEN :item = 'nroregis' THEN nroregis::text
-                    WHEN :item = 'nombreProfesional' THEN nombreProfesional::text
-                    WHEN :item = 'codprofe' THEN codprofe::text
-                    ELSE NULL
-                END) ILIKE UPPER(:valor)
+                (
+                   (CASE 
+                        WHEN :item = 'codcateg1' THEN codcateg1::text
+                        WHEN :item = 'codcateg2' THEN codcateg2::text
+                        WHEN :item = 'codcateg3' THEN codcateg3::text
+                        WHEN :item = 'cedula' THEN cedula::text
+                        WHEN :item = 'nroregis' THEN nroregis::text
+                        WHEN :item = 'nombreProfesional' THEN nombreProfesional::text
+                        WHEN :item = 'codprofe' THEN codprofe::text
+                        ELSE NULL
+                    END) ILIKE UPPER(:valor)
+                    OR (codcateg1::text ILIKE UPPER(:valor))
+                    OR (codcateg2::text ILIKE UPPER(:valor))
+                    OR (codcateg3::text ILIKE UPPER(:valor))
+                )
             ORDER BY 
                 final.apellidos, 
                 final.nombres,
-                final.nomprofe;
-        ";
+                final.nomprofe;";
       
         $query = $conectar->prepare($sql);
         $query->bindValue(':item', $item);

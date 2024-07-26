@@ -15,6 +15,12 @@ class ControladorProfesion
     public function obtenerProfesion()
     {
         $token = isset($_GET['token']) ? trim($_GET['token']) : '';
+
+          // Configura los encabezados CORS
+          header("Access-Control-Allow-Origin: *"); // Permite solicitudes desde cualquier origen
+          header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); // Métodos permitidos
+          header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Encabezados permitidos
+      
     
         // Verificar el token
         if ($this->verificarToken($token)) {

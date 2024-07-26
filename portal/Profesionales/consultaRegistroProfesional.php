@@ -59,7 +59,7 @@
                                         </select>
                                     </div>
                                     <div class="search-field" id="searchButton">
-                                        <input type="text" id="searchInput" placeholder="Buscar...">
+                                        <input type="text" id="searchInputText" placeholder="Buscar...">
                                     </div>
                                 </div>
                             </div>

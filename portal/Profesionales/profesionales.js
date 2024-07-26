@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Configurar eventos para mostrar/ocultar selectores según la selección en #searchCategory
-    $('#searchCategory').on('change', function () {
+    $('#searchCategory').on('change', function() {
         var value = $(this).val();
         if (value === 'codcateg1') {
             $('#divEspecialidad').show();
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Añadir una opción vacía para Select2
                 select.append(new Option('', '', true, true));
 
-                data.forEach(categoria => {
-                    const option = new Option(categoria.nomprofe, categoria.codprofe, false, false);
+                data.forEach(profesion => {
+                    const option = new Option(profesion.nomprofe, profesion.codprofe, false, false);
                     select.append(option).trigger('change');
                 });
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error:', error));
 });
 
-document.getElementById('searchButton').addEventListener('keyup', function (e) {
+document.getElementById('searchButton').addEventListener('keyup', function(e) {
     if (e.keyCode === 13) {
         // Hide initial elements and show loading message
         document.getElementById('masInformacion').style.display = 'none';
@@ -88,18 +88,22 @@ document.getElementById('searchButton').addEventListener('keyup', function (e) {
 
         // Get the selected category and input value
         var category = document.getElementById("searchCategory").value;
-        var searchValue = document.getElementById("searchInput").value;
+        let searchValue = document.getElementById("searchInputText").value;
         var token = "alguno"; // Token value (set dynamically if needed)
 
-        if (category = "codcateg1") {
+        if (category == "codcateg1") {
+
             searchValue = document.getElementById("searchEspecialidad").value;
-        }
-        else if(category = "codprofe"){
+
+        } else if (category == "codprofe") {
+
             searchValue = document.getElementById("searchProfesion").value;
         }
-
         // Construct the URL
         var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+
+        // var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -117,7 +121,7 @@ document.getElementById('searchButton').addEventListener('keyup', function (e) {
                 data.forEach(item => {
                     var imgURL = 'https://sirepro.mspbs.gov.py/foto/' + item.cedula + '.jpg';
 
-                    checkImage(imgURL, function (exists) {
+                    checkImage(imgURL, function(exists) {
                         var srcImage = exists ? imgURL : '/homesirepro/assets/images/users/user-dummy-img.jpg';
 
                         var row = document.createElement('tr');
@@ -204,7 +208,7 @@ function cargarInformacionProf() {
             document.getElementById('userName').textContent = `${userData.nombres} ${userData.apellidos}`;
             document.getElementById('userCedula').textContent = userData.cedula;
             var imageUrl = 'https://sirepro.mspbs.gov.py/foto/' + userData.cedula + '.jpg';
-            checkImage(imageUrl, function (exists) {
+            checkImage(imageUrl, function(exists) {
                 if (exists) {
                     document.getElementById('profesional_img').src = imageUrl;
                 }
@@ -233,7 +237,7 @@ function cargarInformacionProf() {
                 tbody.append(row);
             });
 
-            $('#profesiones_data tbody').on('click', 'tr', function () {
+            $('#profesiones_data tbody').on('click', 'tr', function() {
                 var index = $(this).data('index');
                 var selectedItem = data[index];
 
@@ -302,7 +306,7 @@ function formatDate(sentDate) {
 
 function checkImage(url, callback) {
     var img = new Image();
-    img.onload = function () { callback(true); };
-    img.onerror = function () { callback(false); };
+    img.onload = function() { callback(true); };
+    img.onerror = function() { callback(false); };
     img.src = url;
 }
