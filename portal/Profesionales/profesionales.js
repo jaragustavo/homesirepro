@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('searchButton').addEventListener('keyup', function(e) {
+
     if (e.keyCode === 13) {
         // Hide initial elements and show loading message
         document.getElementById('masInformacion').style.display = 'none';
@@ -98,11 +99,14 @@ document.getElementById('searchButton').addEventListener('keyup', function(e) {
         } else if (category == "codprofe") {
 
             searchValue = document.getElementById("searchProfesion").value;
-        }
-        // Construct the URL
-        var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
 
-        // var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+        }
+
+        // Construct the URL
+
+        // var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+
+        var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
 
         fetch(url)
             .then(response => {
@@ -119,6 +123,7 @@ document.getElementById('searchButton').addEventListener('keyup', function(e) {
 
                 // Iterate over the data and create table rows
                 data.forEach(item => {
+
                     var imgURL = 'https://sirepro.mspbs.gov.py/foto/' + item.cedula + '.jpg';
 
                     checkImage(imgURL, function(exists) {
@@ -154,7 +159,7 @@ document.getElementById('searchButton').addEventListener('keyup', function(e) {
 
                         var cellEspecialidad = document.createElement('td');
                         cellEspecialidad.className = 'normal-font';
-                        cellEspecialidad.innerHTML = '<span>' + (item.description1 || '-') + '</span>';
+                        cellEspecialidad.innerHTML = '<span>' + (item.categoria || '-') + '</span>';
                         row.appendChild(cellEspecialidad);
 
                         // Append the row to the table body
@@ -189,100 +194,111 @@ function cargarInformacionProf() {
     var token = "alguno";
     var currentURL = window.location.href;
     var match_code = currentURL.match(/[\?&]cedula=([^&]*)/);
+
     var cedula = match_code[1];
-    var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
-    console.log(url);
+    //   var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
+
+    var url = "http://localhost/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched data:', data);
+                console.log('Fetched data:', data);
 
-            if (data.length === 0) {
-                document.getElementById('professionsContainer').innerHTML = "No se encontraron datos.";
-                document.getElementById('loadingMessage').style.display = 'none';
-                return;
-            }
-
-            var userData = data[0];
-            document.getElementById('userName').textContent = `${userData.nombres} ${userData.apellidos}`;
-            document.getElementById('userCedula').textContent = userData.cedula;
-            var imageUrl = 'https://sirepro.mspbs.gov.py/foto/' + userData.cedula + '.jpg';
-            checkImage(imageUrl, function(exists) {
-                if (exists) {
-                    document.getElementById('profesional_img').src = imageUrl;
+                if (data.length === 0) {
+                    document.getElementById('professionsContainer').innerHTML = "No se encontraron datos.";
+                    document.getElementById('loadingMessage').style.display = 'none';
+                    return;
                 }
-            });
 
-            var countEspecialidades = 0; // Initialize counter
-            var professionCount = data.length;
+                var userData = data[0];
+                document.getElementById('userName').textContent = `${userData.nombres} ${userData.apellidos}`;
+                document.getElementById('userCedula').textContent = userData.cedula;
+                var imageUrl = 'https://sirepro.mspbs.gov.py/foto/' + userData.cedula + '.jpg';
 
-            var profesionText = professionCount === 1 ? ' Profesión' : ' Profesiones';
-            document.getElementById("cantidad_profesiones").innerHTML =
-                '<i class="feather-award"></i><span>' + professionCount + profesionText + '</span>';
+                checkImage(imageUrl, function(exists) {
+                    if (exists) {
+                        document.getElementById('profesional_img').src = imageUrl;
+                    }
+                });
 
-            var tbody = $('#profesiones_data tbody');
-            var container = document.getElementById('professionsContainer');
+                var countEspecialidades = 0; // Initialize counter
+                var professionCount = data.length;
 
-            data.forEach((item, index) => {
-                // Accumulate cantidad_especialidad
-                countEspecialidades += item.cantidad_especialidad;
+                var profesionText = professionCount === 1 ? ' Profesión' : ' Profesiones';
 
-                var row = `<tr data-index="${index}">
+                document.getElementById("cantidad_profesiones").innerHTML =
+
+                    '<i class="feather-award"></i><span>' + professionCount + profesionText + '</span>';
+
+                var tbody = $('#profesiones_data tbody');
+
+
+
+                data.forEach((item, index) => {
+                    // Accumulate cantidad_especialidad
+                    countEspecialidades += item.cantidad_especialidad;
+
+                    var row = `<tr data-index="${index}">
                     <td>${item.nroregis}</td>
                     <td>${item.nomprofe}</td>
                     <td>${item.nomuniv}</td>
                     <td>${formatDate(item.fecha_vencimiento)}</td>
+                    <td></td>
                 </tr>`;
-                tbody.append(row);
-            });
+                    tbody.append(row);
 
-            $('#profesiones_data tbody').on('click', 'tr', function() {
-                var index = $(this).data('index');
-                var selectedItem = data[index];
 
-                var card;
-                if (selectedItem.cantidad_especialidad > 0) {
-                    card = `<div class="col-lg-12">
-                        <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
-                            <div class="content">
-                                <div class="rbt-profile-row row row--15">
-                                    <div class="col-lg-4 col-md-4">
-                                        <div class="rbt-profile-content b2"><b>Especialidad</b></div>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8">
-                                        <div class="rbt-profile-content b2">${selectedItem.description1 || '--'}</div>
+                });
+
+                $('#profesiones_data tbody').on('click', 'tr', function() {
+                            var index = $(this).data('index');
+                            var selectedItem = data[index];
+                            var container = document.getElementById('professionsContainer');
+
+                            if (container) {
+                                var card;
+
+                                if (selectedItem.cantidad_especialidad > 0) {
+                                    card = `<div class="col-lg-12">
+                                <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
+                                    <div class="content">`;
+
+                                    for (var i = 1; i <= selectedItem.cantidad_especialidad; i++) {
+                                        card += `<div class="rbt-profile-row row row--15">
+                                                
+                                                            <div class="col-lg-8 col-md-8">
+                                                                <div class="rbt-profile-content b2"><b>${selectedItem[`nomespe${i}`] || '--'}</b></div>
+                                                            </div>
+                                                        
+                                                            <div class="col-lg-4 col-md-4">
+                                                                <div class="rbt-profile-content b2" style="color:red">${sumarAnioAdate(selectedItem[`fecinsespe${i}`],5)}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>`;
+                                  
+                                         }
+                                    `</div>
+                                
+                                </div>`
+                               
+                                container.innerHTML = card;
+                        } else {
+                      
+                            card = `<div class="col-lg-12">
+                                <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
+                                    <div class="content">
+                                        <p>El profesional no registra especialidades relacionadas con la profesión seleccionada.</p>
                                     </div>
                                 </div>
-                                <div class="rbt-profile-row row row--15 mt--15">
-                                    <div class="col-lg-4 col-md-4">
-                                        <div class="rbt-profile-content b2"><b>Inscripción</b></div>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8">
-                                        <div class="rbt-profile-content b2">${formatDate(selectedItem.fechains)}</div>
-                                    </div>
-                                </div>
-                                <div class="rbt-profile-row row row--15 mt--15">
-                                    <div class="col-lg-4 col-md-4">
-                                        <div class="rbt-profile-content b2"><b>Fecha de Vencimiento</b></div>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8">
-                                        <div class="rbt-profile-content b2">${formatDate(selectedItem.fecha_vencimiento)}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                            </div>`;
+                            container.innerHTML = card;
+                        }
+        
+                   
                 } else {
-                    card = `<div class="col-lg-12">
-                        <div class="rbt-dashboard-content bg-color-white rbt-shadow-box">
-                            <div class="content">
-                                <p>El profesional no registra especialidades relacionadas con la profesión seleccionada.</p>
-                            </div>
-                        </div>
-                    </div>`;
+                    console.error('Container with ID "container-id" not found.');
                 }
-                container.innerHTML = card;
             });
 
             var especialidadText = countEspecialidades === 1 ? ' Especialidad' : ' Especialidades';
@@ -295,14 +311,31 @@ function cargarInformacionProf() {
 }
 
 
-function formatDate(sentDate) {
-    var fecha = new Date(sentDate);
-    m = fecha.getMonth() + 1;
-    d = fecha.getDate();
-    y = fecha.getFullYear();
-    fechaFormateada = d + '/' + m + '/' + y;
-    return fechaFormateada;
+
+function formatDate(dateString) {
+    var date = new Date(dateString);
+    var day = String(date.getDate()).padStart(2, '0');
+    var month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0-11 en JavaScript, por lo que hay que sumar 1.
+    var year = date.getFullYear();
+    return `${day}/${month}/${year}`;
 }
+
+function sumarAnioAdate(dateString, addYears = 0) {
+    var date = new Date(dateString);
+
+    // Añadir años
+    if (addYears) {
+        date.setFullYear(date.getFullYear() + addYears);
+    }
+
+    var day = String(date.getDate()).padStart(2, '0');
+    var month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0-11 en JavaScript, por lo que hay que sumar 1.
+    var year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}
+
+
 
 function checkImage(url, callback) {
     var img = new Image();
