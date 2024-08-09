@@ -79,6 +79,8 @@ class ControladorProfesional
 
 $controladorProfesional = new ControladorProfesional();
 
+
+
 if (isset($_GET['item']) && $_GET['item'] != 'cedula') {
     // Llamar a la función obtenerProfesional si item existe y es diferente de 'cedula'
     $controladorProfesional->obtenerProfesional();
@@ -86,7 +88,7 @@ if (isset($_GET['item']) && $_GET['item'] != 'cedula') {
 } elseif (isset($_GET['item']) && $_GET['item'] == 'cedula') {
 
     // Llamar a la función obtenerProfesionalxCedula si item existe y es igual a 'cedula'
-    
+ 
     $controladorProfesional->obtenerProfesionalxCedula();
 } 
 

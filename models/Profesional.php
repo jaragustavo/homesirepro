@@ -218,157 +218,156 @@ class Profesional extends Conectar
         $conectar = parent::ConexionSirepro();
     
         // Construir la consulta SQL con la columna y valor proporcionados
-        $sql = "WITH dato AS (
-                SELECT 
-                    a.tipoprof,
-                    a.codprofe,
-                    MAX(a.fechains) AS fechains,
-                    MAX(a.fechains) + INTERVAL '5 years' AS fecha_vencimiento,
-                    CASE 
-                        WHEN (MAX(a.fechains) + INTERVAL '5 years') < CURRENT_DATE THEN 'vencido'
-                        ELSE 'vigente'
-                    END AS estado,
-                    a.cedula,
-                    a.nroregis,
-                    CONCAT_WS(' ', 
-                        NULLIF(trim(p.pnombre), ''), 
-                        NULLIF(trim(p.snombre), ''), 
-                        NULLIF(trim(p.tnombre), ''), 
-                        NULLIF(trim(p.papellido), ''), 
-                        NULLIF(trim(p.sapellido), '')
-                    ) AS nombreProfesional,
-                    CONCAT_WS(' ', 
-                        NULLIF(trim(p.papellido), ''), 
-                        NULLIF(trim(p.sapellido), '')
-                    ) AS apellidos, 
-                    CONCAT_WS(' ', 
-                        NULLIF(trim(p.pnombre), ''), 
-                        NULLIF(trim(p.snombre), ''), 
-                        NULLIF(trim(p.tnombre), '')
-                    ) AS nombres,
-                    b.nomprofe,
-                    i.nomuniv
-                FROM 
-                    rprofesional a
-                    JOIN profesiones b ON a.codprofe = b.codprofe
-                    JOIN titulos c ON a.codtitu = c.codtitu
-                    JOIN personas p ON a.cedula = p.cedula
-                    JOIN instituciones i ON a.coduniv = i.coduniv
-                WHERE 
-                    a.tipoprof <> 4
-                    AND a.cedula = '$valor'
-                GROUP BY 
-                    a.tipoprof, 
-                    a.codprofe, 
-                    a.cedula, 
-                    a.nroregis, 
-                    p.pnombre, 
-                    p.snombre, 
-                    p.tnombre, 
-                    p.papellido, 
-                    p.sapellido, 
-                    b.nomprofe, 
-                    i.nomuniv
-            ),
-            espe AS (
-                SELECT  DISTINCT ON (codespe) 
-                    e.tipoprof,
-                    e.codprofe,
-                    max(e.fechains) AS fecinsespe,
-                    e.cedula,
-                    e.nroregis,
-                    e.codespe,
-                    es.nomespe,
-                    ROW_NUMBER() OVER (PARTITION BY e.cedula, e.nroregis, e.codprofe ORDER BY e.fechains) AS rn
-                FROM 
-                    rprofesional e
-                    JOIN especialidades es ON e.codespe = es.codespe
-                WHERE 
-                    e.tipoprof = 4
-                    AND e.cedula = '$valor'
-                GROUP BY 
-                    e.tipoprof,
-                    e.codprofe,
-                    e.fechains,
-                    e.cedula,
-                    e.nroregis,
-                    e.codespe,
-                    es.nomespe
-            ),
-            pivot AS (
-                SELECT 
-                    dato.tipoprof,
-                    dato.codprofe,
-                    dato.fechains,
-                    dato.fecha_vencimiento,
-                    dato.estado,
-                    dato.cedula,
-                    dato.nroregis,
-                    dato.nombreProfesional,
-                    dato.apellidos,
-                    dato.nombres,
-                    dato.nomprofe,
-                    dato.nomuniv,
-                    COALESCE(MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END), '-') AS codespe1,
-                    COALESCE(MAX(CASE WHEN espe.rn = 1 THEN espe.nomespe END), '-') AS nomespe1,
-                    COALESCE(MAX(CASE WHEN espe.rn = 2 THEN espe.codespe END), '-') AS codespe2,
-                    COALESCE(MAX(CASE WHEN espe.rn = 2 THEN espe.nomespe END), '-') AS nomespe2,
-                    COALESCE(MAX(CASE WHEN espe.rn = 3 THEN espe.codespe END), '-') AS codespe3,
-                    COALESCE(MAX(CASE WHEN espe.rn = 3 THEN espe.nomespe END), '-') AS nomespe3,
-                    MAX(CASE WHEN espe.rn = 1 THEN espe.fecinsespe END) AS fecinsespe1,
-                    MAX(CASE WHEN espe.rn = 2 THEN espe.fecinsespe END) AS fecinsespe2,
-                    MAX(CASE WHEN espe.rn = 3 THEN espe.fecinsespe END) AS fecinsespe3,
-                    COUNT(DISTINCT espe.codespe) AS cantidad_especialidad
-                FROM 
-                    dato
-                LEFT JOIN 
-                    espe 
-                ON 
-                    dato.cedula = espe.cedula
-                    AND dato.nroregis = espe.nroregis
-                    AND dato.codprofe = espe.codprofe
-                GROUP BY
-                    dato.tipoprof,
-                    dato.codprofe,
-                    dato.fechains,
-                    dato.fecha_vencimiento,
-                    dato.estado,
-                    dato.cedula,
-                    dato.nroregis,
-                    dato.nombreProfesional,
-                    dato.apellidos,
-                    dato.nombres,
-                    dato.nomprofe,
-                    dato.nomuniv
-            )
-            SELECT 
-                tipoprof,
-                codprofe,
-                fechains,
-                fecha_vencimiento,
-                estado,
-                cedula,
-                nroregis,
-                nombreProfesional,
-                apellidos,
-                nombres,
-                nomprofe,
-                nomuniv,
-                codespe1,
-                nomespe1,
-                fecinsespe1,
-                codespe2,
-                nomespe2,
-                fecinsespe2,
-                codespe3,
-                nomespe3,
-                fecinsespe3,
-                cantidad_especialidad
-            FROM 
-                pivot
-            ORDER BY 
-                apellidos,
-                nombres";
+        $sql = "SELECT DISTINCT * 
+FROM (
+    WITH dato AS (
+        SELECT 
+            a.tipoprof,
+            a.codprofe,
+            MAX(a.fechains) AS fechains,
+            MAX(a.fechains) + INTERVAL '5 years' AS fecha_vencimiento,
+            CASE 
+                WHEN (MAX(a.fechains) + INTERVAL '5 years') < CURRENT_DATE THEN 'vencido'
+                ELSE 'vigente'
+            END AS estado,
+            a.cedula,
+            a.nroregis,
+            CONCAT_WS(' ', 
+                NULLIF(trim(p.pnombre), ''), 
+                NULLIF(trim(p.snombre), ''), 
+                NULLIF(trim(p.tnombre), ''), 
+                NULLIF(trim(p.papellido), ''), 
+                NULLIF(trim(p.sapellido), '')
+            ) AS nombreProfesional,
+            CONCAT_WS(' ', 
+                NULLIF(trim(p.papellido), ''), 
+                NULLIF(trim(p.sapellido), '')
+            ) AS apellidos, 
+            CONCAT_WS(' ', 
+                NULLIF(trim(p.pnombre), ''), 
+                NULLIF(trim(p.snombre), ''), 
+                NULLIF(trim(p.tnombre), '')
+            ) AS nombres,
+            b.nomprofe
+        FROM 
+            rprofesional a
+            JOIN profesiones b ON a.codprofe = b.codprofe
+            JOIN titulos c ON a.codtitu = c.codtitu
+            JOIN personas p ON a.cedula = p.cedula
+            JOIN instituciones i ON a.coduniv = i.coduniv
+        WHERE 
+            a.tipoprof <> 4
+            AND a.cedula = '$valor'
+        GROUP BY 
+            a.tipoprof, 
+            a.codprofe, 
+            a.cedula, 
+            a.nroregis, 
+            p.pnombre, 
+            p.snombre, 
+            p.tnombre, 
+            p.papellido, 
+            p.sapellido, 
+            b.nomprofe
+    ),
+    espe AS (
+        SELECT DISTINCT ON (codespe) 
+            e.tipoprof,
+            e.codprofe,
+            MAX(e.fechains) AS fecinsespe,
+            e.cedula,
+            e.nroregis,
+            e.codespe,
+            es.nomespe,
+            ROW_NUMBER() OVER (PARTITION BY e.cedula, e.nroregis, e.codprofe ORDER BY e.fechains) AS rn
+        FROM 
+            rprofesional e
+            JOIN especialidades es ON e.codespe = es.codespe
+        WHERE 
+            e.tipoprof = 4
+            AND e.cedula = '$valor'
+        GROUP BY 
+            e.tipoprof,
+            e.codprofe,
+            e.fechains,
+            e.cedula,
+            e.nroregis,
+            e.codespe,
+            es.nomespe
+    ),
+    pivot AS (
+        SELECT 
+            dato.tipoprof,
+            dato.codprofe,
+            dato.fechains,
+            dato.fecha_vencimiento,
+            dato.estado,
+            dato.cedula,
+            dato.nroregis,
+            dato.nombreProfesional,
+            dato.apellidos,
+            dato.nombres,
+            dato.nomprofe,
+            COALESCE(MAX(CASE WHEN espe.rn = 1 THEN espe.codespe END), '-') AS codespe1,
+            COALESCE(MAX(CASE WHEN espe.rn = 1 THEN espe.nomespe END), '-') AS nomespe1,
+            COALESCE(MAX(CASE WHEN espe.rn = 2 THEN espe.codespe END), '-') AS codespe2,
+            COALESCE(MAX(CASE WHEN espe.rn = 2 THEN espe.nomespe END), '-') AS nomespe2,
+            COALESCE(MAX(CASE WHEN espe.rn = 3 THEN espe.codespe END), '-') AS codespe3,
+            COALESCE(MAX(CASE WHEN espe.rn = 3 THEN espe.nomespe END), '-') AS nomespe3,
+            MAX(CASE WHEN espe.rn = 1 THEN espe.fecinsespe END) AS fecinsespe1,
+            MAX(CASE WHEN espe.rn = 2 THEN espe.fecinsespe END) AS fecinsespe2,
+            MAX(CASE WHEN espe.rn = 3 THEN espe.fecinsespe END) AS fecinsespe3,
+            COUNT(DISTINCT espe.codespe) AS cantidad_especialidad
+        FROM 
+            dato
+        LEFT JOIN 
+            espe 
+        ON 
+            dato.cedula = espe.cedula
+            AND dato.nroregis = espe.nroregis
+            AND dato.codprofe = espe.codprofe
+        GROUP BY
+            dato.tipoprof,
+            dato.codprofe,
+            dato.fechains,
+            dato.fecha_vencimiento,
+            dato.estado,
+            dato.cedula,
+            dato.nroregis,
+            dato.nombreProfesional,
+            dato.apellidos,
+            dato.nombres,
+            dato.nomprofe
+    )
+    SELECT 
+        tipoprof,
+        codprofe,
+        fechains,
+        fecha_vencimiento,
+        estado,
+        cedula,
+        nroregis,
+        nombreProfesional,
+        apellidos,
+        nombres,
+        nomprofe,
+        codespe1,
+        nomespe1,
+        fecinsespe1,
+        codespe2,
+        nomespe2,
+        fecinsespe2,
+        codespe3,
+        nomespe3,
+        fecinsespe3,
+        cantidad_especialidad
+    FROM 
+        pivot
+) AS subquery
+ORDER BY 
+    apellidos,
+    nombres;
+";
             
         // Registrar la consulta SQL completa en error_log
             

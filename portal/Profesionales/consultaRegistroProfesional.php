@@ -46,22 +46,35 @@
                                             <option value="codcateg1">Especialidad</option>
                                         </select>
                                     </div>
-                                    <div id="divEspecialidad" class="filter-select rbt-modern-select search-by-category"
+                            
+                                    <div id="divEspecialidad" class="filter-select rbt-modern-select search-by-especialidad"
                                         style="display:none;">
                                         <select id="searchEspecialidad">
                                             <option>Seleccione una especialidad</option>
                                         </select>
                                     </div>
-                                    <div id="divProfesion" class="filter-select rbt-modern-select search-by-category"
+                                
+                                    <div id="divProfesion" class="filter-select rbt-modern-select search-by-profesion"
                                         style="display:none;">
                                         <select id="searchProfesion">
                                             <option>Seleccione una profesión</option>
                                         </select>
                                     </div>
+                                
                                     <div class="search-field" id="searchButton">
                                         <input type="text" id="searchInputText" placeholder="Buscar...">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-3" style="display: flex; align-items: center;">
+                           
+                                <button type="button" class="rbt-btn btn-md btn-gradient hover-icon-reverse" id="buscarDato" name="buscarDato" style="float: right;" onclick="buscarDatos()"> 
+                                        <span class="icon-reverse-wrapper">
+                                            <span class="btn-text">Buscar</span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        </span>
+                                </button>
                             </div>
                         </div>
                     </div>

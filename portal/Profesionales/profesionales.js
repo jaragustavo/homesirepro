@@ -15,12 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (value === 'codcateg1') {
             $('#divEspecialidad').show();
             $('#divProfesion').hide();
+            $('#searchButton').hide();
         } else if (value === 'codprofe') {
             $('#divEspecialidad').hide();
             $('#divProfesion').show();
+            $('#searchButton').hide();
         } else {
             $('#divEspecialidad').hide();
             $('#divProfesion').hide();
+            $('#searchButton').show();
         }
     });
 
@@ -79,110 +82,106 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error:', error));
 });
 
-document.getElementById('searchButton').addEventListener('keyup', function(e) {
+// Define the function buscarDatos
+function buscarDatos() {
+    // Hide initial elements and show loading message
+    document.getElementById('masInformacion').style.display = 'none';
+    document.getElementById('ceroRegistros').style.display = 'none';
+    document.getElementById('loadingMessage').style.display = 'block';
 
-    if (e.keyCode === 13) {
-        // Hide initial elements and show loading message
-        document.getElementById('masInformacion').style.display = 'none';
-        document.getElementById('ceroRegistros').style.display = 'none';
-        document.getElementById('loadingMessage').style.display = 'block';
+    // Get the selected category and input value
+    var category = document.getElementById("searchCategory").value;
+    let searchValue = document.getElementById("searchInputText").value;
+    var token = "alguno"; // Token value (set dynamically if needed)
 
-        // Get the selected category and input value
-        var category = document.getElementById("searchCategory").value;
-        let searchValue = document.getElementById("searchInputText").value;
-        var token = "alguno"; // Token value (set dynamically if needed)
-
-        if (category == "codcateg1") {
-
-            searchValue = document.getElementById("searchEspecialidad").value;
-
-        } else if (category == "codprofe") {
-
-            searchValue = document.getElementById("searchProfesion").value;
-
-        }
-
-        // Construct the URL
-
-        // var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
-
-        var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
-
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                var cantidad_registros = data.length;
-                // Clear the existing table data
-                var tbody = document.querySelector("#profesionales_data tbody");
-                tbody.innerHTML = '';
-
-                // Iterate over the data and create table rows
-                data.forEach(item => {
-
-                    var imgURL = 'https://sirepro.mspbs.gov.py/foto/' + item.cedula + '.jpg';
-
-                    checkImage(imgURL, function(exists) {
-                        var srcImage = exists ? imgURL : '/homesirepro/assets/images/users/user-dummy-img.jpg';
-
-                        var row = document.createElement('tr');
-                        // Create cells for each data field
-                        var cellThumbnail = document.createElement('td');
-                        cellThumbnail.className = 'pro-thumbnail normal-font';
-                        cellThumbnail.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '"><div class="thumbnail rbt-avatars size-lg">' +
-                            '<img class="square-image" style="border-radius: 100%;" src="' + srcImage + '" alt="Profesional"></div></a>';
-                        row.appendChild(cellThumbnail);
-
-                        var cellCedula = document.createElement('td');
-                        cellCedula.className = 'normal-font';
-                        cellCedula.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '">' + item.cedula + '</a>';
-                        row.appendChild(cellCedula);
-
-                        var cellNombre = document.createElement('td');
-                        cellNombre.className = 'pro-title normal-font';
-                        cellNombre.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '">' + item.nombres + ' ' + item.apellidos + '</a>';
-                        row.appendChild(cellNombre);
-
-                        var cellRegistro = document.createElement('td');
-                        cellRegistro.className = 'normal-font';
-                        cellRegistro.innerHTML = '<span>' + item.nroregis + '</span>';
-                        row.appendChild(cellRegistro);
-
-                        var cellProfesion = document.createElement('td');
-                        cellProfesion.className = 'normal-font';
-                        cellProfesion.innerHTML = '<span>' + item.nomprofe + '</span>';
-                        row.appendChild(cellProfesion);
-
-                        var cellEspecialidad = document.createElement('td');
-                        cellEspecialidad.className = 'normal-font';
-                        cellEspecialidad.innerHTML = '<span>' + (item.categoria || '-') + '</span>';
-                        row.appendChild(cellEspecialidad);
-
-                        // Append the row to the table body
-                        tbody.appendChild(row);
-                    });
-                });
-
-                // Hide the loading message
-                document.getElementById('loadingMessage').style.display = 'none';
-                if (cantidad_registros > 0) {
-                    document.getElementById('masInformacion').style.display = 'block';
-                } else {
-                    document.getElementById('ceroRegistros').style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                // Hide the loading message in case of error
-                document.getElementById('loadingMessage').style.display = 'none';
-                document.getElementById('ceroRegistros').style.display = 'block';
-            });
+    if (category == "codcateg1") {
+        searchValue = document.getElementById("searchEspecialidad").value;
+    } else if (category == "codprofe") {
+        searchValue = document.getElementById("searchProfesion").value;
     }
-});
+
+    // Construct the URL
+    var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+
+    var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+
+    // Fetch the data
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            var cantidad_registros = data.length;
+            // Clear the existing table data
+            var tbody = document.querySelector("#profesionales_data tbody");
+            tbody.innerHTML = '';
+
+            // Iterate over the data and create table rows
+            data.forEach(item => {
+
+                var imgURL = 'https://sirepro.mspbs.gov.py/foto/' + item.cedula + '.jpg';
+
+                checkImage(imgURL, function(exists) {
+                    var srcImage = exists ? imgURL : '/homesirepro/assets/images/users/user-dummy-img.jpg';
+
+                    var row = document.createElement('tr');
+                    // Create cells for each data field
+                    var cellThumbnail = document.createElement('td');
+                    cellThumbnail.className = 'pro-thumbnail normal-font';
+                    cellThumbnail.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '"><div class="thumbnail rbt-avatars size-lg">' +
+                        '<img class="square-image" style="border-radius: 100%;" src="' + srcImage + '" alt="Profesional"></div></a>';
+                    row.appendChild(cellThumbnail);
+
+                    var cellCedula = document.createElement('td');
+                    cellCedula.className = 'normal-font';
+                    cellCedula.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '">' + item.cedula + '</a>';
+                    row.appendChild(cellCedula);
+
+                    var cellNombre = document.createElement('td');
+                    cellNombre.className = 'pro-title normal-font';
+                    cellNombre.innerHTML = '<a href="informacionProfesional.php?cedula=' + item.cedula + '">' + item.nombres + ' ' + item.apellidos + '</a>';
+                    row.appendChild(cellNombre);
+
+                    var cellRegistro = document.createElement('td');
+                    cellRegistro.className = 'normal-font';
+                    cellRegistro.innerHTML = '<span>' + item.nroregis + '</span>';
+                    row.appendChild(cellRegistro);
+
+                    var cellProfesion = document.createElement('td');
+                    cellProfesion.className = 'normal-font';
+                    cellProfesion.innerHTML = '<span>' + item.nomprofe + '</span>';
+                    row.appendChild(cellProfesion);
+
+                    var cellEspecialidad = document.createElement('td');
+                    cellEspecialidad.className = 'normal-font';
+                    cellEspecialidad.innerHTML = '<span>' + (item.categoria || '-') + '</span>';
+                    row.appendChild(cellEspecialidad);
+
+                    // Append the row to the table body
+                    tbody.appendChild(row);
+                });
+            });
+
+            // Hide the loading message
+            document.getElementById('loadingMessage').style.display = 'none';
+            if (cantidad_registros > 0) {
+                document.getElementById('masInformacion').style.display = 'block';
+            } else {
+                document.getElementById('ceroRegistros').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            // Hide the loading message in case of error
+            document.getElementById('loadingMessage').style.display = 'none';
+            document.getElementById('ceroRegistros').style.display = 'block';
+        });
+}
+
+
 
 function volverListado() {
     window.location.replace("consultaRegistroProfesional.php");
@@ -196,9 +195,9 @@ function cargarInformacionProf() {
     var match_code = currentURL.match(/[\?&]cedula=([^&]*)/);
 
     var cedula = match_code[1];
-    //   var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
+    var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
 
-    var url = "http://localhost/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
+    // var url = "http://localhost/homesirepro/controller/profesional.php?item=cedula&valor=" + cedula + "&token=" + encodeURIComponent(token);
 
     fetch(url)
         .then(response => response.json())
