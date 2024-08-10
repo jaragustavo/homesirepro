@@ -103,7 +103,7 @@ function buscarDatos() {
     // Construct the URL
     var url = "https://homesirepro.mspbs.gov.py/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
 
-    var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
+    //  var url = "http://localhost/homesirepro/controller/profesional.php?item=" + encodeURIComponent(category) + "&valor=" + encodeURIComponent(searchValue) + "&token=" + encodeURIComponent(token);
 
     // Fetch the data
     fetch(url)
@@ -241,7 +241,7 @@ function cargarInformacionProf() {
                     var row = `<tr data-index="${index}">
                     <td>${item.nroregis}</td>
                     <td>${item.nomprofe}</td>
-                    <td>${item.nomuniv}</td>
+                    <td>${item.nomuniv_concat}</td>
                     <td>${formatDate(item.fecha_vencimiento)}</td>
                     <td></td>
                 </tr>`;

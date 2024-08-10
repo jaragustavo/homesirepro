@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php require_once ('../html/head.php'); ?>
+<?php 
+session_start();
+
+require_once ('../html/head.php'); 
+
+?>
+
 <style>
     .normal-font {
         font-size: 14px;
@@ -9,7 +15,6 @@
     .square-image {
         width: 50%;
         object-fit: cover;
-        /* Required to prevent the image from stretching, use the object-position property to adjust the visible area */
         aspect-ratio: 1/1;
     }
 </style>
@@ -141,6 +146,7 @@
     <?php require_once ('../html/js.php'); ?>
 
     <script type="text/javascript" src="profesionales.js?v=<?php echo time(); ?>"></script>
+
 </body>
 
 </html>

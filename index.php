@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-// Generar el estado aleatorio
-$state = bin2hex(random_bytes(16)); // Genera un string aleatorio de 16 bytes
 
-// Guardar el estado en la sesión
-$_SESSION['oauth2_state'] = $state;
+
 
  require_once ("portal/html/head.php") 
 
