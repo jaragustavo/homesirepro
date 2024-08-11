@@ -204,36 +204,44 @@
 
         public function get_datos_personales($cedula){
             $conectar= parent::ConexionSirepro();
-            $sql="select 
-                a.cedula,  
-                CONCAT_WS(' ', 
-                        NULLIF(trim(a.papellido), ''), 
-                        NULLIF(trim(a.sapellido), '')
+            $sql="SELECT DISTINCT ON (a.cedula) 
+                    a.cedula,  
+                    CONCAT_WS(' ', 
+                        NULLIF(TRIM(a.papellido), ''), 
+                        NULLIF(TRIM(a.sapellido), '')
                     ) AS apellidos, 
-                CONCAT_WS(' ', 
-                        NULLIF(trim(a.pnombre), ''), 
-                        NULLIF(trim(a.snombre), ''), 
-                        NULLIF(trim(a.tnombre), '')
+                    CONCAT_WS(' ', 
+                        NULLIF(TRIM(a.pnombre), ''), 
+                        NULLIF(TRIM(a.snombre), ''), 
+                        NULLIF(TRIM(a.tnombre), '')
                     ) AS nombres,
-                    
-                    ( CASE 
+                    CASE 
                         WHEN a.sexo = 1 THEN 'MASCULINO' 
-                        WHEN a.sexo = 2 THEN 'FEMENINO' END
-                    ) AS sexo,
+                        WHEN a.sexo = 2 THEN 'FEMENINO' 
+                    END AS sexo,
                     a.fechanac,
                     a.coddist,
                     di.nomdist,
                     di.codreg,
-                    
                     a.coddpto,
                     de.nomdpto,
                     a.codnac,
-                    a.codnacs
-            from 
-                personas  a
-                JOIN departamentos de ON a.coddpto = de.coddpto
-                JOIN distritos di ON a.coddist = di.coddist and a.coddpto = di.coddpto
-            where a.cedula = '$cedula'";
+                    a.codnacs,
+                    r.fechains,
+                    r.dccion,
+                    r.telef,
+                    r.celular1,
+                    r.email
+                FROM 
+                    personas a
+                    JOIN departamentos de ON a.coddpto = de.coddpto
+                    JOIN distritos di ON a.coddist = di.coddist AND a.coddpto = di.coddpto
+                    JOIN rprofesional r ON a.cedula = r.cedula 
+                WHERE 
+                    a.cedula = '$cedula'
+                ORDER BY 
+                    a.cedula, 
+                    r.fechains DESC;";
             $query=$conectar->prepare($sql);
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);

@@ -171,36 +171,27 @@ if (isset($_SESSION["usuario_id"])) {
                         <div class="row">
                             <form method="post" id="datos_personales_form">
                                 <section class="proj-page-section">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="telefono">Teléfono</label>
                                             <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Telefono" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="celular">Celular</label>
+                                            <input type="text" class="form-control" id="celular" name="celular" placeholder="Celular" style="width: 100%;" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="email">Correo electrónico</label>
                                             <input type="text" class="form-control" id="email" name="email" placeholder="email" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="cantidad_hijo">Cantidad de Hijos</label>
-                                            <input type="number" class="form-control" id="cantidad_hijo" name="cantidad_hijo" placeholder="Cantidad de Hijos" style="width: 100%;" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="estado_civil">Estado Civil</label>
-                                            <select class="form-control" id="estado_civil" name="estado_civil">
-                                                <option value="">Seleccione Estado Civil</option>
-                                                <option value="CA">Casada/o</option>
-                                                <option value="SO">Soltera/o</option>
-                                                <option value="DI">Divorciada/o</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
+
+                                    
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="departamento_id">Departamento</label>
                                             <select class="form-control" id="departamento_id" name="departamento_id">
@@ -208,7 +199,7 @@ if (isset($_SESSION["usuario_id"])) {
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="ciudad_id">Ciudad</label>
                                             <select class="form-control" id="ciudad_id" name="ciudad_id">
@@ -216,18 +207,13 @@ if (isset($_SESSION["usuario_id"])) {
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="direccion_domicilio">Dirección de domicilio</label>
                                             <input type="text" class="form-control" id="direccion_domicilio" name="direccion_domicilio" placeholder="Dirección de su domicilio" style="width: 100%;" />
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="contacto">Contacto</label>
-                                            <input type="text" class="form-control" id="contacto" name="contacto" placeholder="Contacto alternativo" style="width: 100%;" />
-                                        </div>
-                                    </div>
+                                   
                                 </section>
                             </form>
                         </div>

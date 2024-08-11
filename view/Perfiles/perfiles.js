@@ -1,57 +1,66 @@
 function init() {
-    // $.post("../../controller/usuario.php?op=cantidadesTramites", function(data) {
-    //     data = JSON.parse(data);
-    //     $('#lbltramitesrealizados').html(data.lbltramitesrealizados);
-    // });
-
-    // $.post("../../controller/usuario.php?op=cantidadesReposos", function(data) {
-    //     data = JSON.parse(data);
-    //     $('#lblreposos').html(data.lblreposos);
-    // });
-
-    // $.post("../../controller/usuario.php?op=comboEstablecimientosSalud", function(data) {
-    //     $('#lugares_trabajo').html(data);
-    // });
-
-    // $.post("../../controller/usuario.php?op=comboProfesiones", function(data) {
-    //     $('#profesion').html(data);
-    // });
-
-    // actualizar_img();
+   
+    actualizar_img();
 
 }
 $(document).ready(function() {
 
     // Inicializar Select2 para los selects de departamentos y ciudades
-    // $('#departamento_id').select2();
-    // $('#ciudad_id').select2();
+    $('#departamento_id').select2();
+    $('#ciudad_id').select2();
     cargarDatosPersonales();
     // Cargar departamentos al cargar la página
-   // cargarDepartamentos();
+    cargarDepartamentos();
 
+     // Función para cargar ciudades basado en el departamento seleccionado
+     function cargarCiudades(departamento_id, ciudad_id) {
+
+        var ciudadSelect = $('#ciudad_id');
+        ciudadSelect.empty(); // Limpiar opciones actuales
+        ciudadSelect.append(new Option('Seleccione Ciudad', ''));
+
+        // Encontrar el departamento seleccionado en los datos de departamentos
+        var selectedDepartamento = departamentosData.find(d => parseInt(d.departamento_id) == parseInt(departamento_id));
+
+        if (selectedDepartamento) {
+            // Iterar sobre las ciudades del departamento seleccionado y agregarlas al select
+            selectedDepartamento.ciudades.forEach(function(ciudad) {
+                ciudadSelect.append(new Option(ciudad.ciudad_nombre, parseInt(ciudad.ciudad_id)));
+            });
+
+            // Establecer la ciudad seleccionada, si existe
+            if (ciudad_id) {
+
+                ciudad_id = parseInt(ciudad_id); // Convertir a entero
+
+                $('#ciudad_id').val(ciudad_id).trigger('change.select2');
+            }
+        }
+      
+    }
     // Función para cargar departamentos desde el archivo JSON
-    // function cargarDepartamentos() {
-    //     $.getJSON('../../json/departamentos.json', function(data) {
-    //         // Guardar los datos de departamentos globalmente para su uso posterior
-    //         departamentosData = data;
+    function cargarDepartamentos() {
+        $.getJSON('../../controller/departamento.php', function(data) {
+            // Guardar los datos de departamentos globalmente para su uso posterior
+            departamentosData = data;
 
-    //         // Obtener el select de departamentos
-    //         var departamentoSelect = $('#departamento_id');
-    //         departamentoSelect.empty(); // Limpiar opciones actuales
+            // Obtener el select de departamentos
+            var departamentoSelect = $('#departamento_id');
+            departamentoSelect.empty(); // Limpiar opciones actuales
 
-    //         // Agregar opción por defecto
-    //         departamentoSelect.append(new Option('Seleccione Departamento', ''));
+            // Agregar opción por defecto
+            departamentoSelect.append(new Option('Seleccione Departamento', ''));
 
-    //         // Iterar sobre los datos y agregar opciones al select
-    //         data.forEach(function(departamento) {
-    //             departamentoSelect.append(new Option(departamento.departamento_nombre, parseInt(departamento.departamento_id)));
-    //         });
+            // Iterar sobre los datos y agregar opciones al select
+            data.forEach(function(departamento) {
+                departamentoSelect.append(new Option(departamento.nomdpto, parseInt(departamento.coddpto)));
+            });
 
-    //         // Llamar a cargarDatosPersonales después de cargar los departamentos
-    //         cargarDatosPersonales();
-    //     });
-    //     actualizar_img();
-    // }
+            // Llamar a cargarDatosPersonales después de cargar los departamentos
+            cargarDatosPersonales();
+        });
+        actualizar_img();
+    }
 
     function cargarDatosPersonales() {
         $.post("../../controller/usuario.php?op=mostrarDatosPersonales", function(response) {
@@ -82,15 +91,18 @@ $(document).ready(function() {
                 $('#codnac').val(datos.codnac);
                 $('#codnacs').val(datos.codnacs);
     
-                // Si tienes otros campos que necesitan ser cargados, agrégalos aquí.
-    
-                // Establecer el departamento seleccionado y cargar ciudades
-                // var departamento_id = datos.coddpto;
-                // $('#departamento_id').val(departamento_id).trigger('change');
-        
-                // // Cargar ciudades basadas en el departamento seleccionado
-                // cargarCiudades(departamento_id, datos.coddist);
-    
+                $('#telefono').val(datos.telef);  
+                $('#celular').val(datos.celular1); 
+                $('#email').val(datos.email);  
+                $('#direccion_domicilio').val(datos.dccion);
+
+                 // Establecer el departamento seleccionado y cargar ciudades
+                 var departamento_id = datos.coddpto;
+                 $('#departamento_id').val(departamento_id).trigger('change');
+ 
+                 // Cargar ciudades basadas en el departamento seleccionado
+               
+                 cargarCiudades(departamento_id,datos.coddist);
             } catch (e) {
                 console.error("Error al parsear JSON: ", e);
                 alert("Error al cargar los datos personales.");
@@ -99,35 +111,14 @@ $(document).ready(function() {
     }
     
 
-    // Función para cargar ciudades basado en el departamento seleccionado
-    function cargarCiudades(departamento_id, ciudad_id) {
-
-        var ciudadSelect = $('#ciudad_id');
-        ciudadSelect.empty(); // Limpiar opciones actuales
-        ciudadSelect.append(new Option('Seleccione Ciudad', ''));
-
-        // Encontrar el departamento seleccionado en los datos de departamentos
-        var selectedDepartamento = departamentosData.find(d => parseInt(d.departamento_id) == parseInt(departamento_id));
-
-        if (selectedDepartamento) {
-            // Iterar sobre las ciudades del departamento seleccionado y agregarlas al select
-            selectedDepartamento.ciudades.forEach(function(ciudad) {
-                ciudadSelect.append(new Option(ciudad.ciudad_nombre, parseInt(ciudad.ciudad_id)));
-            });
-
-            // Establecer la ciudad seleccionada, si existe
-            if (ciudad_id) {
-
-                ciudad_id = parseInt(ciudad_id); // Convertir a entero
-
-                $('#ciudad_id').val(ciudad_id).trigger('change.select2');
-            }
-        }
-      
-    }
-
    
  
+});
+
+  // Evento de cambio en el select de departamento para cargar ciudades
+  $('#departamento_id').change(function() {
+    var departamento_id = $(this).val();
+    cargarCiudades(departamento_id);
 });
 // Función para guardar datos personales
 function guardarDatosPersonales() {
@@ -361,7 +352,3 @@ function actualizar_img() {
     });
 }
 
-// Asegúrate de que la función está lista cuando la página se carga
-$(document).ready(function() {
-   // actualizar_img();
-});
