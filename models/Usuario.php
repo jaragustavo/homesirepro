@@ -66,7 +66,6 @@
                 }else{
                     $sql="select * from usuarios where ci = '".$ci."' and password= '".$pass."'";
 
-                    // error_log('$$$$$$$$$$$$$$ '.$sql);
                     $query=$conectar->prepare($sql);
                     $query->execute();
                     $resultado = $query->fetch();
@@ -80,11 +79,12 @@
                         $_SESSION["cedula"]=$resultado["ci"];
                         $_SESSION["telefono"]=$resultado["telefono"];
                         $_SESSION["area_id"]=$resultado["area_id"];
-
                         $roles_usuario = Usuario::get_roles_x_usuario($resultado["id"]);
                         foreach ($roles_usuario as $rol_usuario){
                             if($rol_usuario["rol_nom"] == "PROFESIONAL"){
+                                
                                 $_SESSION["inicio"]="index.php";
+
                                 header("Location:".Conectar::ruta()."view/home/");
                             }
                             elseif($rol_usuario["rol_nom"] == "OPERATIVO"){
@@ -202,17 +202,41 @@
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function get_datos_personales($usuario_id){
-            $conectar= parent::Conexion();
-            $sql="SELECT ci, 
-            email,
-            nombre, apellido, 
-            telefono, ciudad_id, 
-            direccion, fecha_nacimiento
-                FROM usuarios WHERE id = $usuario_id;";
+        public function get_datos_personales($cedula){
+            $conectar= parent::ConexionSirepro();
+            $sql="select 
+                a.cedula,  
+                CONCAT_WS(' ', 
+                        NULLIF(trim(a.papellido), ''), 
+                        NULLIF(trim(a.sapellido), '')
+                    ) AS apellidos, 
+                CONCAT_WS(' ', 
+                        NULLIF(trim(a.pnombre), ''), 
+                        NULLIF(trim(a.snombre), ''), 
+                        NULLIF(trim(a.tnombre), '')
+                    ) AS nombres,
+                    
+                    ( CASE 
+                        WHEN a.sexo = 1 THEN 'MASCULINO' 
+                        WHEN a.sexo = 2 THEN 'FEMENINO' END
+                    ) AS sexo,
+                    a.fechanac,
+                    a.coddist,
+                    di.nomdist,
+                    di.codreg,
+                    
+                    a.coddpto,
+                    de.nomdpto,
+                    a.codnac,
+                    a.codnacs
+            from 
+                personas  a
+                JOIN departamentos de ON a.coddpto = de.coddpto
+                JOIN distritos di ON a.coddist = di.coddist and a.coddpto = di.coddpto
+            where a.cedula = '$cedula'";
             $query=$conectar->prepare($sql);
             $query->execute();
-            return $query->fetchAll(PDO::FETCH_ASSOC);
+            return $query->fetch(PDO::FETCH_ASSOC);
         }
     }
 ?>

@@ -10,7 +10,7 @@
 			$nombreBaseDeDatos = "homesirepro";
 	        $rutaServidor = "localhost";
 			$puerto = "5432";
-			// $contraseña = "postgres";
+		    $contraseña = "postgres";
 			// $usuario = "postgres";
 			// $nombreBaseDeDatos = "homesirepro";
 	        // $rutaServidor = "localhost";
@@ -54,9 +54,9 @@
 		
         public static function ruta(){
 			/* TODO: Ruta de acceso del Proyecto (Validar su puerto y nombre de carpeta por el suyo) */
-           // return "http://localhost:90/homesirepro/";
+            return "http://localhost/homesirepro/";
 			// return "http://localhost/MSPBS_SISTEMA/homesirepro/";
-			 return "https://homesirepro.mspbs.gov.py/homesirepro/";
+			// return "https://homesirepro.mspbs.gov.py/homesirepro/";
         }
     }
 ?>

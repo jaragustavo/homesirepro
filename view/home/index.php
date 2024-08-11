@@ -1,7 +1,5 @@
 <?php
-
-  require_once("../../config/conexion.php");
-
+   require_once("../../config/conexion.php");
   if(isset($_SESSION["usuario_id"])){ 
 ?>
 
@@ -99,8 +97,8 @@
 </html>
 <?php
 } else {
- 
-	header("Location:".Conectar::ruta()."index.php");
+ error_log('nose que puta pasa');
+//	header("Location:".Conectar::ruta()."index.php");
 
 }
 ?>

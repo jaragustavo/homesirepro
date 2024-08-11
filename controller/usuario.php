@@ -115,7 +115,7 @@
             
             // error_log('################## '.count($datos));
             
-            break;
+            break; 
         case "grafico";
             $datos=$usuario->get_usuario_grafico($_SESSION["usuario_id"]);  
             echo json_encode($datos);
@@ -142,7 +142,7 @@
                 echo json_encode($output);
             }
             break;
-
+ 
         case "totalRepososVisados":
             $datos=$usuario->get_total_reposos_visados();  
             if(is_array($datos)==true and count($datos)>0){
@@ -154,14 +154,79 @@
             }
             break;
         case "mostrarDatosPersonales":
-            $datos=$usuario->get_datos_personales($_SESSION["usuario_id"]);  
-            if(is_array($datos)==true and count($datos)>0){
-                foreach($datos as $row)
-                {
-                    $output["lbltotalrepososvisados"] = $row["cant_reposos"];
-                }
-                echo json_encode($output);
+
+            $datos = $usuario->get_datos_personales($_SESSION["cedula"]);  
+            
+            if ($datos) {
+                echo json_encode($datos);
+            } else {
+                echo json_encode(["error" => "No se encontraron datos."]);
             }
             break;
+            case "guardarFotoPerfil":
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
+            
+                    $doc1 = $_FILES['file']['tmp_name'];
+                    $cedula = $_SESSION['cedula']; // Asegúrate de tener esta variable bien definida
+            
+                    if ($doc1 != "") {
+            
+                        // Define la ruta local donde se guardará la imagen
+                        $ruta_local = "../docs/documents/foto_perfil/" . $cedula . '/';
+            
+                        // Crear el directorio si no existe
+                        if (!file_exists($ruta_local)) {
+                            mkdir($ruta_local, 0777, true);
+                        } else {
+                            // Eliminar archivos existentes con el mismo nombre
+                            $files = glob($ruta_local . $cedula . '.*');
+                            foreach ($files as $file_existente) {
+                                if (is_file($file_existente)) {
+                                    unlink($file_existente);
+                                }
+                            }
+                        }
+            
+                        // Obtener la extensión del archivo y generar un nuevo nombre de archivo
+                        $fileExtension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+                        $docNombre = $cedula . "." . $fileExtension;
+                        $destino = $ruta_local . $docNombre;
+            
+                        // Mover el archivo subido al destino local
+                        if (move_uploaded_file($doc1, $destino)) {
+                            // Transferir la imagen al servidor remoto
+                            $url_remoto = 'http://sirepro.mspbs.gov.py/Apis/subir_foto.php'; // Debes crear este script en el servidor remoto
+                            $data = [
+                                'file' => new CURLFile($destino),
+                                'cedula' => $cedula
+                            ];
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, $url_remoto);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                            $response = curl_exec($ch);
+                            curl_close($ch);
+                            
+                            error_log('$$$$$$$$$$$$$$ '.$response);
+                            
+                            if ($response === false) {
+                                echo json_encode(["status" => "error", "message" => "Error al transferir la imagen al servidor remoto."]);
+                            } else {
+                                echo json_encode(["status" => "ok", "new_image_path" => $destino, "server_response" => $response]);
+                            }
+                        } else {
+                            echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido."]);
+                        }
+                    } else {
+                        echo json_encode(["status" => "error", "message" => "No se subió ningún archivo."]);
+                    }
+                }
+            break;
+            
+            
+            
     }
 ?>
