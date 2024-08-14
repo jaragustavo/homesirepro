@@ -1,125 +1,130 @@
 function init() {
-   
+
     actualizar_img();
 
 }
-$(document).ready(function() {
 
-    // Inicializar Select2 para los selects de departamentos y ciudades
+// Función para cargar ciudades basado en el departamento seleccionado
+function cargarCiudades(departamento_id, ciudad_id) {
+    // Convertir departamento_id a una cadena y agregar ceros a la izquierda si es necesario
+    var departamento_id_str = departamento_id.toString().padStart(2, '0');
+
+    var ciudadSelect = $('#ciudad_id');
+    ciudadSelect.empty(); // Limpiar opciones actuales
+    ciudadSelect.append(new Option('Seleccione Ciudad', ''));
+
+    $.post('../../controller/distrito.php?op=obtenerDistritos', { coddpto: departamento_id_str }, function(data) {
+        var ciudades = JSON.parse(data);
+
+        ciudades.forEach(function(ciudad) {
+            ciudadSelect.append(new Option(ciudad.nomdist, ciudad.coddist));
+        });
+
+        if (ciudad_id) {
+            $('#ciudad_id').val(ciudad_id).trigger('change.select2');
+        }
+    });
+}
+
+function cargarDepartamentos() {
+    $.getJSON('../../controller/departamento.php', function(data) {
+        // Guardar los datos de departamentos globalmente para su uso posterior
+        departamentosData = data;
+
+        // Obtener el select de departamentos
+        var departamentoSelect = $('#departamento_id');
+        departamentoSelect.empty(); // Limpiar opciones actuales
+
+        // Agregar opción por defecto
+        departamentoSelect.append(new Option('Seleccione Departamento', ''));
+
+        // Iterar sobre los datos y agregar opciones al select
+        data.forEach(function(departamento) {
+            departamentoSelect.append(new Option(departamento.nomdpto, parseInt(departamento.coddpto)));
+        });
+
+        // Llamar a cargarDatosPersonales después de cargar los departamentos
+        cargarDatosPersonales();
+    });
+    actualizar_img();
+}
+
+function cargarDatosPersonales() {
+    $.post("../../controller/usuario.php?op=mostrarDatosPersonales", function(response) {
+
+        console.log("Respuesta del servidor:", response); // Verificar la respuesta
+
+        try {
+            var datos = JSON.parse(response);
+
+            // Verificar si la respuesta contiene un error
+            if (datos.error) {
+                console.error("Error: " + datos.error);
+                alert("No se encontraron datos personales.");
+                return;
+            }
+
+            // Cargar los valores en los campos del formulario
+            $('#nombre').val(datos.nombres);
+            $('#apellido').val(datos.apellidos);
+            $('#documento_identidad').val(datos.cedula);
+            $('#fecha_nacimiento').val(datos.fechanac);
+            $('#sexo').val(datos.sexo);
+            $('#coddist').val(datos.coddist);
+            $('#nomdist').val(datos.nomdist);
+            $('#codreg').val(datos.codreg);
+            $('#coddpto').val(datos.coddpto);
+            $('#nomdpto').val(datos.nomdpto);
+            $('#codnac').val(datos.codnac);
+            $('#codnacs').val(datos.codnacs);
+
+            $('#telefono').val(datos.telef);
+            $('#celular').val(datos.celular1);
+            $('#email').val(datos.email);
+            $('#direccion_domicilio').val(datos.dccion);
+            $('#barrio').val(datos.otrbarrio);
+
+            // Establecer el departamento seleccionado y cargar ciudades
+            var departamento_id = datos.coddpto;
+            $('#departamento_id').val(departamento_id).trigger('change');
+
+            // Cargar ciudades basadas en el departamento seleccionado
+
+            cargarCiudades(departamento_id, datos.coddist);
+        } catch (e) {
+            console.error("Error al parsear JSON: ", e);
+            alert("Error al cargar los datos personales.");
+        }
+    });
+}
+
+$(document).ready(function() {
     $('#departamento_id').select2();
     $('#ciudad_id').select2();
-    cargarDatosPersonales();
-    // Cargar departamentos al cargar la página
+
     cargarDepartamentos();
 
-     // Función para cargar ciudades basado en el departamento seleccionado
-     function cargarCiudades(departamento_id, ciudad_id) {
+    // Evento de cambio en el select de departamento para cargar ciudades
+    $('#departamento_id').change(function() {
+        var departamento_id = $(this).val();
+        // Convertir departamento_id a una cadena y agregar ceros a la izquierda si es necesario
+        var departamento_id_str = departamento_id.toString().padStart(2, '0');
+        cargarCiudades(departamento_id_str);
+    });
 
-        var ciudadSelect = $('#ciudad_id');
-        ciudadSelect.empty(); // Limpiar opciones actuales
-        ciudadSelect.append(new Option('Seleccione Ciudad', ''));
+    $('#guardar_datos_personales_btn').click(function() {
+        guardarDatosPersonales();
+    });
 
-        // Encontrar el departamento seleccionado en los datos de departamentos
-        var selectedDepartamento = departamentosData.find(d => parseInt(d.departamento_id) == parseInt(departamento_id));
+    // Asignar el evento de click al botón de guardar datos personales
+    $('#guardar_datos_personales_btn').click(function() {
+        guardarDatosPersonales();
+    });
 
-        if (selectedDepartamento) {
-            // Iterar sobre las ciudades del departamento seleccionado y agregarlas al select
-            selectedDepartamento.ciudades.forEach(function(ciudad) {
-                ciudadSelect.append(new Option(ciudad.ciudad_nombre, parseInt(ciudad.ciudad_id)));
-            });
-
-            // Establecer la ciudad seleccionada, si existe
-            if (ciudad_id) {
-
-                ciudad_id = parseInt(ciudad_id); // Convertir a entero
-
-                $('#ciudad_id').val(ciudad_id).trigger('change.select2');
-            }
-        }
-      
-    }
-    // Función para cargar departamentos desde el archivo JSON
-    function cargarDepartamentos() {
-        $.getJSON('../../controller/departamento.php', function(data) {
-            // Guardar los datos de departamentos globalmente para su uso posterior
-            departamentosData = data;
-
-            // Obtener el select de departamentos
-            var departamentoSelect = $('#departamento_id');
-            departamentoSelect.empty(); // Limpiar opciones actuales
-
-            // Agregar opción por defecto
-            departamentoSelect.append(new Option('Seleccione Departamento', ''));
-
-            // Iterar sobre los datos y agregar opciones al select
-            data.forEach(function(departamento) {
-                departamentoSelect.append(new Option(departamento.nomdpto, parseInt(departamento.coddpto)));
-            });
-
-            // Llamar a cargarDatosPersonales después de cargar los departamentos
-            cargarDatosPersonales();
-        });
-        actualizar_img();
-    }
-
-    function cargarDatosPersonales() {
-        $.post("../../controller/usuario.php?op=mostrarDatosPersonales", function(response) {
-            
-            console.log("Respuesta del servidor:", response); // Verificar la respuesta
-    
-            try {
-                var datos = JSON.parse(response);
-                
-                // Verificar si la respuesta contiene un error
-                if (datos.error) {
-                    console.error("Error: " + datos.error);
-                    alert("No se encontraron datos personales.");
-                    return;
-                }
-    
-                // Cargar los valores en los campos del formulario
-                $('#nombre').val(datos.nombres);
-                $('#apellido').val(datos.apellidos);
-                $('#documento_identidad').val(datos.cedula);
-                $('#fecha_nacimiento').val(datos.fechanac);
-                $('#sexo').val(datos.sexo);
-                $('#coddist').val(datos.coddist);
-                $('#nomdist').val(datos.nomdist);
-                $('#codreg').val(datos.codreg);
-                $('#coddpto').val(datos.coddpto);
-                $('#nomdpto').val(datos.nomdpto);
-                $('#codnac').val(datos.codnac);
-                $('#codnacs').val(datos.codnacs);
-    
-                $('#telefono').val(datos.telef);  
-                $('#celular').val(datos.celular1); 
-                $('#email').val(datos.email);  
-                $('#direccion_domicilio').val(datos.dccion);
-
-                 // Establecer el departamento seleccionado y cargar ciudades
-                 var departamento_id = datos.coddpto;
-                 $('#departamento_id').val(departamento_id).trigger('change');
- 
-                 // Cargar ciudades basadas en el departamento seleccionado
-               
-                 cargarCiudades(departamento_id,datos.coddist);
-            } catch (e) {
-                console.error("Error al parsear JSON: ", e);
-                alert("Error al cargar los datos personales.");
-            }
-        });
-    }
-    
-
-   
- 
+    init();
 });
 
-  // Evento de cambio en el select de departamento para cargar ciudades
-  $('#departamento_id').change(function() {
-    var departamento_id = $(this).val();
-    cargarCiudades(departamento_id);
-});
+
 // Función para guardar datos personales
 function guardarDatosPersonales() {
     // Validar el formulario antes de enviarlo
@@ -200,10 +205,6 @@ function validateForm(formulario) {
     return !isEmpty;
 }
 
-// Asignar el evento de click al botón de guardar datos personales
-$('#guardar_datos_personales_btn').click(function() {
-    guardarDatosPersonales();
-});
 
 function guardarFoto() {
 
@@ -211,8 +212,32 @@ function guardarFoto() {
     var fileInput = document.getElementById('foto_perfil');
     var file = fileInput.files[0];
 
-    formData.append('file', file);
+    // Verificar si se ha seleccionado un archivo
+    if (!file) {
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, seleccione un archivo.",
+            icon: "error",
+            confirmButtonColor: "#3d85c6",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
 
+    // Verificar el tipo de archivo (solo permitir JPG)
+    if (file.type !== 'image/jpeg') {
+        Swal.fire({
+            title: "Error",
+            text: "¡Solo se permiten imágenes en formato JPG!",
+            icon: "error",
+            confirmButtonColor: "#3d85c6",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
+
+
+    formData.append('file', file);
     $.ajax({
         url: '../../controller/usuario.php?op=guardarFotoPerfil',
         type: 'POST',
@@ -222,18 +247,9 @@ function guardarFoto() {
         success: function(response) {
             var data = JSON.parse(response);
             if (data.status === "ok") {
-                // Swal.fire({
-                //     // title: "Éxito",
-                //     // text: "La foto de perfil fue actualizada.",
-                //     // icon: "success",
-                //     // showCancelButton: true,
-                //     // confirmButtonColor: "#3d85c6",
-                //     // confirmButtonText: "OK"
-                // });
-
                 // Actualizar la imagen de perfil con la nueva foto
                 var foto_perfil = document.querySelector('.avatar-preview-128 img');
-                foto_perfil.src = data.new_image_path;
+                foto_perfil.src = '../' + data.new_image_path;
             } else {
                 Swal.fire({
                     title: "Error",
@@ -311,7 +327,6 @@ function guardarFotoCi() {
     });
 }
 
-
 function actualizar_img() {
     $(".nuevaImagen").change(function() {
         var imagen = this.files[0];
@@ -332,6 +347,7 @@ function actualizar_img() {
             });
         } else {
             var datosImagen = new FileReader();
+
             datosImagen.readAsDataURL(imagen);
 
             datosImagen.onload = function(event) {
@@ -351,4 +367,3 @@ function actualizar_img() {
         }
     });
 }
-

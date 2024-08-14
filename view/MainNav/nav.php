@@ -20,7 +20,8 @@
                 <span class="lbl">Perfil</span>
             </span>
             <ul>
-                <a href="../Perfiles/datosPersonales.php"><span class="lbl">Datos personales</span></a>
+                <a href="../Perfiles/datosPersonales.php"><span class="lbl">Personal</span></a>
+                <a href="../Perfiles/datosProfesionales.php"><span class="lbl">Profesional</span></a>
         </li>
     </ul>
 

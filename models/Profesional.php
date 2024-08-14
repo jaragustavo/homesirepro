@@ -412,7 +412,10 @@ class Profesional extends Conectar
         // Construir la consulta SQL con la columna y valor proporcionados
         $sql = "WITH dato AS (
                     SELECT 
+	                    a.norden,
+	                    a.tipoinsc,
                         a.tipoprof,
+	                    a.formainsc,
                         a.codprofe,
                         MAX(a.fechains) AS fechains,
                         MAX(a.fechains) + INTERVAL '5 years' AS fecha_vencimiento,
@@ -459,7 +462,11 @@ class Profesional extends Conectar
                     p.tnombre, 
                     p.papellido, 
                     p.sapellido, 
-                    b.nomprofe
+                    b.nomprofe,
+	                a.tipoinsc,
+	                 a.norden,
+	                a.formainsc
+	     
                 
                 ),
                 espe AS (
@@ -489,7 +496,7 @@ class Profesional extends Conectar
                         e.cedula,
                         e.nroregis,
                         e.codespe,
-                    p.pnombre, 
+                        p.pnombre, 
                         p.snombre, 
                         p.tnombre, 
                         p.papellido, 
@@ -501,6 +508,9 @@ class Profesional extends Conectar
                 ),
                 pivot AS (
                     SELECT 
+					    dato.norden,
+					    dato.tipoinsc,
+					    dato.formainsc,
                         dato.tipoprof,
                         dato.codprofe,
                         dato.fechains,
@@ -543,6 +553,8 @@ class Profesional extends Conectar
                         AND dato.nroregis = espe.nroregis
                         AND dato.codprofe = espe.codprofe
                     GROUP BY
+					    dato.tipoinsc,
+				    	dato.formainsc,
                         dato.tipoprof,
                         dato.codprofe,
                         dato.fechains,
@@ -554,9 +566,13 @@ class Profesional extends Conectar
                         dato.apellidos,
                         dato.nombres,
                         dato.nomprofe,
+					    dato.norden,
                         dato.nomuniv_concat
                 )
                 SELECT 
+				    norden,
+				    tipoinsc,
+				    formainsc,
                     tipoprof,
                     codprofe,
                     fechains,
@@ -585,7 +601,7 @@ class Profesional extends Conectar
                 ORDER BY 
                     apellidos,
                     nombres;";
-        
+          
                 $query = $conectar->prepare($sql);
                 $query->execute();
                 $conectar = null;
