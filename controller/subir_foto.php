@@ -1,9 +1,8 @@
 <?php
-// Asegúrate de que el script tenga permisos de escritura en la carpeta de destino
 
 // Obtener la cédula y el archivo subido desde la solicitud
 $cedula = isset($_POST['cedula']) ? $_POST['cedula'] : '';
-$upload_dir = '/var/www/html/MSPBS_CONTROL_PROFESIONES/sirepro/Apis/';
+$upload_dir = '/var/www/html/MSPBS_CONTROL_PROFESIONES/sirepro/foto/';
 
 if (isset($_FILES['file']) && !empty($cedula)) {
     // Crear el directorio si no existe

@@ -162,71 +162,95 @@
             } else {
                 echo json_encode(["error" => "No se encontraron datos."]);
             }
-            break;
-            case "guardarFotoPerfil":
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
-            
-                    $doc1 = $_FILES['file']['tmp_name'];
-                    $cedula = $_SESSION['cedula']; // Asegúrate de tener esta variable bien definida
-            
-                    if ($doc1 != "") {
-            
-                        // Define la ruta local donde se guardará la imagen
-                        $ruta_local = "../docs/documents/foto_perfil/" . $cedula . '/';
-            
-                        // Crear el directorio si no existe
-                        if (!file_exists($ruta_local)) {
-                            mkdir($ruta_local, 0777, true);
-                        } else {
-                            // Eliminar archivos existentes con el mismo nombre
-                            $files = glob($ruta_local . $cedula . '.*');
-                            foreach ($files as $file_existente) {
-                                if (is_file($file_existente)) {
-                                    unlink($file_existente);
-                                }
+         break;
+        case "guardarFotoPerfil":
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['file'])) {
+        
+                $doc1 = $_FILES['file']['tmp_name'];
+                $cedula = $_SESSION['cedula']; // Asegúrate de tener esta variable bien definida
+                if ($doc1 != "") {
+        
+                    // Define la ruta local donde se guardará la imagen
+                    $ruta_local = "../docs/documents/foto_carnet/" . $cedula . '/';
+                    // Crear el directorio si no existe
+                    if (!file_exists($ruta_local)) {
+                        mkdir($ruta_local, 0777, true);
+                    } else {
+                        // Eliminar archivos existentes con el mismo nombre
+                        $files = glob($ruta_local . $cedula . '.*');
+                        foreach ($files as $file_existente) {
+                            if (is_file($file_existente)) {
+                                unlink($file_existente);
                             }
                         }
-            
-                        // Obtener la extensión del archivo y generar un nuevo nombre de archivo
-                        $fileExtension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-                        $docNombre = $cedula . "." . $fileExtension;
-                        $destino = $ruta_local . $docNombre;
-            
-                        // Mover el archivo subido al destino local
-                        if (move_uploaded_file($doc1, $destino)) {
-                            // Transferir la imagen al servidor remoto
-                            $url_remoto = 'http://sirepro.mspbs.gov.py/Apis/subir_foto.php'; // Debes crear este script en el servidor remoto
-                            $data = [
-                                'file' => new CURLFile($destino),
-                                'cedula' => $cedula
-                            ];
+                    }
+        
+                    // Obtener la extensión del archivo y generar un nuevo nombre de archivo
+                    $fileExtension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+                    $docNombre = $cedula . "." . $fileExtension;
+                    $destino = $ruta_local . $docNombre;
+        
+                    // Mover el archivo subido al destino local
+                    if (move_uploaded_file($doc1, $destino)) {
+                        // Transferir la imagen al servidor remoto
+                        $url_remoto = 'http://sirepro.mspbs.gov.py/Apis/subir_foto.php'; // Debes crear este script en el servidor remoto
+                        $data = [
+                            'file' => new CURLFile($destino),
+                            'cedula' => $cedula
+                        ];
 
-                            $ch = curl_init();
-                            curl_setopt($ch, CURLOPT_URL, $url_remoto);
-                            curl_setopt($ch, CURLOPT_POST, true);
-                            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $url_remoto);
+                        curl_setopt($ch, CURLOPT_POST, true);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                            $response = curl_exec($ch);
-                            curl_close($ch);
-                            
-                            error_log('$$$$$$$$$$$$$$ '.$response);
-                            
-                            if ($response === false) {
-                                echo json_encode(["status" => "error", "message" => "Error al transferir la imagen al servidor remoto."]);
-                            } else {
-                                echo json_encode(["status" => "ok", "new_image_path" => $destino, "server_response" => $response]);
-                            }
+                        $response = curl_exec($ch);
+                        curl_close($ch);
+                        
+                        if ($response === false) {
+                            echo json_encode(["status" => "error", "message" => "Error al transferir la imagen al servidor remoto."]);
                         } else {
-                            echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido."]);
+                            echo json_encode(["status" => "ok", "new_image_path" => $destino, "server_response" => $response]);
                         }
                     } else {
-                        echo json_encode(["status" => "error", "message" => "No se subió ningún archivo."]);
+                        echo json_encode(["status" => "error", "message" => "Error al mover el archivo subido."]);
                     }
+                } else {
+                    echo json_encode(["status" => "error", "message" => "No se subió ningún archivo."]);
                 }
-            break;
+            }
+        break;
             
-            
+        case "updateDatosPersonales":
+            date_default_timezone_set('America/Asuncion');
+
+            $fecha = date('Y-m-d');
+            $hora = date('H:i:s');
+            $fecha_hora = $fecha.' '.$hora;
+            try {
+                $datos = array(
+                    "fecha_hora"=>$fecha_hora,
+                    "usuario_id"=>$_SESSION["usuario_id"],
+                    "cedula"=>$_SESSION["cedula"],
+              //      "nombre"=>$_POST["nombre"],
+         //           "apellido"=>$_POST["apellido"],
+                    "email"=>$_POST["email"],
+          //          "fecha_nacimiento"=>$_POST["fecha_nacimiento"],
+                    "direccion_domicilio"=>$_POST["direccion_domicilio"],
+                    "barrio"=>$_POST["barrio"],
+                    "telefono"=>$_POST["telefono"],
+                    "celular"=>$_POST["celular"],
+                    "ciudad_id"=>$_POST["ciudad_id"],
+                    "departamento_id"=>$_POST["departamento_id"]
+                );
+                $resultado = $usuario->update_usuario($datos);
+            }
+            catch(Exception $e){
+                echo $e;
+            }
+
+         break;        
             
     }
 ?>

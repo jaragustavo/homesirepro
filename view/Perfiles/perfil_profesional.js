@@ -1,122 +1,270 @@
+let cedula;
+let tipoprof;
+let tipoinsc;
+let formainsc;
+let dia;
+let mes;
+let anio;
+let rorden;
+
 $(document).ready(function() {
+    $.get("../../controller/get_cedula_session.php", function(sessionData) {
+        // Obtener la cédula de la sesión
+        cedula = sessionData.cedula;
 
-    // Cargar las profesiones al cargar la página
-    $.post("../../controller/usuario.php?op=comboProfesiones", function(data) {
-        $('#profesion_id').html(data);
+        cargarDatosProfesionales(function() {
+            // Verificar los valores antes de llamar a cargarDocumentos
+            console.log("Valores antes de cargarDocumentos:", { tipoprof, tipoinsc, formainsc, cedula });
 
-        // Cargar los establecimientos de salud al cargar la página
-        cargarEstablecimientosSalud();
-
-        // Llamar a cargarDatosProfesionales 
-        cargarDatosProfesionales();
+            cargarLugarTrabajo();
+            cargarDocumentos();
+            cargarPostGrado();
+        });
     });
-
-    $('.agregar-estudio').click(function() {
-        agregarFilaEstudio();
-    });
-
-    $('.agregar-trabajo').click(function() {
-        agregarFilaTrabajo();
-
-        // Recargar los establecimientos de salud en todos los select
-        cargarEstablecimientosSalud();
-    });
-
-    // Evento para eliminar fila
-    $(document).on('click', '.eliminar-fila', function() {
-        $(this).closest('.trabajo-row').remove();
-    });
-
-    $(document).on('click', '.eliminar-fila-estudio', function() {
-        $(this).closest('.estudio-row').remove();
-    });
-
-    actualizar_img();
 });
 
-// Función para cargar datos profesionales desde el servidor
-function cargarDatosProfesionales() {
-    $.post("../../controller/usuario.php?op=mostrarDatosProfesionales", function(response) {
-        try {
-            var jsArray = JSON.parse(response);
+function cargarDatosProfesionales(callback) {
+    var item = 'cedula';
+    $.ajax({
+        url: '../../controller/profesional.php',
+        method: 'POST',
+        data: {
+            item: item,
+            valor: cedula,
+            token: 'alguno'
+        },
+        success: function(response) {
+            if (Array.isArray(response) && response.length > 0) {
+                const profesional = response[0];
+                $('#nro_registro').val(profesional.nroregis);
+                $('#profesion').val(profesional.nomprofe);
+                $('#universidad').val(profesional.nomuniv_concat);
 
-            if (jsArray && jsArray.length > 0) {
-                var element = jsArray[0]; // Tomar el primer elemento (suponiendo uno solo)
 
-                // Cargar los valores en los campos del formulario
-                $('#profesion_id').val(element.profesion_id).trigger('change');
 
-                // Asegúrate de que jsonDatosProfesionales sea un objeto y no una cadena
-                var jsonDatosProfesionales = element.jsonDatosProfesionales;
-                if (typeof jsonDatosProfesionales === 'string') {
-                    jsonDatosProfesionales = JSON.parse(jsonDatosProfesionales);
-                }
+                document.getElementById('nro_registro').textContent = profesional.nroregis;
 
-                $('#lugar_egreso').val(jsonDatosProfesionales.lugar_egreso);
-                $('#anio_egreso').val(jsonDatosProfesionales.anio_egreso);
+                rorden = profesional.norden;
+                tipoprof = profesional.tipoprof;
+                tipoinsc = profesional.tipoinsc;
+                formainsc = profesional.formainsc;
 
-                // Cargar los lugares de trabajo
-                var lugaresTrabajo = jsonDatosProfesionales.lugares_trabajo;
-                for (var i = 0; i < lugaresTrabajo.length; i++) {
-                    if (i > 0) {
-                        agregarFilaTrabajo(); // Agregar fila adicional si es necesario
-                    }
-                }
-
-                // Cargar los estudios
-                var estudios = jsonDatosProfesionales.estudios;
-                for (var i = 0; i < estudios.length; i++) {
-                    if (i > 0) {
-                        agregarFilaEstudio(); // Agregar fila adicional si es necesario
-                    }
-                }
-
-                // Recargar los establecimientos de salud en todos los select y luego asignar valores
-                cargarEstablecimientosSalud(function() {
-                    for (var i = 0; i < lugaresTrabajo.length; i++) {
-                        var filaTrabajo = $('.trabajo-row').eq(i);
-                        filaTrabajo.find('select[name="lugar_trabajo[]"]').val(lugaresTrabajo[i].lugar_trabajo).trigger('change');
-                        filaTrabajo.find('select[name="tipo_contrato[]"]').val(lugaresTrabajo[i].tipo_contrato).trigger('change');
-                        filaTrabajo.find('select[name="vinculo[]"]').val(lugaresTrabajo[i].vinculo).trigger('change');
-                    }
-                });
-
-                // Asignar valores a los estudios sin función adicional
-                for (var i = 0; i < estudios.length; i++) {
-                    var filaEstudio = $('.estudio-row').eq(i);
-                    filaEstudio.find('select[name="titulo[]"]').val(estudios[i].titulo).trigger('change');
-                    filaEstudio.find('input[name="titulo_descripcion[]"]').val(estudios[i].titulo_descripcion);
+                // Ejecutar el callback si está definido
+                if (callback && typeof callback === 'function') {
+                    console.log("Ejecutando callback");
+                    callback();
                 }
             } else {
-                console.error("La respuesta no contiene datos válidos:", response);
+                console.error("No se encontraron datos");
             }
-        } catch (e) {
-            console.error("Error al procesar la respuesta:", e, response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", xhr.status, error);
         }
     });
 }
 
-function cargarEstablecimientosSalud(callback) {
+function cargarDocumentos() {
+    // Envío de datos mediante POST
+    $.post("../../controller/documentos.php?op=obtenerDocumentos", {
+        cedula: cedula,
+        tipoinsc: tipoinsc,
+        formainsc: formainsc,
+        tipoprof: tipoprof
 
+    }, function(data) {
+        try {
+            // Convertir la respuesta a JSON
+            let documentos = typeof data === "string" ? JSON.parse(data) : data;
 
-    $.post("../../controller/usuario.php?op=comboEstablecimientosSalud", function(data) {
-        $('select[name="lugar_trabajo[]"]').each(function() {
-            if ($(this).children().length === 0) { // Si el select aún no tiene opciones cargadas
-                $(this).html(data);
+            // Limpiar el contenedor antes de cargar los nuevos datos
+            $('#documentos-container').empty();
 
+            // Comprobar si el array de documentos está vacío
+            if (documentos.length === 0) {
+                // Mostrar mensaje si no hay documentos
+                $('#documentos-container').append('<p>No hay documentos registrados.</p>');
+                return;
             }
+
+            // Crear el encabezado de la tabla
+            let tableHtml = `
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ver</th>
+                                <th>Documento Exigidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+            documentos.forEach(function(documento) {
+                let documentoUrl = null;
+                let iconHtml = '';
+
+                if (documento.norden) {
+
+                    let [year, month, day] = documento.fechasol.split('-');
+                    mes = month.padStart(2, '0');
+                    dia = day.padStart(2, '0');
+                    anio = year;
+
+                    // Construir URL del documento si norden tiene un valor
+                    documentoUrl = `https://sirepro.mspbs.gov.py/documentos/${cedula}_${dia}${mes}${anio}_${rorden}_${documento.norden}.pdf`;
+                    iconHtml = `<a href="${documentoUrl}" target="_blank" title="Ver Documento">
+                                    <img src="../../public/img/pdf.bmp" alt="Ver Documento" style="width: 20px; height: 20px;"/> <!-- ícono de archivo PDF -->
+                                </a>`;
+                } else {
+                    iconHtml = `
+                        <i class="glyphicon glyphicon-paperclip" style="color:#5bc0de;" title="Documento no disponible"></i>  `;
+                }
+
+                tableHtml += `
+                        <tr>
+                            <td>${iconHtml}</td>
+                            <td>${documento.nomtdoc}</td>
+                        </tr>
+                    `;
+            });
+
+            // Cerrar la tabla
+            tableHtml += `
+                        </tbody>
+                    </table>
+                `;
+
+            // Añadir la tabla al contenedor
+            $('#documentos-container').append(tableHtml);
+        } catch (e) {
+            // Manejar errores en la conversión de datos a JSON
+            console.error("Error al procesar la respuesta del servidor:", e);
+            $('#documentos-container').append('<p>Error al cargar los documentos. Inténtalo de nuevo más tarde.</p>');
+        }
+    }).fail(function(xhr, status, error) {
+        // Manejar errores en la solicitud
+        console.error("Error al obtener datos del lugar de trabajo:", error);
+        $('#documentos-container').append('<p>Error al cargar los documentos. Inténtalo de nuevo más tarde.</p>');
+    });
+}
+
+
+// Función para cargar lugar de trabajo
+function cargarLugarTrabajo() {
+
+    // Envío la cédula al controlador mediante POST
+    $.post("../../controller/lugarTrabajo.php?op=obtenerLugarTrabajo", {
+        cedula: cedula
+    }, function(data) {
+        // Convertir la respuesta a JSON si no está ya en formato JSON
+        var trabajos = typeof data === "string" ? JSON.parse(data) : data;
+
+        // Limpiar el contenedor antes de cargar los nuevos datos
+        $('#trabajo-container').empty();
+
+        // Comprobar si el array de trabajos está vacío
+        if (trabajos.length === 0) {
+            // Mostrar mensaje si no hay trabajos
+            $('#trabajo-container').append('<p>No hay lugar de trabajo registrado.</p>');
+            return;
+        }
+
+        // Iterar sobre cada trabajo y añadirlo al contenedor
+        trabajos.forEach(function(trabajo) {
+            var trabajoHtml = `
+                    <div class="row trabajo-row col-12">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="lugar_trabajo">Lugar Trabajo</label>
+                                <input type="text" class="form-control" name="lugar_trabajo[]" placeholder="Descripción Lugar Trabajo" value="${trabajo.lugartra}">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono[]" placeholder="Teléfono" value="${trabajo.telef}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" class="form-control" name="direccion[]" placeholder="Dirección" value="${trabajo.dccion}">
+                            </div>
+                        </div>
+                         <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="direccion">Email</label>
+                                <input type="text" class="form-control" name="direccion[]" placeholder="Dirección" value="${trabajo.email}">
+                            </div>
+                        </div>
+                       
+                    </div>
+                `;
+
+            // Añadir el trabajo al contenedor
+            $('#trabajo-container').append(trabajoHtml);
+        });
+    }).fail(function(xhr, status, error) {
+        // Manejar errores en la solicitud
+        console.error("Error al obtener datos del lugar de trabajo:", error);
+    });
+
+}
+
+
+// Función para cargar Post Grados
+function cargarPostGrado() {
+    // Envío la cédula al controlador mediante POST
+    $.post("../../controller/especialidad.php?op=obtenerEspecialidad", {
+        cedula: cedula
+    }, function(data) {
+        // Convertir la respuesta a JSON si no está ya en formato JSON
+        var especialidades = typeof data === "string" ? JSON.parse(data) : data;
+
+        // Limpiar el contenedor antes de cargar los nuevos datos
+        $('#especialidad-container').empty();
+
+        // Comprobar si el array de especialidades está vacío
+        if (especialidades.length === 0) {
+            // Mostrar mensaje si no hay especialidades
+            $('#especialidad-container').append('<p>No tiene especialidad registrada.</p>');
+            return;
+        }
+
+        // Crear la tabla
+        var tableHtml = `
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Especialidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        // Iterar sobre cada especialidad y añadirla a la tabla
+        especialidades.forEach(function(especialidad) {
+            tableHtml += `
+                <tr>
+                    <td>${especialidad.nomespe}</td>
+                </tr>
+            `;
         });
 
-        // Inicializar select2 después de cargar las opciones en los select existentes
-        $('select[name="lugar_trabajo[]"]').select2();
-        // Llamar al callback después de cargar las opciones
-        if (typeof callback === 'function') {
-            callback();
-        }
+        // Cerrar la tabla
+        tableHtml += `
+                </tbody>
+            </table>
+        `;
+
+        // Añadir la tabla al contenedor
+        $('#especialidad-container').append(tableHtml);
+    }).fail(function(xhr, status, error) {
+        // Manejar errores en la solicitud
+        console.error("Error al obtener datos del lugar de Especialidad:", error);
     });
-
-
 }
+
 
 function guardarDatosProfesionales() {
     // Validar el formulario antes de enviarlo
@@ -257,174 +405,4 @@ function validateForm(formulario) {
 
 
     return !isEmpty;
-}
-
-function agregarFilaTrabajo() {
-    var trabajoRow = `
-    <div class="row trabajo-row mt-2">
-        <div class="col-md-6" >
-            <label for="lugar_trabajo">Lugar de Trabajo</label>
-            <select class="form-control" name="lugar_trabajo[]">
-                <!-- Opciones se cargarán dinámicamente -->
-            </select>
-        </div>
-        <div class="col-md-3" >
-            <label for="tipo_contrato">Contrato</label>
-            <select class="form-control" name="tipo_contrato[]">
-                <option value=""></option>
-                <option value="PER">Permanente</option>
-                <option value="CON">Contratado</option>
-            </select>
-        </div>
-        <div class="col-md-2" >
-         <label for="vinculo">Vínculo</label>
-            <select class="form-control" name="vinculo[]">
-                <option value=""></option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>
-        </div>
-        <div class="col-md-1"  style="padding: 20px 0px 10px 10px !important">
-            <i class="glyphicon glyphicon-trash eliminar-fila"
-            style="float: center; color: #e06666; font-size: large; padding: 10px 0px 10px 5px; margin: 0px;"
-             cursor: pointer;" aria-hidden="true" title="Eliminar fila"></i>
-        </div>
-    </div>`;
-    $('#trabajo-container').append(trabajoRow);
-
-    // Recargar los establecimientos de salud en los nuevos select
-    cargarEstablecimientosSalud(function() {
-        // Inicializar select2 en el nuevo select
-        $('select[name="lugar_trabajo[]"]').last().select2();
-    });
-
-}
-
-function agregarFilaEstudio() {
-    var estudioRow = `
-    <div class="row estudio-row col-12">
-        <div class="col-md-2">
-            <div class="form-group">
-                <label for="titulo">Titulo</label>
-                <select class="form-control" name="titulo[]">
-                    <option value=""></option>
-                    <option value="Doctorado">Doctorado</option>
-                    <option value="Masterado">Masterado</option>
-                    <option value="Diplomado">Diplomado</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="titulo_descripcion">Descripción</label>
-                <input type="text" class="form-control" name="titulo_descripcion[]" placeholder="Descripción">
-            </div>
-        </div>
-        <div class="col-md-1" style="padding: 20px 0px 10px 20px !important">
-            <i class="glyphicon glyphicon-trash eliminar-fila-estudio"
-            style="float: center; color: #e06666; font-size: large;  padding: 10px 0px 10px 5px; margin: 0px;"
-            cursor: pointer;" aria-hidden="true" title="Eliminar fila"></i>
-        </div>
-    </div>`;
-    $('#estudio-container').append(estudioRow);
-}
-
-function guardarFotoRegistro() {
-
-    var formData = new FormData();
-    var fileInput = document.getElementById('imagen');
-    var file = fileInput.files[0];
-
-    formData.append('file', file);
-
-    $.ajax({
-        url: '../../controller/usuario.php?op=guardarFotoRegistro',
-        type: 'POST',
-        data: formData,
-        processData: false, // Importante
-        contentType: false, // Importante
-        success: function(response) {
-            var data = JSON.parse(response);
-            if (data.status === "ok") {
-                // Swal.fire({
-                //     title: "Éxito",
-                //     text: "La foto de perfil fue actualizada.",
-                //     icon: "success",
-                //     showCancelButton: true,
-                //     confirmButtonColor: "#3d85c6",
-                //     confirmButtonText: "OK"
-                // });
-
-                // // Actualizar la imagen de perfil con la nueva foto
-                // var foto_perfil = document.querySelector('.avatar-preview-128 img');
-                // foto_perfil.src = data.new_image_path;
-            } else {
-                Swal.fire({
-                    title: "Error",
-                    text: data.message,
-                    icon: "error",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3d85c6",
-                    confirmButtonText: "OK"
-                });
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            Swal.fire({
-                title: "Error",
-                text: "Ocurrió un error al subir el archivo.",
-                icon: "error",
-                showCancelButton: true,
-                confirmButtonColor: "#3d85c6",
-                confirmButtonText: "OK"
-            });
-        }
-    });
-}
-
-
-
-/*=============================================
-SUBIENDO EL ARCHIVO
-=============================================*/
-function actualizar_img() {
-    $(".nuevaImagen").change(function() {
-        var imagen = this.files[0];
-
-        /*=============================================
-        VALIDAMOS EL FORMATO DEL ARCHIVO SEA PDF, JPG O PNG
-        =============================================*/
-        if (imagen.type != "image/jpeg" && imagen.type != "image/png" && imagen.type != "application/pdf") {
-            $(".nuevaImagen").val("");
-            Swal.fire({
-                title: "Error al subir la imagen",
-                text: "¡El archivo debe estar en formato PDF, JPG o PNG!",
-                confirmButtonText: "¡Cerrar!"
-            });
-        } else if (imagen.size > 8000000) {
-            $(".nuevaImagen").val("");
-            Swal.fire({
-                title: "Error al subir la imagen",
-                text: "¡El archivo no debe pesar más de 8MB!",
-                confirmButtonText: "¡Cerrar!"
-            });
-        } else {
-            var datosImagen = new FileReader();
-            datosImagen.readAsDataURL(imagen);
-
-            datosImagen.onload = function(event) {
-                var rutaImagen = event.target.result;
-
-                if (imagen.type === "application/pdf") {
-                    $("#imagenmuestra").hide();
-                    $("#pdfmuestra").attr("src", rutaImagen).show();
-                } else {
-                    $("#pdfmuestra").hide();
-                    $("#imagenmuestra").attr("src", rutaImagen).show();
-                }
-            }; 
-        }    
-    });
 }

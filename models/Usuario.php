@@ -204,8 +204,10 @@
 
         public function get_datos_personales($cedula){
             $conectar= parent::ConexionSirepro();
-            $sql="SELECT DISTINCT ON (a.cedula) 
-                    a.cedula,  
+            $sql="SELECT 
+                    DISTINCT ON (a.cedula)
+                    a.cedula,
+                    a.fechanac,
                     CONCAT_WS(' ', 
                         NULLIF(TRIM(a.papellido), ''), 
                         NULLIF(TRIM(a.sapellido), '')
@@ -219,32 +221,135 @@
                         WHEN a.sexo = 1 THEN 'MASCULINO' 
                         WHEN a.sexo = 2 THEN 'FEMENINO' 
                     END AS sexo,
-                    a.fechanac,
-                    a.coddist,
-                    di.nomdist,
-                    di.codreg,
-                    a.coddpto,
-                    de.nomdpto,
-                    a.codnac,
-                    a.codnacs,
-                    r.fechains,
-                    r.dccion,
-                    r.telef,
-                    r.celular1,
-                    r.email
+                    rp.telef,
+                    rp.dccion,
+                    rp.email,
+                    rp.coddist,
+                    rp.coddpto,
+                    rp.codbarrio,
+                    rp.celular1,
+                    rp.otrbarrio,
+                    di.nomdist
                 FROM 
-                    personas a
-                    JOIN departamentos de ON a.coddpto = de.coddpto
-                    JOIN distritos di ON a.coddist = di.coddist AND a.coddpto = di.coddpto
-                    JOIN rprofesional r ON a.cedula = r.cedula 
+                    public.rprofesional AS rp
+                    LEFT JOIN public.distritos AS di ON rp.coddist = di.coddist
+                    LEFT JOIN public.personas AS a ON rp.cedula = a.cedula
                 WHERE 
-                    a.cedula = '$cedula'
+                    rp.cedula = '$cedula'
                 ORDER BY 
-                    a.cedula, 
-                    r.fechains DESC;";
+                    a.cedula,
+                    rp.fechains DESC";
             $query=$conectar->prepare($sql);
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);
         }
+        public function update_usuario($datos)
+        {
+            try {
+                // Conexión para la tabla usuarios
+                $conectarUsuarios = parent::Conexion();
+                // Conexión para la tabla rprofesional
+                $conectarProfesionales = parent::ConexionSirepro();
+                
+                // Iniciar la transacción para ambas conexiones
+                $conectarUsuarios->beginTransaction();
+                $conectarProfesionales->beginTransaction();
+        
+                // SQL para actualizar la tabla usuarios
+                $sqlUsuarios = "UPDATE public.usuarios
+                                SET 
+                                    user_mod = :usuario_id,
+                                    fecha_mod = :fecha_hora::timestamp, 
+                                    telefono = :telefono,
+                                    direccion_domicilio = :direccion_domicilio, 
+                                    email = :email,
+                                    ciudad_id = :ciudad_id, 
+                                    departamento_id = :departamento_id,
+                                    barrio = :barrio
+                                WHERE id = :usuario_id;";
+        
+                $queryUsuarios = $conectarUsuarios->prepare($sqlUsuarios);
+                $queryUsuarios->bindValue(':usuario_id', $datos['usuario_id'], PDO::PARAM_INT);
+                $queryUsuarios->bindValue(':fecha_hora', $datos['fecha_hora'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':telefono', $datos['telefono'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':direccion_domicilio', $datos['direccion_domicilio'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':email', $datos['email'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':ciudad_id', $datos['ciudad_id'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':departamento_id', $datos['departamento_id'], PDO::PARAM_STR);
+                $queryUsuarios->bindValue(':barrio', $datos['barrio'], PDO::PARAM_STR);
+                $queryUsuarios->execute();
+        
+                 // SQL para obtener el registro más reciente de rprofesional
+            $sqlReciente = "SELECT cedula, fechains, norden
+            FROM public.rprofesional
+            WHERE cedula = :cedula
+            ORDER BY fechains DESC
+            LIMIT 1;";
+
+            $queryReciente = $conectarProfesionales->prepare($sqlReciente);
+            $queryReciente->bindValue(':cedula', $datos['cedula'], PDO::PARAM_STR);
+            $queryReciente->execute();
+            $registroReciente = $queryReciente->fetch(PDO::FETCH_ASSOC);
+
+            if ($registroReciente) {
+            // Actualizar el registro más reciente
+            $sqlProfesionales = "UPDATE public.rprofesional
+                            SET 
+                                telef = :telefono,
+                                dccion = :direccion_domicilio, 
+                                email = :email,
+                                coddist = :ciudad_id, 
+                                coddpto = :departamento_id,
+                                otrbarrio = :barrio,
+                                celular1 = :celular
+                            WHERE cedula = :cedula
+                            AND fechains = :fechains
+                            AND norden = :norden;";
+
+            // Registrar el comando completo en error_log
+            $logProfesionales = str_replace(
+                [':telefono', ':direccion_domicilio', ':email', ':ciudad_id', ':departamento_id', ':barrio', ':celular', ':cedula', ':fechasol', ':norden'],
+                [$datos['telefono'], $datos['direccion_domicilio'], $datos['email'], $datos['ciudad_id'], $datos['departamento_id'], $datos['barrio'], $datos['celular'], $datos['cedula'],$registroReciente['fechains'], $registroReciente['norden']],
+                $sqlProfesionales
+            );
+            error_log("Consulta Profesionales: " . $logProfesionales);
+
+
+            $queryProfesionales = $conectarProfesionales->prepare($sqlProfesionales);
+            $queryProfesionales->bindValue(':telefono', $datos['telefono'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':celular', $datos['celular'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':direccion_domicilio', $datos['direccion_domicilio'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':email', $datos['email'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':ciudad_id', $datos['ciudad_id'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':departamento_id', $datos['departamento_id'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':barrio', $datos['barrio'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':cedula', $datos['cedula'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':fechains', $registroReciente['fechains'], PDO::PARAM_STR);
+            $queryProfesionales->bindValue(':norden', $registroReciente['norden'], PDO::PARAM_INT);
+            $queryProfesionales->execute();
+            }
+
+            // Si todas las transacciones tienen éxito, entonces se comprometen
+            $conectarUsuarios->commit();
+            $conectarProfesionales->commit();
+
+            echo 'ok';
+            
+                } catch (Exception $e) {
+                    // Si hay algún error, revertir todas las transacciones
+                    if ($conectarUsuarios->inTransaction()) {
+                        $conectarUsuarios->rollBack();
+                    }
+                    if ($conectarProfesionales->inTransaction()) {
+                        $conectarProfesionales->rollBack();
+                    }
+            
+                    $men = str_replace('SQLSTATE[P0001]: Raise exception: 7 ERROR:', '', $e->getMessage());
+                    error_log($men . ' ' . $sqlUsuarios . ' | ' . $sqlProfesionales);
+                    echo $men . ' ' . $sqlUsuarios . ' | ' . $sqlProfesionales;
+                    return $men . ' ' . $sqlUsuarios . ' | ' . $sqlProfesionales;
+                }
+        }
+        
     }
 ?>

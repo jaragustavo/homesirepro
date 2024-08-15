@@ -55,47 +55,40 @@ if (isset($_SESSION["usuario_id"])) {
                                 <button type="button" class="avatar-preview avatar-preview-128">
 
                                      <?php
-/*
-                                        $imagenes_perfil = Publicacion::get_imagenes_perfil($_SESSION["usuario_id"]);
-
-                                        $foto_registro_profesional = $imagenes_perfil['foto_registro_profesional'];
-                                        $foto_perfil = $imagenes_perfil['foto_perfil'];
-                                        $foto_ci = $imagenes_perfil['foto_ci'];
-
-                                        $esImagen = false;
-                                        $esPDF = false;
-
-                                        if ($foto_ci != null && $foto_ci != '') {
-                                            $extension = pathinfo($foto_ci, PATHINFO_EXTENSION);
-                                            if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png'])) {
-                                                $esImagen = true;
-                                            } elseif (strtolower($extension) == 'pdf') {
-                                                $esPDF = true;
-                                            }
-                                        } else {
-                                            $foto_ci = "assets/assets-main/images/icons/user2.png";
-                                            $esImagen = true; // Para mostrar la imagen predeterminada
-                                        }
-                                            */
-
+                                           
+                                            $esImagen = false;
+                                            $esPDF = false;
                                             $cedula = $_SESSION["cedula"];
-                                            $imagen_path = "http://sirepro.mspbs.gov.py/foto/{$cedula}.jpg";
-                                            $imagen_default = "assets/assets-main/images/icons/user2.png";
-                                            
-                                            // Verificar si la imagen existe usando cURL
-                                            $ch = curl_init($imagen_path);
-                                            curl_setopt($ch, CURLOPT_NOBODY, true);
-                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                            curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera para la respuesta
-                                            curl_exec($ch);
-                                            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                                            curl_close($ch);
-                                            if ($http_code == 200) {
-                                                $imagen_mostrar = $imagen_path;
-                                            } else {
-                                                $imagen_mostrar = $imagen_default;
+
+                                            $imagen_default = "../../assets/assets-main/images/icons/user2.png";
+
+                                           // Definir las posibles rutas de imagen
+                                            $extensiones = ['jpg', 'png'];
+                                           
+                                            $imagen_mostrar = $imagen_default;
+
+                                            // Intentar verificar la existencia de la imagen con cada extensión
+                                            foreach ($extensiones as $ext) {
+
+                                                $imagen_path = "http://sirepro.mspbs.gov.py/foto/{$cedula}.{$ext}";
+
+                                                // Verificar si la imagen existe usando cURL
+                                                $ch = curl_init($imagen_path);
+                                                curl_setopt($ch, CURLOPT_NOBODY, true);
+                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                                curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Tiempo de espera para la respuesta
+                                                curl_exec($ch);
+                                                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                                                curl_close($ch);
+
+                                                if ($http_code == 200) {
+                                                    $imagen_mostrar = $imagen_path;
+                                                    break; // Salir del bucle si se encuentra la imagen
+                                                }
+
                                             }
-                                    ?>
+                                           
+                                      ?>
                                      <img src="<?php echo $imagen_mostrar; ?>" alt="Foto de usuario">
                                      <span class="update">
                                         <i class="font-icon font-icon-picture-double"></i>
@@ -105,7 +98,7 @@ if (isset($_SESSION["usuario_id"])) {
                                 </button>
                             </div>
                             <!-- Documento del usuario -->
-                            <div class="col-lg-5">
+                            <div class="col-lg-7">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -133,37 +126,7 @@ if (isset($_SESSION["usuario_id"])) {
                                     </div>
                                 </div>   
                             </div>
-                            <!-- Documento del usuario -->
-                            <div class="col-md-4">
-                                <div class="col-lg-12">
-                                    <fieldset class="form-group text-center">
-                                        <label class="form-label semibold" for="documento">Imagen Documento Identidad </label>
-                                        <p class="help-block text-small-red" style="font-size: 12px; color: red;">Ambos lados</p>
-                                        <div class="el-element-overlay">
-                                            <div class="el-card-item">
-                                                <div class="el-card-avatar el-overlay-1 rectangular-preview" id="contenedor-preview">
-                                                    <?php if ($esImagen) { ?>
-                                                        <a id="imagen-enlace" href="../<?php echo $foto_ci; ?>" target="_blank">
-                                                            <img id="imagenmuestra" name="imagenmuestra" class="previsualizar" title="Imagen de la cedula"
-                                                                src="../<?php echo $foto_ci; ?>" alt="Imagen Ci.">
-                                                        </a>
-                                                    <?php } elseif ($esPDF) { ?>
-                                                        <a id="pdf-enlace" href="../<?php echo $foto_ci; ?>" target="_blank">
-                                                            <iframe id="pdfmuestra" name="pdfmuestra" class="previsualizar" src="../<?php echo $foto_ci; ?>" style="display: block;" width="100%" height="300px"></iframe>
-                                                        </a>
-                                                    <?php } ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                      
-                                        <div class="waves-effect waves-light">
-                                            <label for="imagen" class="custom-file-upload">Adjuntar Documento</label>
-                                            <input type="file" class="nuevaImagen" name="imagen" id="imagen" onchange="guardarFotoCi()">
-                                            <input type="hidden" name="imagenactual" id="imagenactual">
-                                        </div>
-                                    </fieldset>
-                                </div>
-                            </div>
+                   
                         </div>
                     </section>
 
@@ -209,9 +172,16 @@ if (isset($_SESSION["usuario_id"])) {
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="direccion_domicilio">Dirección de domicilio</label>
-                                            <input type="text" class="form-control" id="direccion_domicilio" name="direccion_domicilio" placeholder="Dirección de su domicilio" style="width: 100%;" />
+                                            <label for="barrio">Barrio</label>
+                                            <input type="text" class="form-control" id="barrio" name="barrio" placeholder="Barrio" />
                                         </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label for="direccion_domicilio">Dirección de domicilio</label>
+                                          <textarea class="form-control"  id="direccion_domicilio" name="direccion_domicilio" placeholder="Dirección de su domicilio" rows="3"></textarea>
+                                        </div>
+                                       
                                     </div>
                                    
                                 </section>
