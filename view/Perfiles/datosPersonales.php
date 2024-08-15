@@ -170,20 +170,20 @@ if (isset($_SESSION["usuario_id"])) {
                                             </select>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="barrio">Barrio</label>
                                             <input type="text" class="form-control" id="barrio" name="barrio" placeholder="Barrio" />
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                          <label for="direccion_domicilio">Dirección de domicilio</label>
-                                          <textarea class="form-control"  id="direccion_domicilio" name="direccion_domicilio" placeholder="Dirección de su domicilio" rows="3"></textarea>
+                                            <label for="direccion_domicilio">Dirección de domicilio</label>
+                                            <textarea class="form-control" id="direccion_domicilio" name="direccion_domicilio" placeholder="Dirección de su domicilio" rows="3"></textarea>
                                         </div>
-                                       
                                     </div>
-                                   
+                     
                                 </section>
                             </form>
                         </div>
