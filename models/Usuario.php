@@ -192,6 +192,19 @@
             return $query->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        public function get_total_especialidad($cedula){
+            $conectar=parent::ConexionSirepro();
+            $sql="SELECT COUNT(DISTINCT codespe) AS cantidad_especialidad
+                  FROM rprofesional
+                  WHERE cedula = '$cedula'
+                  AND tipoprof = 4";
+
+                
+            $query=$conectar->prepare($sql);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         public static function get_usuarios($usuario_id){
             $conectar=parent::Conexion();
             $sql="SELECT 

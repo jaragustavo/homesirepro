@@ -46,8 +46,8 @@
 							<div class="col-sm-4">
 								<article class="statistic-box yellow">
 									<div>
-										<div class="number" id="lbltotal">15</div>
-										<div class="caption"><div>Investigaciones Cientificas</div></div>
+										<div class="number" id="lblespecialidad" name="lblespecialidad"></div>
+										<div class="caption"><div>Especializaciones</div></div>
 									</div>
 								</article>
 							</div>

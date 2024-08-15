@@ -152,7 +152,22 @@
                 }
                 echo json_encode($output);
             }
-            break;
+        break;
+
+        case "cantidadEspecialidad":
+
+                $datos=$usuario->get_total_especialidad($_SESSION["cedula"]);  
+               
+                if(is_array($datos)==true and count($datos)>0){
+                    
+                    foreach($datos as $row)
+                    {
+                      
+                        $output["lblespecialidad"] = $row["cantidad_especialidad"];
+                    }
+                    echo json_encode($output);
+                }
+                break;
         case "mostrarDatosPersonales":
 
             $datos = $usuario->get_datos_personales($_SESSION["cedula"]);  
