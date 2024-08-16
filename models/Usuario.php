@@ -81,6 +81,7 @@
                         $_SESSION["area_id"]=$resultado["area_id"];
                         $roles_usuario = Usuario::get_roles_x_usuario($resultado["id"]);
                         foreach ($roles_usuario as $rol_usuario){
+
                             if($rol_usuario["rol_nom"] == "PROFESIONAL"){
                                 
                                 $_SESSION["inicio"]="index.php";
@@ -177,7 +178,10 @@
             $conectar=parent::ConexionSirepro();
             $sql="select 
             count(*) as cant_reposos from reposos
-            where ciprof = '$cedula'";
+            where ciprof = '$cedula'
+            AND estado = '2'
+            AND cantrep <> '0'
+            ";
             $query=$conectar->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -186,7 +190,11 @@
         public function get_total_reposos_visados(){
             $conectar=parent::ConexionSirepro();
             $sql="select 
-            count(*) as cant_reposos from reposos";
+            count(*) as cant_reposos 
+            from reposos
+            AND estado = '2'
+            AND cantrep <> '0'
+            ";
             $query=$conectar->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -198,8 +206,7 @@
                   FROM rprofesional
                   WHERE cedula = '$cedula'
                   AND tipoprof = 4";
-
-                
+               
             $query=$conectar->prepare($sql);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_ASSOC);

@@ -37,6 +37,7 @@ class ControladorPagoVisacion
             echo json_encode(['error' => 'Token invalido']);
         }
     }
+
    
 }
 

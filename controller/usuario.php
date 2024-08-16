@@ -2,11 +2,12 @@
     /* TODO: Llamando Clases */
     require_once("../config/conexion.php");
     require_once("../models/Usuario.php");
+    require_once("../models/PagoVisacion.php");
     require_once("../models/Menu.php");
     /* TODO: Inicializando clase */
     $usuario = new Usuario();
     $menu = new Menu();
-
+    $pagoVisacion = new PagoVisacion();
     switch($_GET["op"]){
         /* TODO: Guardar y editar, guardar cuando el ID este vacio, y Actualizar cuando se envie el ID */
         case "guardaryeditar":
@@ -168,6 +169,29 @@
                     echo json_encode($output);
                 }
                 break;
+        case "obtenerCantidadRepososWeb":
+            $datos = $pagoVisacion->obtenerCantidadRepososWeb($_SESSION["cedula"]);  
+            
+            if (is_array($datos) && count($datos) > 0) {
+                // Inicializa $output para evitar problemas
+                $output = array();
+                
+                foreach ($datos as $row) {
+                    // Verifica si la clave existe en el array
+                    if (isset($row["cantidad_visado_web"])) {
+                        $output["lblreposoVisadoWeb"] = $row["cantidad_visado_web"];
+                        error_log('Cantidad Visado Web: ' . $row["cantidad_visado_web"]);
+                    } else {
+                        error_log('La clave "cantidad_visado_web" no existe en el array.');
+                    }
+                }
+        
+                echo json_encode($output);
+            } else {
+                error_log('No se encontraron datos para la cédula: ' . $_SESSION["cedula"]);
+            }
+        break;
+        
         case "mostrarDatosPersonales":
 
             $datos = $usuario->get_datos_personales($_SESSION["cedula"]);  
