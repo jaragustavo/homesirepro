@@ -4,10 +4,21 @@
         /* TODO: Listar reposos segun CI del usuario (médico) */
         public function listar_reposos_x_medico($cedula){
             $conectar= parent::conexionSirepro();
-            $sql="select id as id_reposo, cedula as ci_paciente, nombyapel as nombre_paciente,
-            nrecibo, fechainicio as fecha_inicio, fechafin as fecha_fin, cantrep from reposos 
-            where ciprof = '$cedula'";
-      
+            $sql="SELECT cast(tid as bigint) id_reposo, ciusuario ci_paciente, nombyapel nombre_paciente,
+                    0 nrecibo,fechainicio fecha_inicio,fechafin fecha_fin, cantrep
+                    FROM pagos_visaciones 
+                    WHERE ciprof = '$cedula'
+                    AND estado = '2'
+                    AND cantrep <> '0'
+                    union
+                    select id AS id_reposo, cedula AS ci_paciente, nombyapel AS nombre_paciente,
+                        nrecibo, fechainicio AS fecha_inicio, fechafin AS fecha_fin, cantrep  from reposos
+                    WHERE ciprof = '$cedula'
+                    AND estado = '2'
+                    AND cantrep <> '0'
+                    order by fecha_inicio desc 
+                    ";
+            error_log($sql);
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();
@@ -18,20 +29,35 @@
            
             $conectar= parent::conexionSirepro();
             // Construir la consulta con placeholders
-            $sql = "SELECT id AS id_reposo, cedula AS ci_paciente, nombyapel AS nombre_paciente,
-                        nrecibo, fechainicio AS fecha_inicio, fechafin AS fecha_fin, cantrep 
-                    FROM reposos 
-                    WHERE ciprof = :cedula";
-            
+            // $sql = "SELECT id AS id_reposo, cedula AS ci_paciente, nombyapel AS nombre_paciente,
+            //             nrecibo, fechainicio AS fecha_inicio, fechafin AS fecha_fin, cantrep 
+            //         FROM reposos 
+            //         WHERE ciprof = :cedula";
+
+            $sql = "select * from (SELECT cast (tid as bigint) id_reposo, ciusuario ci_paciente, nombyapel nombre_paciente,
+                    0 nrecibo,fechainicio fecha_inicio,fechafin fecha_fin, cantrep
+                    FROM pagos_visaciones 
+                    WHERE ciprof = :cedula
+                    AND estado = '2'
+                    AND cantrep <> '0'
+                    union
+                    select id AS id_reposo, cedula AS ci_paciente, nombyapel AS nombre_paciente,
+                        nrecibo, fechainicio AS fecha_inicio, fechafin AS fecha_fin, cantrep  from reposos
+                    WHERE ciprof = :cedula
+                    AND estado = '2'
+                    AND cantrep <> '0'
+                    ) DATO
+                     WHERE 1 = 1";
+                    
             // Añadir condiciones dinámicamente
             if ($ci_paciente != "") {
-                $sql .= " AND cedula ILIKE :ci_paciente";
+                $sql .= " AND ci_paciente ILIKE :ci_paciente";
             }
             if ($nombre_paciente != "") {
-                $sql .= " AND nombyapel ILIKE :nombre_paciente";
+                $sql .= " AND nombre_paciente ILIKE :nombre_paciente";
             }
             if ($fecha_inicio_reposo != "") {
-                $sql .= " AND fechainicio::date >= :fecha_inicio_reposo";
+                $sql .= " AND fecha_inicio::date >= :fecha_inicio_reposo";
             }
 
             // Preparar la consulta
@@ -39,6 +65,7 @@
 
             // Vincular parámetros
             $stmt->bindParam(':cedula', $cedula);
+
             if ($ci_paciente != "") {
                 $ci_paciente_param = "%$ci_paciente%";
                 $stmt->bindParam(':ci_paciente', $ci_paciente_param);

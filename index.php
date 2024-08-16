@@ -1,280 +1,202 @@
 <?php
-session_start();
-
-
-
-
- require_once ("portal/html/head.php") 
-
+    require_once("config/conexion.php");
+    if (isset($_POST["enviar"]) and $_POST["enviar"]=="si"){
+        require_once("models/Usuario.php");
+        $usuario = new Usuario();
+        $usuario->login();
+    }
 ?>
 
+<!doctype html>
+<html lang="es" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
 
+<head>
+    <meta charset="utf-8" />
+    <title>APE | Acceso </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+
+    <link rel="shortcut icon" href="assets/images/logo1_sirepro.jpg">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <script src="assets/js/layout.js"></script>
+    <link href="public/css/main.css" rel="stylesheet" type="text/css" />
+
+    <link href="public/css/lib/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="public/css/lib/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="public/css/main.source.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="rbt-header-sticky">
-
-<?php require_once ("portal/html/header.php") ?>
-
-<a class="close_side_menu" href="javascript:void(0);"></a>
+<body>
 
 
-    <main class="rbt-main-wrapper">
-        <!-- Start Banner Area -->
-        <div class="rbt-banner-area rbt-banner-1">
-            <div class="container-fluid">
+    <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
+
+        <div class="bg-overlay"></div>
+
+        <div class="auth-page-content overflow-hidden pt-lg-5">
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-12 pb--120 pt--70">
-                        <div class="content">
-                            <div class="inner">
-
-                                <h1 class="title">
-                                Bienvenido a HomeSirepro
-                                </h1>
-                                <p class="description">
-                                Sistema informático para profesionales de la salud. Con HomeSirepro, podrás gestionar todos tus trámites y 
-                                llevar un control detallado de los reposos a pacientes. ¡Optimiza tu tiempo y mejora tu eficiencia
-                                con nuestras herramientas avanzadas!
-
-                                </p>
-                                <div class="slider-btn">
-                                    <a class="rbt-btn btn-gradient hover-icon-reverse" href="portal/Profesionales/consultaRegistroProfesional.php">
-                                        <span class="icon-reverse-wrapper">
-                                            <span class="btn-text">Consultar profesionales</span>
-                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="shape-wrapper" id="scene">
-                                <img src="assets-main/images/banner/banner-02.png" alt="Hero Image">
-                                <div class="hero-bg-shape-1 layer" data-depth="0.4">
-                                    <img src="assets-main/images/shape/shape-01.png" alt="Hero Image Background Shape">
-                                </div>
-                                <div class="hero-bg-shape-2 layer" data-depth="0.4">
-                                    <img src="assets-main/images/shape/shape-02.png" alt="Hero Image Background Shape">
-                                </div>
-                            </div>
-
-                            <div class="banner-card pb--60 mb--50 swiper rbt-dot-bottom-center banner-swiper-active">
-                                <div class="swiper-wrapper">
-                                    <!-- Start Single Card  -->
-                                    <div class="swiper-slide">
-                                        <div class="rbt-card variation-01 rbt-hover">
-                                            <div class="rbt-card-img">
-                                                <a href="course-details.html">
-                                                    <img src="assets-main/images/service/Crear_identidad_electronica.jpg" alt="Card image">
-                                                </a>
-                                            </div>
-                                            <div class="rbt-card-body">
-                                                <h4 class="rbt-card-title"><a href="" class="loginMtic">Acceso a HomeSirepro</a>
-                                                </h4>
-                                                <p class="rbt-card-text">Puede acceder mediante Identidad Electrónica</p>
-
-                                                <div class="rbt-card-bottom">
-                                                    <a class="rbt-btn-link" href="https://identidad.paraguay.gov.py/login?clientId=1&scope=read&responseType=code&state=3a8595b1-bd02-d4e7-0964-ad3efdeabcc0">Ir<i
-                                                            class="feather-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="swiper-slide">
-                                        <div class="rbt-card variation-01 rbt-hover">
-                                            <div class="rbt-card-img">
-                                                <a href="course-details.html">
-                                                    <img src="assets-main/images/service/tramites_en_linea.jpg" alt="Card image">
-                                                </a>
-                                            </div>
-                                            <div class="rbt-card-body">
-                                                <ul class="rbt-meta">
-                                                    <li><i class="feather-book"></i>Registros Profesionales</li>
-                                                    <li><i class="feather-users"></i>Constancias</li>
-                                                </ul>
-                                                <h4 class="rbt-card-title"><a href="course-details.html">Trámites en línea</a>
-                                                </h4>
-                                                <p class="rbt-card-text">Puede realizar trámites en línea desde el lugar en que se encuentre.</p>
-
-                                                <div class="rbt-card-bottom">
-                                                    <a class="rbt-btn-link" href="course-details.html">Saber más<i
-                                                            class="feather-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                    <!-- Start Single Card  -->
-                                    <div class="swiper-slide">
-                                        <div class="rbt-card variation-01 rbt-hover">
-                                            <div class="rbt-card-img">
-                                                <a href="course-details.html">
-                                                    <img src="assets-main/images/service/reposo_medico.jpg" alt="Card image">
-                                                </a>
-                                            </div>
-                                            <div class="rbt-card-body">
-                                                <ul class="rbt-meta">
-                                                    <li><i class="feather-book"></i>Reposos médicos</li>
-                                                </ul>
-                                                <h4 class="rbt-card-title"><a href="course-details.html">Reposos emitidos</a>
-                                                </h4>
-                                                <p class="rbt-card-text">Encuentre el historial de reposos emitidos visados por el Control de Profesiones.</p>
-                                                <div class="rbt-card-bottom">
-                                                    <a class="rbt-btn-link" href="course-details.html">Saber más<i
-                                                                class="feather-arrow-right"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Card  -->
-
-                                </div>
-                                <div class="rbt-swiper-pagination"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Banner Area -->
-
-        <!-- Start About Area  -->
-        <div class="rbt-about-area bg-color-white rbt-section-gapTop pb_md--80 pb_sm--80 about-style-1">
-            <div class="container">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="thumbnail-wrapper">
-                            <div class="thumbnail image-1">
-                                <img data-parallax='{"x": 0, "y": -20}' src="assets-main/images/team/doctor1.jpg" alt="Education Images">
-                            </div>
-                            <div class="thumbnail image-2 d-none d-xl-block">
-                                <img data-parallax='{"x": 0, "y": 60}' src="assets-main/images/team/dentist1.jpg" alt="Education Images">
-                            </div>
-                            <div class="thumbnail image-3 d-none d-md-block">
-                                <img data-parallax='{"x": 0, "y": 80}' src="assets-main/images/team/doctor2.jpg" alt="Education Images">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="inner pl--50 pl_sm--0 pl_md--0">
-                            <div class="section-title text-start">
-                                <span class="subtitle bg-coral-opacity">Número de Boleta</span>
-                                <h2 class="title">Consultar Pago de Visaciones</h2>
-                            </div>
-
-                            <p class="description mt--30">Con HomeSirepro, las personas podrán consultar fácilmente el número de boleta de pago de reposo y el estado en el que se encuentra. Esta funcionalidad permite un seguimiento rápido y preciso de las boletas, asegurando que los usuarios estén siempre informados sobre el progreso de sus pagos.
-                            </p>
-                            <div class="about-btn mt--40">
-                                <a class="rbt-btn btn-gradient hover-icon-reverse" href="portal/pagoVisacion/consultaPagoVisacion.php">
-                                    <span class="icon-reverse-wrapper">
-                                    <span class="btn-text">Consultar</span>
-                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End About Area  -->
-
-        <!-- Start Counterup Area  -->
-        <div class="rbt-counterup-area bg-color-extra2 rbt-section-gapBottom default-callto-action-overlap">
-            <div class="container">
-                <div class="row mb--60">
                     <div class="col-lg-12">
-                        <div class="section-title text-center">
-                            <span class="subtitle bg-primary-opacity">¿Por qué formar parte de HomeSirepro?</span>
+                        <div class="card overflow-hidden">
+                            <div class="row g-0">
+                                <div class="col-lg-6">
+                                    <div class="p-lg-5 p-4 auth-one-bg h-100">
+                                        <div class="bg-overlay"></div>
+                                        <div class="position-relative h-100 d-flex flex-column">
+                                            <div class="mt-auto">
+                                                <div class="mb-3">
+                                                    <i class="ri-double-quotes-l display-4 text-success"></i>
+                                                </div>
+
+                                                <div id="qoutescarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                                                    <div class="carousel-indicators">
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                    </div>
+                                                    <div class="carousel-inner text-center text-white-50 pb-5">
+                                                        <div class="carousel-item active">
+                                                            <p class="fs-15 fst-italic">" ¡Perfecto! El código es ordenado, el diseño es claro y se presta fácilmente a personalizaciones. "</p>
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <p class="fs-15 fst-italic">" El soporte técnico es verdaderamente destacado, con una atención al cliente sorprendente."</p>
+                                                        </div>
+                                                        <div class="carousel-item">
+                                                            <p class="fs-15 fst-italic">"  El Sistema HOMESIREPRO supera mis expectativas, proporcionando una solución integral que se ajusta perfectamente a mis necesidades y preferencias."</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="p-lg-5 p-4">
+                                    
+                        <!-- TODO: validar segun valor al iniciar session -->
+                        
+                                        <div class="mt-6">
+                                            <form action="" method="post" id="login_form">
+                                                <div class="mb-2">
+                                                <a href="index.html">
+                                                    <span>
+                                                        <img src="assets/images/logo-mspbs.png" alt="" >
+                                                    </span>
+                                                </a>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <?php
+                                                        if (isset($_GET["m"])){
+                                                            switch($_GET["m"]){
+                                                                case "1";
+                                                                    ?>
+                                                                    <!-- alert alert-warning alert-icon alert-close alert-dismissible fade in -->
+                                                                        <div class="alert alert-warning alert-icon alert-close alert-dismissible " role="alert">
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <!-- <span aria-hidden="true">×</span> -->
+                                                                            </button>
+                                                                            <i class="font-icon font-icon-warning"></i>
+                                                                            El Usuario y/o Contraseña son incorrectos.
+                                                                        </div>
+                                                                    <?php
+                                                                break;
+
+                                                            case "2";
+                                                                ?>
+                                                                    <div class="alert alert-warning alert-icon alert-close alert-dismissible " role="alert">
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                            <!-- <span aria-hidden="true">×</span> -->
+                                                                        </button>
+                                                                        <i class="font-icon font-icon-warning"></i>
+                                                                        Los campos estan vacios.
+                                                                    </div>
+                                                                <?php
+                                                                break;
+                                                            }
+                                                        }
+                                                    ?>
+                                                </div>  
+                                                <div class="mb-2">
+                                                    <label for="usu_correo" class="form-label">Cédula Identidad</label>
+                                                    <input type="text" class="form-control" name="ci" id="ci" placeholder="Ingrese Ci.">
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <div class="float-end">
+                                                        <a href="auth-pass-reset-cover.html" class="text-muted">Olvide Contraseña?</a>
+                                                    </div>
+                                                    <label class="form-label" for="usu_pass">Contraseña</label>
+                                                    <div class="position-relative auth-pass-inputgroup mb-3">
+                                                        <input type="password" class="form-control pe-5" placeholder="Ingrese Contraseña" name="password" id="password">
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i id="togglePassword" class="ri-eye-fill align-middle"></i></button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+                                                    <label class="form-check-label" for="auth-remember-check">Recuerdame</label>
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <input type="hidden" name="enviar" value="si">
+                                                    <button class="btn btn-primary w-100" type="submit">Acceder</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
 
                         </div>
-                    </div>
-                </div>
-                <div class="row g-5 hanger-line">
-                    <!-- Start Single Counter  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-                        <div class="rbt-counterup rbt-hover-03 border-bottom-gradient">
-                            <div class="top-circle-shape"></div>
-                            <div class="inner">
-                                <div class="rbt-round-icon">
-                                    <img src="assets-main/images/icons/counter-01.png" alt="Icons Images">
-                                </div>
-                                <div class="content">
-                                    <h3 class="counter"><span class="odometer" data-count="13000">00</span>
-                                    </h3>
-                                    <span class="subtitle">Profesionales inscriptos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Counter  -->
 
-                    <!-- Start Single Counter  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt--60 mt_md--30 mt_sm--30 mt_mobile--60">
-                        <div class="rbt-counterup rbt-hover-03 border-bottom-gradient">
-                            <div class="top-circle-shape"></div>
-                            <div class="inner">
-                                <div class="rbt-round-icon">
-                                    <img src="assets-main/images/icons/counter-02.png" alt="Icons Images">
-                                </div>
-                                <div class="content">
-                                    <h3 class="counter"><span class="odometer" data-count="4000">00</span>
-                                    </h3>
-                                    <span class="subtitle">Reposos visados</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <!-- End Single Counter  -->
 
-                    <!-- Start Single Counter  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--60 mt_sm--60">
-                        <div class="rbt-counterup rbt-hover-03 border-bottom-gradient">
-                            <div class="top-circle-shape"></div>
-                            <div class="inner">
-                                <div class="rbt-round-icon">
-                                    <img src="assets-main/images/icons/counter-03.png" alt="Icons Images">
-                                </div>
-                                <div class="content">
-                                    <h3 class="counter"><span class="odometer" data-count="1000">00</span>
-                                    </h3>
-                                    <span class="subtitle">Certificados expedidos</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Counter  -->
-
-                    <!-- Start Single Counter  -->
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt--60 mt_md--60 mt_sm--60">
-                        <div class="rbt-counterup rbt-hover-03 border-bottom-gradient">
-                            <div class="top-circle-shape"></div>
-                            <div class="inner">
-                                <div class="rbt-round-icon">
-                                    <img src="assets-main/images/icons/counter-04.png" alt="Icons Images">
-                                </div>
-                                <div class="content">
-                                    <h3 class="counter"><span class="odometer" data-count="1500">00</span>
-                                    </h3>
-                                    <span class="subtitle">Trámites gestionados</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Counter  -->
                 </div>
             </div>
         </div>
-        <!-- End Counterup Area  -->
 
-        
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <p class="mb-0">&copy;
+                                <script>document.write(new Date().getFullYear())</script> ServiSoft. Elaborado con  <i class="mdi mdi-heart text-danger"></i> por Gustavo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
-    </main>
-    <?php require_once ('portal/html/footer.php'); ?>
-    <?php require_once ('portal/html/js.php'); ?>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="assets/libs/node-waves/waves.min.js"></script>
+    <script src="assets/libs/feather-icons/feather.min.js"></script>
+    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <!-- <script src="assets/js/plugins.js"></script> -->
+
+    <script src="assets/js/pages/password-addon.init.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script type="text/javascript" src="login.js"></script>
 </body>
 
 </html>
+

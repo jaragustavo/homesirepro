@@ -21,7 +21,7 @@ $(document).ready(function() {
                 console.log("Image detect...");
                 myimagetreat(image[0]);
             },
-            onPaste: function (e) {
+            onPaste: function(e) {
                 console.log("Text detect...");
             }
         },
@@ -36,59 +36,59 @@ $(document).ready(function() {
     });
     $('#viewuser').hide();
 
-    tabla = $('#reposos_data').dataTable({
-        "aProcessing": true,
-        "aServerSide": true,
-        dom: 'rtip',
-        lengthChange: false,
-        colReorder: true,
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ],
-        "ajax": {
-            url: '../../controller/reposo.php?op=listar_x_medico',
-            type: "post",
-            dataType: "json",
-            data: { usu_id: usu_id },
-            error: function(e) {
-                console.log(e.responseText);
-            }
-        },
-        "ordering": false,
-        "bDestroy": true,
-        "responsive": true,
-        "bInfo": true,
-        "iDisplayLength": 10,
-        "autoWidth": false,
-        "language": {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando un total de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando un total de 0 registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Buscar:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
+    $(document).ready(function() {
+        $('#reposos_data').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "dom": 'rtip',
+            "lengthChange": false,
+            "colReorder": true,
+            "ordering": false, // Desactiva el ordenamiento en todas las columnas
+            "buttons": [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+            "ajax": {
+                "url": '../../controller/reposo.php?op=listar_x_medico',
+                "type": "post",
+                "dataType": "json",
+                "data": { usu_id: usu_id },
+                "error": function(e) {
+                    console.log(e.responseText);
+                }
             },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            "bDestroy": true,
+            "responsive": true,
+            "info": true,
+            "pageLength": 10, // Corregido para iDisplayLength
+            "autoWidth": false,
+            "language": {
+                "processing": "Procesando...",
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron resultados",
+                "emptyTable": "Ningún dato disponible en esta tabla",
+                "info": "Mostrando un total de _TOTAL_ registros",
+                "infoEmpty": "Mostrando un total de 0 registros",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "search": "Buscar:",
+                "loadingRecords": "Cargando...",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
             }
-        }
-    }).DataTable();
-    
+        });
+    });
+
+
     var currentURL = window.location.href;
     // Use a regular expression to extract the ID from the URL
     var match = currentURL.match(/[\?&]ID=([^&]*)/);
@@ -103,7 +103,7 @@ $(document).ready(function() {
 /* TODO: Link para poder ver el detalle de documento academico */
 $(document).on("click", ".btn-inline", function() {
     const ciphertext = $(this).data("ciphertext");
-    window.location.replace('http://localhost:90/homesirepro/view/Reposos/verDetalleReposo.php?ID=' + ciphertext + '');    
+    window.location.replace('http://localhost:90/homesirepro/view/Reposos/verDetalleReposo.php?ID=' + ciphertext + '');
 });
 
 /* TODO:Filtro avanzado */
@@ -134,6 +134,7 @@ function listardatatable(ci_paciente, nombre_paciente, fecha_inicio_reposo) {
         dom: 'rtip',
         lengthChange: false,
         colReorder: true,
+
         buttons: [
             'copyHtml5',
             'excelHtml5',
@@ -144,7 +145,7 @@ function listardatatable(ci_paciente, nombre_paciente, fecha_inicio_reposo) {
             url: '../../controller/reposo.php?op=listar_filtro',
             type: "post",
             dataType: "json",
-            data: { ci_paciente: ci_paciente, nombre_paciente: nombre_paciente, fecha_inicio_reposo:fecha_inicio_reposo },
+            data: { ci_paciente: ci_paciente, nombre_paciente: nombre_paciente, fecha_inicio_reposo: fecha_inicio_reposo },
             error: function(e) {
                 console.log(e.responseText);
             }
@@ -154,6 +155,7 @@ function listardatatable(ci_paciente, nombre_paciente, fecha_inicio_reposo) {
         "bInfo": true,
         "iDisplayLength": 10,
         "autoWidth": false,
+        "ordering": false, // Desactiva el ordenamiento en todas las columnas
         "language": {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
@@ -238,7 +240,7 @@ $(document).on("click", "#btntodo", function() {
 
 });
 
-function cargarReposo(idEncrypted){
+function cargarReposo(idEncrypted) {
     /* TODO: Mostramos informacion del documento en inputs */
     $.post("../../controller/reposo.php?op=mostrar", { idEncrypted: idEncrypted }, function(data) {
         data = JSON.parse(data);
@@ -246,7 +248,7 @@ function cargarReposo(idEncrypted){
         $('#tipo_documento').trigger('change');
         $('#institucion_educativa').val(data.institucion_educativa);
         $('#institucion_educativa').trigger('change');
-        $('#imagenmuestra').attr("src",data.documento_ruta);
+        $('#imagenmuestra').attr("src", data.documento_ruta);
         $('#dato_adic').summernote('code', data.dato_adic);
 
         $('#idEncrypted').val(doc_academico_id);
@@ -262,7 +264,7 @@ function actualizar_img() {
         /*=============================================
         VALIDAMOS EL FORMATO DEL ARCHIVO SEA PDF, JPG O PNG
         =============================================*/
-        
+
         if (imagen["type"] != "image/jpeg" && imagen["type"] != "image/png" && imagen["type"] != "application/pdf") {
             $(".nuevaImagen").val("");
             Swal.fire({
@@ -284,11 +286,12 @@ function actualizar_img() {
             $(datosImagen).on("load", function(event) {
                 var rutaImagen = event.target.result;
                 $(".previsualizar").attr("src", rutaImagen);
-            });
-         }
+            });     
+        }
 
-        
-    });
+
+            
+    });
 }
 
 init();
