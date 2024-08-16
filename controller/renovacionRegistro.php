@@ -33,7 +33,7 @@
         
                 // Construyendo la cadena HTML
                 $html = '<a target="_blank" href="' . $href . '">
-                             <img src="../../public/img/pdf.bmp" id="Image9" alt="" border="0" style="width:38px;height:39px;">
+                             <img src="../../public/img/pdf.bmp" id="Image9" alt="Imprimir Certificado" title="Imprimir Certificado" border="0" style="width:38px;height:39px;">
                          </a>';
         
                 // Asignando la cadena HTML al subarray
