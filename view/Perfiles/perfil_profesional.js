@@ -165,7 +165,11 @@ function cargarLugarTrabajo() {
         // Comprobar si el array de trabajos está vacío
         if (trabajos.length === 0) {
             // Mostrar mensaje si no hay trabajos
+<<<<<<< HEAD
             $('#trabajo-container').append('<p>No tiene dados laborales registrado.</p>');
+=======
+            $('#trabajo-container').append('<p>No hay lugar de trabajo registrado.</p>');
+>>>>>>> 987cb6c326ad03bec247a7803027d5f05c74ba7f
             return;
         }
 

@@ -14,6 +14,11 @@ function init(){
         $('#lbltotalrepososvisados').html(data.lbltotalrepososvisados);
     });
 
+    $.post("../../controller/usuario.php?op=cantidadEspecialidad",function (data) {
+        data = JSON.parse(data);
+        $('#lblespecialidad').html(data.lblespecialidad);
+    });
+
 }
 
 $(document).ready(function(){

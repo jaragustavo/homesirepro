@@ -160,16 +160,17 @@ session_start();
                     <div class="col-lg-6">
                         <div class="inner pl--50 pl_sm--0 pl_md--0">
                             <div class="section-title text-start">
-                                <span class="subtitle bg-coral-opacity">Número de Boleta</span>
-                                <h2 class="title">Consultar Pago de Visaciones</h2>
+                                <span class="subtitle bg-coral-opacity">Sobre HomeSirepro</span>
+                                <h2 class="title">Conoce sobre la plataforma HomeSirepro</h2>
                             </div>
 
-                            <p class="description mt--30">Con HomeSirepro, las personas podrán consultar fácilmente el número de boleta de pago de reposo y el estado en el que se encuentra. Esta funcionalidad permite un seguimiento rápido y preciso de las boletas, asegurando que los usuarios estén siempre informados sobre el progreso de sus pagos.
+                            <p class="description mt--30">Los profesionales de salud en el Paraguay son personas que dan todo de sí por salvar vidas y estar al servicio constante de la ciudadanía.
+                                <br><br>Por ello, se busca ofrecer una plataforma íntegra para todos los profesionales de salud, desde donde puedan realizar trámites en cualquier momento y lugar.
                             </p>
                             <div class="about-btn mt--40">
-                                <a class="rbt-btn btn-gradient hover-icon-reverse" href="portal/pagoVisacion/consultaPagoVisacion.php">
+                                <a class="rbt-btn btn-gradient hover-icon-reverse" href="#">
                                     <span class="icon-reverse-wrapper">
-                                    <span class="btn-text">Consultar</span>
+                            <span class="btn-text">Más acerca de HomeSirepro</span>
                                     <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                     <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                     </span>
