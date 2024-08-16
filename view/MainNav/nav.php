@@ -81,7 +81,8 @@
                     <span class="lbl">Trámites en línea</span>
                 </span>
                 <ul>
-                    <a href="..\Tramites\listarTramites.php"><span class="lbl">Gestiones</span></a>
+                    <!-- <a href="..\Tramites\listarTramites.php"><span class="lbl">Gestiones</span></a> -->
+                    <a href="..\RenovacionRegistro\listarRenovacionRegistro.php"><span class="lbl">Renovación de Registros Profesionales</span></a>
                 </li>
                 </ul>
             </li>
@@ -123,7 +124,7 @@
             </li>
         <?php }
         if ($value["nombre_permiso"] == "Comprobantes") { ?>
-            <li class="blue-darker with-sub">
+            <!-- <li class="blue-darker with-sub">
                 <span>
                     <span class="glyphicon glyphicon-file" style="font-size:20px;"></span>
                     <span class="lbl">Comprobantes</span>
@@ -132,7 +133,7 @@
                     <a href="..\Tramites\listarTramites.php"><span class="lbl">Rendimiento por Departamento</span></a>
                 </li>
                 </ul>
-            </li>
+            </li> -->
         <?php }
     }
     ?>
