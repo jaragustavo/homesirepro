@@ -3,20 +3,15 @@
 class Distrito extends Conectar
 {
    
-    public function obtenerDistrito() {
-          
+      public function obtenerDistritosPorDepartamento($coddpto) {
+       
         $conectar = parent::ConexionSirepro();
-    
-        // Construir la consulta SQL con la columna y valor proporcionados
-        $sql = "SELECT * FROM public.distritos
-                order by nomdpto";
-        error_log('$$$$$$$$$$$ '.$sql);
+        $sql = "SELECT coddist, nomdist FROM public.distritos WHERE coddpto = :coddpto ORDER BY nomdist";
         $query = $conectar->prepare($sql);
+        $query->bindValue(':coddpto', $coddpto, PDO::PARAM_STR);
         $query->execute();
-        $conectar = null;
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    
     
 }
 ?>

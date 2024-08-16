@@ -111,28 +111,6 @@ if (isset($_SESSION["usuario_id"])) {
                                 </div>
                             </section><!-- .proj-page-section -->
 
-                            <?php
-                                require_once ("../../config/conexion.php");
-
-                                $imagenes_perfil = Publicacion::get_imagenes_perfil($_SESSION["usuario_id"]);
-                                $foto_registro_profesional = $imagenes_perfil['foto_registro_profesional'];
-
-                                $esImagen = false;
-                                $esPDF = false;
-
-                                if ($foto_registro_profesional != null && $foto_registro_profesional != '') {
-                                    $extension = pathinfo($foto_registro_profesional, PATHINFO_EXTENSION);
-                                    if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png'])) {
-                                        $esImagen = true;
-                                    } elseif (strtolower($extension) == 'pdf') {
-                                        $esPDF = true;
-                                    }
-                                } else {
-                                    $foto_registro_profesional = "assets/assets-main/images/icons/user2.png";
-                                    $esImagen = true; // Para mostrar la imagen predeterminada
-                                }
-                            ?>
-                             
                             <!-- Formulario -->
                             <div class="container-fluid">
                                 <div class="row">
@@ -140,142 +118,72 @@ if (isset($_SESSION["usuario_id"])) {
                                             <section class="proj-page-section" id="formulario">
                                                 <!-- Sección de Datos Personales -->
                                                 <div class="row">
-                                                    <div class="col-md-7">
-                                                       <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label for="nro_registro">Nro.Registro</label>
+                                                                    <input type="text" class="form-control" id="nro_registro" name="nro_registro" placeholder="Nro.Registro">
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label for="profesion_id">Profesión</label>
-                                                                    <select class="form-control" id="profesion_id" name="profesion_id" data-placeholder="Seleccionar">
-                                                                        <option value="" selected>Seleccionar</option>
-                                                                        <!-- Opciones de profesión -->
-                                                                    </select>
+                                                                    <label for="profesion">Profesión</label>
+                                                                    <input type="text" class="form-control" id="profesion" name="profesion" placeholder="Profesión">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-8">
-                                                                <div class="form-group">
-                                                                    <label for="lugar_egreso">Lugar de Egreso</label>
-                                                                    <input type="text" class="form-control" id="lugar_egreso" name="lugar_egreso" placeholder="Lugar o Institución de egreso">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group">
-                                                                    <label for="anio_egreso">Año Egreso</label>
-                                                                    <input type="number" class="form-control" id="anio_egreso" name="anio_egreso" placeholder="Año de Egreso">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-5">
-                                                        <div class="col-lg-12">
-                                                            <fieldset class="form-group text-center"> <!-- Clase text-center para centrar el contenido -->
-                                                                <label class="form-label semibold" for="documento">Registro Profesional </label>
-                                                                <p class="help-block text-small-red" style="font-size: 12px; color: red;">Ambos lados</p>
-                                                                <div class="el-element-overlay">
-                                                                    <div class="el-card-item">
-                                                                        <div class="el-card-avatar el-overlay-1 rectangular-preview">
-                                                                            <?php if ($esImagen) { ?>
-                                                                                <img id="imagenmuestra" name="imagenmuestra" class="previsualizar" title="Imagen de la cedula"
-                                                                                    src="../<?php echo $foto_registro_profesional; ?>" alt="Imagen Registro Profesional.">
-                                                                            <?php } elseif ($esPDF) { ?>
-                                                                                <iframe id="pdfmuestra" name="pdfmuestra" class="previsualizar" src="../<?php echo $foto_registro_profesional; ?>" style="display: block;" width="100%" height="300px"></iframe>
-                                                                            <?php } ?>
-                                                                        </div>
+                                                           
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="universidad">Universidad</label>
+                                                                        <input type="text" class="form-control" id="universidad" name="universidad" placeholder="Uninversidad">
                                                                     </div>
                                                                 </div>
-                                                                <div class="waves-effect waves-light">
-                                                                    <label for="imagen" class="custom-file-upload">Seleccionar Documento</label>
-                                                                    <input type="file" class="nuevaImagen" name="imagen" id="imagen" onchange="guardarFotoRegistro()">
-                                                                    <input type="hidden" name="imagenactual" id="imagenactual">
-                                                                </div>
-                                                            </fieldset>
-                                                        </div>
+                                                        
+                                              
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <section class="proj-page-section proj-page-header">
+                                                            <div class="title">
+                                                                Post Grados
+                                                            </div>
+                                                        </section><!-- .proj-page-section -->
+
+                                                        <section class="proj-page-section">
+                                                    
+                                                            <div id="especialidad-container">
+                                                                    
+                                                            </div>
+                                                        
+                                                        </section><!-- .box-typical.steps-icon-block -->
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <section class="proj-page-section proj-page-header">
+                                                            <div class="title">
+                                                                Datos Laborales
+                                                            </div>
+                                                        </section><!-- .proj-page-section -->
+
+                                                        <section class="proj-page-section">
+                                                    
+                                                            <div id="trabajo-container">
+                                                                    
+                                                            </div>
+                                                        
+                                                        </section><!-- .box-typical.steps-icon-block -->
                                                     </div>
 
                                                 </div>
-                                       
-                                                <div id="trabajo-container">
-                                                    <div class="row trabajo-row col-12">
-                                                        <div class="col-md-6" >
-                                                            <div class="form-group">
-                                                                <label for="lugar_trabajo">Lugar de Trabajo</label>
-                                                                <select class="form-control" name="lugar_trabajo[]">
-                                                                    <!-- Opciones se cargarán dinámicamente -->
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="tipo_contrato">Contrato</label>
-                                                                <select class="form-control" name="tipo_contrato[]">
-                                                                    <option value=""></option>
-                                                                    <option value="PER">Permanente</option>
-                                                                    <option value="CON">Contratado</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="form-group">
-                                                                <label for="vinculo">Vínculo</label>
-                                                                <select class="form-control" name="vinculo[]">
-                                                                    <option value=""></option>
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-1"  style="padding: 20px 15px 10px 15px !important">
-                                                            <i class="glyphicon glyphicon-plus agregar-trabajo"
-                                                            style="float:left;color:#8DC26F; font-size:large; padding: 10px 0px 15px 10px; margin: 0px; cursor: pointer;" aria-hidden="true" title="Agregar lugar de trabajo"></i>
-                                                        </div>
+                                                <div class="col-md-6">
+                                                    <div id="documentos-container">
 
+                                                    
                                                     </div>
                                                 </div>
+                                             
+                                                 
                                         </section><!-- .box-typical.steps-icon-block -->
 
-                                        <!-- Datos Post Grado -->
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <section class="proj-page-section proj-page-header">
-                                                    <div class="title">
-                                                        Post Grados
-                                                    </div>
-                                                </section><!-- .proj-page-section -->
-
-                                                <section class="proj-page-section">
-                                                    <div id="estudio-container">
-                                                        <div class="row estudio-row col-12">
-                                                             <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label for="titulo">Titulo</label>
-                                                                    <select class="form-control" name="titulo[]">
-                                                                        <option value=""></option>
-                                                                        <option value="Doctorado">Doctorado</option>
-                                                                        <option value="Masterado">Masterado</option>
-                                                                        <option value="Diplomado">Diplomado</option>
-                                                                        <option value="Otro">Otro</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="titulo_descripcion">Descripción</label>
-                                                                    <input type="text" class="form-control" id="titulo_descripcion[]" name="titulo_descripcion[]" placeholder="Descripcion">
-                                                                </div>
-                                                            </div>
-    
-                                                            <div class="col-md-1"  style="padding: 20px 0px 10px 15px !important">
-                                                                <i class="glyphicon glyphicon-plus agregar-estudio"
-                                                                style="float:left;color:#8DC26F; font-size:large;  padding: 10px 0px 10px 10px; margin: 0px; cursor: pointer;" aria-hidden="true" title="Agregar Post Grado"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section><!-- .box-typical.steps-icon-block -->
-                                            </div><!-- .row -->
-                                        </div><!-- .container-fluid -->
+                                      
 
                                     </form>
                                 </div><!-- .row -->

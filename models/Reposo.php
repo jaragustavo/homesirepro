@@ -7,6 +7,7 @@
             $sql="select id as id_reposo, cedula as ci_paciente, nombyapel as nombre_paciente,
             nrecibo, fechainicio as fecha_inicio, fechafin as fecha_fin, cantrep from reposos 
             where ciprof = '$cedula'";
+      
             $sql=$conectar->prepare($sql);
             $sql->execute();
             return $resultado=$sql->fetchAll();
@@ -14,37 +15,47 @@
 
         /* TODO: Filtro Avanzado de reposos */
         public function filtrar_reposos($cedula,$ci_paciente,$nombre_paciente,$fecha_inicio_reposo){
+           
             $conectar= parent::conexionSirepro();
-            $condicionCiPaciente = "";
-            $condicionNombrePaciente = "";
-            $condicionFecha = "";
-            $and = "";
-            $and2 = "";
-            if($ci_paciente != ""){
-                $condicionCiPaciente = "cedula ilike '%$ci_paciente%' ";
-            } 
-            if($nombre_paciente != ""){
-                $condicionNombrePaciente = "nombyapel ilike '%$nombre_paciente%' ";
+            // Construir la consulta con placeholders
+            $sql = "SELECT id AS id_reposo, cedula AS ci_paciente, nombyapel AS nombre_paciente,
+                        nrecibo, fechainicio AS fecha_inicio, fechafin AS fecha_fin, cantrep 
+                    FROM reposos 
+                    WHERE ciprof = :cedula";
+            
+            // Añadir condiciones dinámicamente
+            if ($ci_paciente != "") {
+                $sql .= " AND cedula ILIKE :ci_paciente";
             }
-            if($fecha_inicio_reposo != ""){
-                $condicionFecha= "fechainicio::date = '$fecha_inicio_reposo'";
+            if ($nombre_paciente != "") {
+                $sql .= " AND nombyapel ILIKE :nombre_paciente";
             }
-            if($condicionNombrePaciente != "" && $condicionCiPaciente != ""){
-                $and = " AND ";
+            if ($fecha_inicio_reposo != "") {
+                $sql .= " AND fechainicio::date >= :fecha_inicio_reposo";
             }
-            if($condicionFecha != "" && $condicionNombrePaciente != ""){
-                $and2 = " AND ";
-            }
-            $sql="select id as id_reposo, cedula as ci_paciente, nombyapel as nombre_paciente,
-            nrecibo, fechainicio as fecha_inicio, fechafin as fecha_fin, cantrep from reposos 
-            where ciprof = '$cedula' AND ".$condicionCiPaciente.$and.$condicionNombrePaciente.
-            $and2.$condicionFecha;
 
-            $sql=$conectar->prepare($sql);
-            $sql->execute();
+            // Preparar la consulta
+            $stmt = $conectar->prepare($sql);
+
+            // Vincular parámetros
+            $stmt->bindParam(':cedula', $cedula);
+            if ($ci_paciente != "") {
+                $ci_paciente_param = "%$ci_paciente%";
+                $stmt->bindParam(':ci_paciente', $ci_paciente_param);
+            }
+            if ($nombre_paciente != "") {
+                $nombre_paciente_param = "%$nombre_paciente%";
+                $stmt->bindParam(':nombre_paciente', $nombre_paciente_param);
+            }
+            if ($fecha_inicio_reposo != "") {
+                $stmt->bindParam(':fecha_inicio_reposo', $fecha_inicio_reposo);
+            }
+
+            // Ejecutar la consulta
+            $stmt->execute();
             $conectar = null;
 
-            return $resultado=$sql->fetchAll();
+            return $resultado = $stmt->fetchAll();
         }
 
         /* TODO: Mostrar documento personal segun id del documento */

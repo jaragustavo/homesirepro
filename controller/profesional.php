@@ -43,9 +43,9 @@ class ControladorProfesional
    
     public function obtenerProfesionalxCedula()
     {
-        $item = isset($_GET['item']) ? trim($_GET['item']) : '';
-        $valor = isset($_GET['valor']) ? trim($_GET['valor']) : '';
-        $token = isset($_GET['token']) ? trim($_GET['token']) : '';
+        $item = isset($_REQUEST['item']) ? trim($_REQUEST['item']) : '';
+        $valor = isset($_REQUEST['valor']) ? trim($_REQUEST['valor']) : '';
+        $token = isset($_REQUEST['token']) ? trim($_REQUEST['token']) : '';
 
         // Configura los encabezados CORS
         header("Access-Control-Allow-Origin: *"); // Permite solicitudes desde cualquier origen
@@ -57,14 +57,17 @@ class ControladorProfesional
             if ($this->esParametroValido($valor) || $this->esParametroValido($item)) {
                 $profesional = new Profesional();
                 $resultado = $profesional->obtenerProfesionalxCedula($item,$valor);
-                
+             
                 header('Content-Type: application/json');
+              
                 echo json_encode($resultado);
             } else {
+            
                 http_response_code(400); // Bad Request
                 echo json_encode(['error' => 'Parámetro invalido']);
             }
         } else {
+           
             http_response_code(403); // Forbidden
             echo json_encode(['error' => 'Token invalido']);
         }
@@ -134,28 +137,24 @@ class ControladorProfesional
     }
 }
 
+
 $controladorProfesional = new ControladorProfesional();
 
-
-
-
-
-if (isset($_GET['item']) && $_GET['item'] == 'cedula') {
-
-  
+if (isset($_REQUEST['item']) && $_REQUEST['item'] == 'cedula') {
  
+
     $controladorProfesional->obtenerProfesionalxCedula();
 
-}else if (isset($_GET['item']) && $_GET['item'] == 'nombreProfesional') {
+}else if (isset($_REQUEST['item']) && $_REQUEST['item'] == 'nombreProfesional') {
 
     $controladorProfesional->obtenerProfesionalxNombre(); 
 
-}else if (isset($_GET['item']) && $_GET['item'] == 'nroregis') {
+}else if (isset($_REQUEST['item']) && $_REQUEST['item'] == 'nroregis') {
 
     $controladorProfesional->obtenerProfesionalxNroRegistro(); 
 
 
-}else if  (isset($_GET['item']) && $_GET['item'] != 'nombreProfesional' && $_GET['item'] != 'cedula')  {
+}else if  (isset($_REQUEST['item']) && $_REQUEST['item'] != 'nombreProfesional' && $_REQUEST['item'] != 'cedula')  {
 
     $controladorProfesional->obtenerProfesional(); 
 
